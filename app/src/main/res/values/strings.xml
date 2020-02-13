@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">A Special Dinner</string>
+    <string name="action_settings">Manage Dinner</string>
+    <string name="dinner1">Dinner1Test</string>
+    <string name="guestList">Guest list</string>
+    <string name="groups">Groups</string>
+    <string name="relations">Relationship</string>
+    <string name="tables">Tables</string>
+    <string name="makeItButton">Make It</string>
+    <string name="Bribes">Bribes</string>
+    <string name="AddDinnerHint">Enter Dinner Name...</string>
+    <string name="addDinnerbtn">Add Dinner</string>
+    <string name="deleteDinnerbtn">Delete Dinner</string>
+    <string name="delete_dinner_spinner_title">Select Dinner</string>
+    <string name="AddPersonHint">Name:</string>
+    <string name="addPersonbtn">ADD PERSON</string>
+    <string name="name">person_name_hint</string>
+    <string name="person_name_hint">Name:</string>
+    <string name="person_gender_hint">Gender:</string>
+    <string name="savebtn">save</string>
+    <string name="table_size_hint">Size of table:</string>
+    <string name="addTablebtn">Add Table</string>
+    <string name="deletebtn">delete</string>
+</resources>

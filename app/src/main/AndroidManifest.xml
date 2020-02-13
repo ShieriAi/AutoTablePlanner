@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.projecr7">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".tablelist.ManageTableActivity"></activity>
+        <activity android:name=".tablelist.AddTableActivity" />
+        <activity
+            android:name=".tablelist.TableListActivity"
+            android:parentActivityName=".DinnerActivity">
+            <intent-filter>
+                <action android:name=".tablelist.TableListActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DinnerActivity" />
+        </activity>
+        <activity
+            android:name=".ManagePersonActivity"
+            android:parentActivityName=".PeopleListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".PeopleListActivity" />
+        </activity>
+        <activity android:name=".AddPersonActivity" />
+        <activity android:name=".ManageDinnerActivity" />
+        <activity
+            android:name=".AddDinnerActivity"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".PeopleListActivity"
+            android:parentActivityName=".DinnerActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DinnerActivity" />
+        </activity>
+        <activity
+            android:name=".DinnerActivity"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+    </application>
+
+</manifest>
