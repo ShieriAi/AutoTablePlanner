@@ -25,9 +25,9 @@ public class PeopleListActivity extends AppCompatActivity {
     private List<Person> people;
     private int dinnerId;
 
-    private FloatingActionButton fab_main, fab1_person, fab2_couple;
+    private FloatingActionButton fab_main, fab1_person, fab2_couple, fab3_family;
     private Animation fab_open, fab_close, fab_clock, fab_anticlock;
-    TextView textview_person, textview_couple;
+    TextView textview_person, textview_couple, textview_family;
     Boolean isOpen = false;
 
 
@@ -74,6 +74,7 @@ public class PeopleListActivity extends AppCompatActivity {
         fab_main = findViewById(R.id.fab_main_people);
         fab1_person = findViewById(R.id.fab_people);
         fab2_couple = findViewById(R.id.fab_add_couple);
+        fab3_family = findViewById(R.id.fab_add_family);
         fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
         fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
         fab_clock = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_rotate_clock);
@@ -81,6 +82,7 @@ public class PeopleListActivity extends AppCompatActivity {
 
         textview_person = findViewById(R.id.textview_person);
         textview_couple = findViewById(R.id.textview_couple);
+        textview_family = findViewById(R.id.textview_family);
 
         fab_main.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +98,13 @@ public class PeopleListActivity extends AppCompatActivity {
 
 
         fab2_couple.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO
+            }
+        });
+
+        fab3_family.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // TODO
@@ -130,9 +139,12 @@ public class PeopleListActivity extends AppCompatActivity {
     private void fabOpen(){
         textview_person.setVisibility(View.VISIBLE);
         textview_couple.setVisibility(View.VISIBLE);
+        textview_family.setVisibility(View.VISIBLE);
+        fab3_family.startAnimation(fab_open);
         fab2_couple.startAnimation(fab_open);
         fab1_person.startAnimation(fab_open);
         fab_main.startAnimation(fab_clock);
+        fab3_family.setClickable(true);
         fab2_couple.setClickable(true);
         fab1_person.setClickable(true);
         isOpen = true;
@@ -141,9 +153,12 @@ public class PeopleListActivity extends AppCompatActivity {
     private void fabClose(){
         textview_person.setVisibility(View.INVISIBLE);
         textview_couple.setVisibility(View.INVISIBLE);
+        textview_family.setVisibility(View.INVISIBLE);
+        fab3_family.startAnimation(fab_close);
         fab2_couple.startAnimation(fab_close);
         fab1_person.startAnimation(fab_close);
         fab_main.startAnimation(fab_anticlock);
+        fab3_family.setClickable(false);
         fab2_couple.setClickable(false);
         fab1_person.setClickable(false);
         isOpen = false;

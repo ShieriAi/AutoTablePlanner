@@ -24,15 +24,37 @@
 
         <include layout="@layout/people_list" />
     </LinearLayout>
-<!--
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_people"
+
+    <TextView
+        android:id="@+id/textview_family"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@drawable/plus_icon" />
-        -->
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="256dp"
+        android:layout_marginEnd="88dp"
+        android:background="#212121"
+        android:padding="8dp"
+        android:text="@string/family"
+        android:textColor="#ffffff"
+        android:visibility="invisible" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_add_family"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="246dp"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:elevation="16dp"
+        android:focusable="true"
+        android:visibility="invisible"
+        app:backgroundTint="#ffffff"
+        app:pressedTranslationZ="12dp"
+        app:srcCompat="@drawable/family_icon" />
 
     <TextView
         android:id="@+id/textview_couple"
@@ -44,7 +66,7 @@
         android:layout_marginEnd="88dp"
         android:background="#212121"
         android:padding="8dp"
-        android:text="couple"
+        android:text="@string/couple"
         android:textColor="#ffffff"
         android:visibility="invisible" />
 
@@ -63,7 +85,7 @@
         android:visibility="invisible"
         app:backgroundTint="#ffffff"
         app:pressedTranslationZ="12dp"
-        app:srcCompat="@drawable/group_icon" />
+        app:srcCompat="@drawable/couple_icon" />
 
     <TextView
         android:id="@+id/textview_person"
@@ -75,7 +97,7 @@
         android:layout_marginEnd="88dp"
         android:background="#212121"
         android:padding="8dp"
-        android:text="person"
+        android:text="@string/person"
         android:textColor="#ffffff"
         android:visibility="invisible" />
 
@@ -95,7 +117,7 @@
         android:visibility="invisible"
         app:backgroundTint="#ffffff"
         app:pressedTranslationZ="12dp"
-        app:srcCompat="@drawable/guest_list_icon" />
+        app:srcCompat="@drawable/single_icon" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_main_people"

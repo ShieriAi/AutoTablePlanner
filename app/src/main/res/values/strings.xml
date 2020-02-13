@@ -21,4 +21,7 @@
     <string name="table_size_hint">Size of table:</string>
     <string name="addTablebtn">Add Table</string>
     <string name="deletebtn">delete</string>
+    <string name="couple">couple</string>
+    <string name="person">single</string>
+    <string name="family">family</string>
 </resources>
