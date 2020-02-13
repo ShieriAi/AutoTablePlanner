@@ -24,4 +24,7 @@
     <string name="couple">couple</string>
     <string name="person">single</string>
     <string name="family">family</string>
+    <string name="couple1_hint">Guest1</string>
+    <string name="couple2_hint">Guest2</string>
+    <string name="addCouplebtn">add couple</string>
 </resources>

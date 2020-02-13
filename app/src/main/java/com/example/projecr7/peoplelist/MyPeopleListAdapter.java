@@ -1,4 +1,4 @@
-package com.example.projecr7;
+package com.example.projecr7.peoplelist;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,8 +7,9 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.projecr7.database.Dinner;
+import com.example.projecr7.R;
 import com.example.projecr7.database.Person;
+import com.example.projecr7.onClickInterface;
 
 public class MyPeopleListAdapter extends RecyclerView.Adapter<MyPeopleListAdapter.MyViewHolder> {
     private Person[] mDataset;

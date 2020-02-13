@@ -1,4 +1,4 @@
-package com.example.projecr7;
+package com.example.projecr7.peoplelist;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,10 +9,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
+import com.example.projecr7.MainActivity;
+import com.example.projecr7.R;
 import com.example.projecr7.database.DatabaseClient;
-import com.example.projecr7.database.Dinner;
 import com.example.projecr7.database.Person;
 
 public class AddPersonActivity extends AppCompatActivity {
@@ -50,6 +50,7 @@ public class AddPersonActivity extends AppCompatActivity {
                 Person newPerson = new Person(personName, personGender);
                 newPerson.setDinnerId(dinnerId);
                 newPerson.setTableId(4);
+                newPerson.setCoupleId(4);
                 DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().personDao().insert(newPerson);
                 Intent intent = new Intent(AddPersonActivity.this, PeopleListActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);

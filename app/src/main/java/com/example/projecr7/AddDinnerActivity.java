@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.projecr7.database.Couple;
 import com.example.projecr7.database.DatabaseClient;
 import com.example.projecr7.database.Dinner;
 import com.example.projecr7.database.Table;
@@ -40,6 +41,10 @@ public class AddDinnerActivity extends AppCompatActivity {
                 defaultTable.setUid(4);
                 defaultTable.setDinnerId(newDinner.getUid());
                 DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().tableDao().insert(defaultTable);
+                Couple defaultCouple = new Couple();
+                defaultCouple.setUid(4);
+                defaultCouple.setDinnerId(newDinner.getUid());
+                DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().coupleDao().insert(defaultCouple);
                 Intent intent = new Intent(AddDinnerActivity.this, MainActivity.class);
                 startActivity(intent);
             }

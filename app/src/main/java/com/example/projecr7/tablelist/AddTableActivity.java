@@ -8,15 +8,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.NumberPicker;
-import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.projecr7.AddPersonActivity;
 import com.example.projecr7.MainActivity;
-import com.example.projecr7.PeopleListActivity;
 import com.example.projecr7.R;
 import com.example.projecr7.database.DatabaseClient;
-import com.example.projecr7.database.Person;
 import com.example.projecr7.database.Table;
 
 public class AddTableActivity extends AppCompatActivity {

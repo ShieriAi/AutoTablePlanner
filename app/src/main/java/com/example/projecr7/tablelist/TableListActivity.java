@@ -3,21 +3,15 @@ package com.example.projecr7.tablelist;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Database;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.projecr7.AddPersonActivity;
 import com.example.projecr7.MainActivity;
-import com.example.projecr7.ManagePersonActivity;
-import com.example.projecr7.MyPeopleListAdapter;
-import com.example.projecr7.PeopleListActivity;
 import com.example.projecr7.R;
 import com.example.projecr7.database.DatabaseClient;
-import com.example.projecr7.database.Person;
 import com.example.projecr7.database.Table;
 import com.example.projecr7.onClickInterface;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -82,9 +76,12 @@ public class TableListActivity extends AppCompatActivity {
         Table[] tableArray;;
         if(tableList.size() - 1 > 0){
             tableArray =  new Table[tableList.size() - 1];
+            int j = 0;
             for(int i = 0; i < tableList.size(); i++){
-                if(tableList.get(i).getUid() != 4)
-                    tableArray[i] = tableList.get(i);
+                if(tableList.get(i).getUid() != 4){
+                    tableArray[j] = tableList.get(i);
+                    j++;
+                }
             }
             mAdapter = new MyTableListAdapter(tableArray, mOnClickInterface);
             mRecyclerView.setAdapter(mAdapter);

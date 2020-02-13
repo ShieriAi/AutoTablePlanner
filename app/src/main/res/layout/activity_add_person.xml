@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="30"
-    tools:context=".AddPersonActivity">
+    tools:context=".peoplelist.AddPersonActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -9,27 +9,31 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".tablelist.ManageTableActivity"></activity>
+        <activity android:name=".peoplelist.ManageCoupleActivity"></activity>
+        <activity android:name=".peoplelist.AddCoupleActivity" />
+        <activity android:name=".tablelist.ManageTableActivity" />
         <activity android:name=".tablelist.AddTableActivity" />
         <activity
             android:name=".tablelist.TableListActivity"
             android:parentActivityName=".DinnerActivity">
             <intent-filter>
                 <action android:name=".tablelist.TableListActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".DinnerActivity" />
         </activity>
         <activity
-            android:name=".ManagePersonActivity"
-            android:parentActivityName=".PeopleListActivity">
+            android:name=".peoplelist.ManagePersonActivity"
+            android:parentActivityName=".peoplelist.PeopleListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".PeopleListActivity" />
+                android:value=".peoplelist.PeopleListActivity" />
         </activity>
-        <activity android:name=".AddPersonActivity" />
+        <activity android:name=".peoplelist.AddPersonActivity" />
         <activity android:name=".ManageDinnerActivity" />
         <activity
             android:name=".AddDinnerActivity"
@@ -46,7 +50,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PeopleListActivity"
+            android:name=".peoplelist.PeopleListActivity"
             android:parentActivityName=".DinnerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

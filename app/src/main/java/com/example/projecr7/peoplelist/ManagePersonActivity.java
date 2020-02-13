@@ -1,4 +1,4 @@
-package com.example.projecr7;
+package com.example.projecr7.peoplelist;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.example.projecr7.MainActivity;
+import com.example.projecr7.R;
 import com.example.projecr7.database.DatabaseClient;
 import com.example.projecr7.database.Person;
 
@@ -38,11 +40,11 @@ public class ManagePersonActivity extends AppCompatActivity {
                 android.R.layout.simple_spinner_item, arraySpinner);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         personGenderSpinner.setAdapter(adapter);
-        if(currentPerson.getGender().contains("male")) {
-            personGenderSpinner.setSelection(0);
-        }
-        else if(currentPerson.getGender().contains("female")){
+        if(currentPerson.getGender().contains("female")) {
             personGenderSpinner.setSelection(1);
+        }
+        else if(currentPerson.getGender().contains("male")){
+            personGenderSpinner.setSelection(0);
         }
         else
             personGenderSpinner.setSelection(2);
@@ -58,6 +60,8 @@ public class ManagePersonActivity extends AppCompatActivity {
                 Person newPerson = new Person(personName, personGender);
                 newPerson.setId(currentPerson.getId());
                 newPerson.setDinnerId(currentPerson.getDinnerId());
+                newPerson.setCoupleId(4);
+                newPerson.setTableId(currentPerson.getTableId());
                 Intent intent = new Intent(ManagePersonActivity.this, PeopleListActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, currentPerson.getDinnerId());
                 DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().personDao().updateUsers(newPerson);

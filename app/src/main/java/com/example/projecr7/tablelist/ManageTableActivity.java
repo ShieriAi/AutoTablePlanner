@@ -11,11 +11,8 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.example.projecr7.MainActivity;
-import com.example.projecr7.ManagePersonActivity;
-import com.example.projecr7.PeopleListActivity;
 import com.example.projecr7.R;
 import com.example.projecr7.database.DatabaseClient;
-import com.example.projecr7.database.Person;
 import com.example.projecr7.database.Table;
 
 public class ManageTableActivity extends AppCompatActivity {

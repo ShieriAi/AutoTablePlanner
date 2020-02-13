@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "3671fa648f56edd5d564638c2bae6471",
+    "identityHash": "f436a599c7ca010163cb93fc28160bba",
     "entities": [
       {
         "tableName": "Dinner",
@@ -32,7 +32,7 @@
       },
       {
         "tableName": "Person",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`person_uid` INTEGER NOT NULL, `dinner_id` INTEGER NOT NULL, `name` TEXT, `gender` TEXT, `currentHappiness` REAL NOT NULL, `person_table_id` INTEGER NOT NULL, PRIMARY KEY(`person_uid`), FOREIGN KEY(`dinner_id`) REFERENCES `Dinner`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`person_table_id`) REFERENCES `Table`(`table_id`) ON UPDATE NO ACTION ON DELETE SET DEFAULT )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`person_uid` INTEGER NOT NULL, `dinner_id` INTEGER NOT NULL, `name` TEXT, `gender` TEXT, `currentHappiness` REAL NOT NULL, `person_table_id` INTEGER NOT NULL, `person_couple_id` INTEGER NOT NULL, PRIMARY KEY(`person_uid`), FOREIGN KEY(`dinner_id`) REFERENCES `Dinner`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`person_table_id`) REFERENCES `Table`(`table_id`) ON UPDATE NO ACTION ON DELETE SET DEFAULT , FOREIGN KEY(`person_couple_id`) REFERENCES `Couple`(`couple_uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "uid",
@@ -69,6 +69,12 @@
             "columnName": "person_table_id",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "coupleId",
+            "columnName": "person_couple_id",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -101,6 +107,14 @@
               "person_table_id"
             ],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_Person_person_table_id` ON `${TABLE_NAME}` (`person_table_id`)"
+          },
+          {
+            "name": "index_Person_person_couple_id",
+            "unique": false,
+            "columnNames": [
+              "person_couple_id"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Person_person_couple_id` ON `${TABLE_NAME}` (`person_couple_id`)"
           }
         ],
         "foreignKeys": [
@@ -124,6 +138,17 @@
             ],
             "referencedColumns": [
               "table_id"
+            ]
+          },
+          {
+            "table": "Couple",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "person_couple_id"
+            ],
+            "referencedColumns": [
+              "couple_uid"
             ]
           }
         ]
@@ -200,12 +225,67 @@
             ]
           }
         ]
+      },
+      {
+        "tableName": "Couple",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`couple_uid` INTEGER NOT NULL, `dinner_id` INTEGER NOT NULL, PRIMARY KEY(`couple_uid`), FOREIGN KEY(`dinner_id`) REFERENCES `Dinner`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "uid",
+            "columnName": "couple_uid",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dinnerId",
+            "columnName": "dinner_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "couple_uid"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_Couple_couple_uid",
+            "unique": true,
+            "columnNames": [
+              "couple_uid"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_Couple_couple_uid` ON `${TABLE_NAME}` (`couple_uid`)"
+          },
+          {
+            "name": "index_Couple_dinner_id",
+            "unique": false,
+            "columnNames": [
+              "dinner_id"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Couple_dinner_id` ON `${TABLE_NAME}` (`dinner_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "Dinner",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "dinner_id"
+            ],
+            "referencedColumns": [
+              "uid"
+            ]
+          }
+        ]
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3671fa648f56edd5d564638c2bae6471')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f436a599c7ca010163cb93fc28160bba')"
     ]
   }
 }
