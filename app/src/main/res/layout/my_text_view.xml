@@ -8,6 +8,6 @@
     android:longClickable="true"
     android:paddingHorizontal="20dp"
     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-    android:textSize="40sp">
+    android:textSize="25sp">
 
 </TextView>

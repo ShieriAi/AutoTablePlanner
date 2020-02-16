@@ -5,8 +5,8 @@
     android:layout_height="30dp"
     android:autoSizeTextType="uniform"
     android:clickable="true"
-    android:paddingHorizontal="20dp"
+    android:paddingHorizontal="50dp"
     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-    android:textSize="30sp">
+    android:textSize="20sp">
 
 </TextView>

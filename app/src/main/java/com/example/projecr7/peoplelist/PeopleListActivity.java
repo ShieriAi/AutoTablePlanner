@@ -159,7 +159,7 @@ public class PeopleListActivity extends AppCompatActivity {
     private void updateCoupleList() {
         couples = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().coupleDao().loadAllByDinner(dinnerId);
         Couple[] coupleArray;
-        if(couples.size() - 1 != 0){
+        if(couples.size() - 1 > 0){
             coupleArray =  new Couple[couples.size() - 1];
             int j = 0;
             for(int i = 0; i < couples.size(); i++){

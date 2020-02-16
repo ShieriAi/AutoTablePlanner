@@ -1,6 +1,7 @@
 package com.example.projecr7.peoplelist;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -120,6 +121,7 @@ public class ManageCoupleActivity extends AppCompatActivity {
                 intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
                 DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().coupleDao().delete(currentCouple);
                 startActivity(intent);
+               //TODO NavUtils.navigateUpFromSameTask(ManageCoupleActivity.this);
             }
         });
     }
