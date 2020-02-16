@@ -12,6 +12,7 @@ import android.widget.EditText;
 import com.example.projecr7.database.Couple;
 import com.example.projecr7.database.DatabaseClient;
 import com.example.projecr7.database.Dinner;
+import com.example.projecr7.database.Family;
 import com.example.projecr7.database.Table;
 
 import java.util.List;
@@ -37,14 +38,18 @@ public class AddDinnerActivity extends AppCompatActivity {
                 Dinner newDinner = new Dinner(givenName);
                 DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().dinnerDao().insert(newDinner);
                 // set a default table for people
-                Table defaultTable = new Table("default", 10000);
-                defaultTable.setUid(4);
-                defaultTable.setDinnerId(newDinner.getUid());
-                DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().tableDao().insert(defaultTable);
-                Couple defaultCouple = new Couple();
-                defaultCouple.setUid(4);
-                defaultCouple.setDinnerId(newDinner.getUid());
-                DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().coupleDao().insert(defaultCouple);
+//                Table defaultTable = new Table("default", 10000);
+//                defaultTable.setUid(4);
+//                defaultTable.setDinnerId(newDinner.getUid());
+//                DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().tableDao().insert(defaultTable);
+//                Couple defaultCouple = new Couple();
+//                defaultCouple.setUid(4);
+//                defaultCouple.setDinnerId(newDinner.getUid());
+//                DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().coupleDao().insert(defaultCouple);
+//                Family defaultFamily = new Family();
+//                defaultFamily.setUid(4);
+//                defaultFamily.setDinnerId(newDinner.getUid());
+//                DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().familyDao().insert(defaultFamily);
                 Intent intent = new Intent(AddDinnerActivity.this, MainActivity.class);
                 startActivity(intent);
             }

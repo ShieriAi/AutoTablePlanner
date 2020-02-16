@@ -16,6 +16,7 @@ import com.example.projecr7.MainActivity;
 import com.example.projecr7.R;
 import com.example.projecr7.database.Couple;
 import com.example.projecr7.database.DatabaseClient;
+import com.example.projecr7.database.Family;
 import com.example.projecr7.database.Person;
 import com.example.projecr7.onClickInterface;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -26,11 +27,12 @@ import java.util.List;
 public class PeopleListActivity extends AppCompatActivity {
 
     public static final String EXTRA_COUPLEID = "com.example.projecr7.COUPLEID";
-    private RecyclerView peopleRecyclerView, coupleRecyclerView;
-    private RecyclerView.Adapter mPeopleAdapter, mCoupleAdapter;
-    private RecyclerView.LayoutManager layoutManager, coupleLayoutManager;
+    private RecyclerView peopleRecyclerView, coupleRecyclerView, familyRecyclerView;
+    private RecyclerView.Adapter mPeopleAdapter, mCoupleAdapter, mFamilyAdapter;
+    private RecyclerView.LayoutManager layoutManager, coupleLayoutManager, familyLayoutManager;
     private List<Person> people;
     private List<Couple> couples;
+    private List<Family> families;
     private int dinnerId;
 
     private FloatingActionButton fab_main, fab1_person, fab2_couple, fab3_family;
@@ -39,7 +41,7 @@ public class PeopleListActivity extends AppCompatActivity {
     Boolean isOpen = false;
 
 
-    private onClickInterface mOnClickInterface, mCoupleOnClickInterface;
+    private onClickInterface mOnClickInterface, mCoupleOnClickInterface, mFamilyOnClickInterface;
 
     public Context getContext() {
         return getApplicationContext();
@@ -87,6 +89,24 @@ public class PeopleListActivity extends AppCompatActivity {
             }
         };
         updateCoupleList();
+
+        familyRecyclerView = findViewById(R.id.my_recycler_view_family_list);
+        familyRecyclerView.setHasFixedSize(true);
+        familyLayoutManager = new LinearLayoutManager(this);
+        familyRecyclerView.setLayoutManager(familyLayoutManager);
+
+        mFamilyOnClickInterface = new onClickInterface() {
+            @Override
+            public void setClick(Object i) {
+                Family selectFamily = (Family)i;
+                int selectFamilyId = selectFamily.getUid();
+                Intent intent = new Intent(PeopleListActivity.this, ManageFamilyActivity.class);
+                intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
+                intent.putExtra(PeopleListActivity.EXTRA_COUPLEID, selectFamilyId);
+                startActivity(intent);
+            }
+        };
+        updateFamilyList();
 
         TextView textview = findViewById(R.id.textViewDinnerName_peoplelist);
         textview.setText(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().dinnerDao().loadSingleById(dinnerId).toString());
@@ -140,7 +160,10 @@ public class PeopleListActivity extends AppCompatActivity {
         fab3_family.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO
+                fabClose();
+                Intent intent = new Intent(PeopleListActivity.this, AddFamilyActivity.class);
+                intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
+                startActivity(intent);
             }
         });
 
@@ -156,11 +179,28 @@ public class PeopleListActivity extends AppCompatActivity {
 
     }
 
+    private void updateFamilyList() {
+        families = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().familyDao().loadAllByDinner(dinnerId);
+        Family[] familyArray;
+        if(families.size() > 0){
+            familyArray =  new Family[families.size()];
+            int j = 0;
+            for(int i = 0; i < families.size(); i++){
+                if(families.get(i).getUid() != 4) {
+                    familyArray[j] = families.get(i);
+                    j++;
+                }
+            }
+            mFamilyAdapter = new MyFamilyListAdapter(familyArray, mFamilyOnClickInterface);
+            familyRecyclerView.setAdapter(mFamilyAdapter);
+        }
+    }
+
     private void updateCoupleList() {
         couples = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().coupleDao().loadAllByDinner(dinnerId);
         Couple[] coupleArray;
-        if(couples.size() - 1 > 0){
-            coupleArray =  new Couple[couples.size() - 1];
+        if(couples.size() > 0){
+            coupleArray =  new Couple[couples.size()];
             int j = 0;
             for(int i = 0; i < couples.size(); i++){
                 if(couples.get(i).getUid() != 4) {
@@ -177,7 +217,7 @@ public class PeopleListActivity extends AppCompatActivity {
         people = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().personDao().loadAllByDinner(dinnerId);
         ArrayList<Person> singlePeople = new ArrayList<Person>();
         for(int i = 0; i < people.size(); i++){
-            if(people.get(i).getCoupleId() == 4)
+            if(people.get(i).getCoupleId() == 4 )
                 singlePeople.add(people.get(i));
         }
         Person[] peopleArray;

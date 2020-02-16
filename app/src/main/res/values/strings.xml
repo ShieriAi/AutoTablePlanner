@@ -27,4 +27,6 @@
     <string name="couple1_hint">Guest1</string>
     <string name="couple2_hint">Guest2</string>
     <string name="addCouplebtn">add couple</string>
+    <string name="addFamilybtn">add family</string>
+    <string name="familySizeHint">Size of family</string>
 </resources>

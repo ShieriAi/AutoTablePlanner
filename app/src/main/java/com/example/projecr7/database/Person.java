@@ -25,8 +25,12 @@ import static androidx.room.ForeignKey.SET_DEFAULT;
                 entity = Couple.class,
                 parentColumns = "couple_uid",
                 childColumns = "person_couple_id"
+        ),@ForeignKey(onDelete = CASCADE,
+        entity = Family.class,
+        parentColumns = "family_uid",
+        childColumns = "person_family_id"
         )},
-        indices = {@Index(value = {"person_uid"}, unique = true), @Index(value = {"dinner_id"}), @Index(value = {"person_table_id"}), @Index(value = {"person_couple_id"})})
+        indices = {@Index(value = {"person_uid"}, unique = true), @Index(value = {"dinner_id"}), @Index(value = {"person_table_id"}), @Index(value = {"person_couple_id"}), @Index(value = {"person_family_id"})})
 public class Person {
 
     @PrimaryKey
@@ -41,11 +45,14 @@ public class Person {
     private String gender;
     public double currentHappiness;
 
-    @ColumnInfo(name = "person_table_id")
+    @ColumnInfo(name = "person_table_id", defaultValue = "4")
     public int tableId;
 
-    @ColumnInfo(name = "person_couple_id")
+    @ColumnInfo(name = "person_couple_id", defaultValue = "4")
     public int coupleId;
+
+    @ColumnInfo(name = "person_family_id", defaultValue = "4")
+    public int familyId;
 
     public Person(String name, String gender){
         this.name = name;
@@ -59,17 +66,17 @@ public class Person {
         String currentT = "2" + month + date + hour + minute + second;
         this.uid = Integer.parseInt(currentT);
         this.currentHappiness = 0;
+        this.familyId = 4;
+        this.coupleId = 4;
+        this.tableId = 4;
     }
 
     public void setOtherId(){
-        Calendar calendar = Calendar.getInstance();
-        String month = Integer.toString(calendar.get(Calendar.MONTH));
-        String date = Integer.toString(calendar.get(Calendar.DATE));
-        String hour = Integer.toString(calendar.get(Calendar.HOUR));
-        String minute = Integer.toString(calendar.get(Calendar.MINUTE));
-        String second = Integer.toString(calendar.get(Calendar.SECOND));
-        String currentT = "3" + month + date + hour + minute + second;
-        this.uid = Integer.parseInt(currentT);
+        this.uid++;
+    }
+
+    public void setOtherId(int i){
+        this.uid += i;
     }
 
     public void setName(String name){
@@ -100,8 +107,16 @@ public class Person {
         this.coupleId = coupleId;
     }
 
+    public void setFamilyId(int familyId) {
+        this.familyId = familyId;
+    }
+
     public int getCoupleId(){
         return  coupleId;
+    }
+
+    public int getFamilyId(){
+        return familyId;
     }
 
     public String getName(){

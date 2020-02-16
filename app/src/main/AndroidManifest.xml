@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".peoplelist.ManageCoupleActivity"
+        <activity android:name=".peoplelist.ManageFamilyActivity"></activity>
+        <activity android:name=".peoplelist.AddFamilyActivity" />
+        <activity
+            android:name=".peoplelist.ManageCoupleActivity"
             android:parentActivityName=".peoplelist.PeopleListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

@@ -54,6 +54,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scrollbars="horizontal" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="#815476"
+                android:gravity="center"
+                android:text="@string/family"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/my_recycler_view_family_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="horizontal" />
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

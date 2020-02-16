@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "f436a599c7ca010163cb93fc28160bba",
+    "identityHash": "c433b7874c07925d05c058aca919a1c5",
     "entities": [
       {
         "tableName": "Dinner",
@@ -32,7 +32,7 @@
       },
       {
         "tableName": "Person",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`person_uid` INTEGER NOT NULL, `dinner_id` INTEGER NOT NULL, `name` TEXT, `gender` TEXT, `currentHappiness` REAL NOT NULL, `person_table_id` INTEGER NOT NULL, `person_couple_id` INTEGER NOT NULL, PRIMARY KEY(`person_uid`), FOREIGN KEY(`dinner_id`) REFERENCES `Dinner`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`person_table_id`) REFERENCES `Table`(`table_id`) ON UPDATE NO ACTION ON DELETE SET DEFAULT , FOREIGN KEY(`person_couple_id`) REFERENCES `Couple`(`couple_uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`person_uid` INTEGER NOT NULL, `dinner_id` INTEGER NOT NULL, `name` TEXT, `gender` TEXT, `currentHappiness` REAL NOT NULL, `person_table_id` INTEGER NOT NULL DEFAULT 4, `person_couple_id` INTEGER NOT NULL DEFAULT 4, `person_family_id` INTEGER NOT NULL DEFAULT 4, PRIMARY KEY(`person_uid`), FOREIGN KEY(`dinner_id`) REFERENCES `Dinner`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`person_table_id`) REFERENCES `Table`(`table_id`) ON UPDATE NO ACTION ON DELETE SET DEFAULT , FOREIGN KEY(`person_couple_id`) REFERENCES `Couple`(`couple_uid`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`person_family_id`) REFERENCES `Family`(`family_uid`) ON UPDATE NO ACTION ON DELETE SET DEFAULT )",
         "fields": [
           {
             "fieldPath": "uid",
@@ -68,13 +68,22 @@
             "fieldPath": "tableId",
             "columnName": "person_table_id",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "4"
           },
           {
             "fieldPath": "coupleId",
             "columnName": "person_couple_id",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "4"
+          },
+          {
+            "fieldPath": "familyId",
+            "columnName": "person_family_id",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "4"
           }
         ],
         "primaryKey": {
@@ -115,6 +124,14 @@
               "person_couple_id"
             ],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_Person_person_couple_id` ON `${TABLE_NAME}` (`person_couple_id`)"
+          },
+          {
+            "name": "index_Person_person_family_id",
+            "unique": false,
+            "columnNames": [
+              "person_family_id"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Person_person_family_id` ON `${TABLE_NAME}` (`person_family_id`)"
           }
         ],
         "foreignKeys": [
@@ -149,6 +166,17 @@
             ],
             "referencedColumns": [
               "couple_uid"
+            ]
+          },
+          {
+            "table": "Family",
+            "onDelete": "SET DEFAULT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "person_family_id"
+            ],
+            "referencedColumns": [
+              "family_uid"
             ]
           }
         ]
@@ -280,12 +308,73 @@
             ]
           }
         ]
+      },
+      {
+        "tableName": "Family",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`family_uid` INTEGER NOT NULL, `dinner_id` INTEGER NOT NULL, `familySize` INTEGER NOT NULL, PRIMARY KEY(`family_uid`), FOREIGN KEY(`dinner_id`) REFERENCES `Dinner`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "uid",
+            "columnName": "family_uid",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dinnerId",
+            "columnName": "dinner_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "familySize",
+            "columnName": "familySize",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "family_uid"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_Family_family_uid",
+            "unique": true,
+            "columnNames": [
+              "family_uid"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_Family_family_uid` ON `${TABLE_NAME}` (`family_uid`)"
+          },
+          {
+            "name": "index_Family_dinner_id",
+            "unique": false,
+            "columnNames": [
+              "dinner_id"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Family_dinner_id` ON `${TABLE_NAME}` (`dinner_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "Dinner",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "dinner_id"
+            ],
+            "referencedColumns": [
+              "uid"
+            ]
+          }
+        ]
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f436a599c7ca010163cb93fc28160bba')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c433b7874c07925d05c058aca919a1c5')"
     ]
   }
 }

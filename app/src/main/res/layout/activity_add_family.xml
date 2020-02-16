@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="30"
-    tools:context=".peoplelist.AddPersonActivity">
+    tools:context=".peoplelist.AddFamilyActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,33 +16,29 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#FFC773"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
             android:paddingHorizontal="10dp"
-            android:paddingVertical="3dp"
-            android:text="@string/person_name_hint"
-            android:textSize="20sp" />
-
-        <EditText
-            android:id="@+id/add_person_name_input"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="#E2E2E2" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#FFC773"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="3dp"
-            android:text="@string/person_gender_hint"
-            android:textSize="20sp" />
+            android:text="@string/familySizeHint"
+            android:textSize="18sp"
+            android:background="#815476"
+            android:textColor="#FFFFFF"/>
 
         <Spinner
-            android:id="@+id/add_person_gender_spinner"
+            android:id="@+id/add_family_size_spinner"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="#E2E2E2" />
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#815476"
+            android:textColor="#FFFFFF"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/my_recycler_view_family_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:scrollbars="horizontal"
+            android:layout_weight="18"/>
 
 
     </LinearLayout>
@@ -52,12 +48,12 @@
         android:layout_weight="2">
 
         <Button
-            android:id="@+id/button_add_person_with_name"
+            android:id="@+id/button_add_family"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="#647764"
-            android:text="@string/addPersonbtn"
+            android:text="@string/addFamilybtn"
             android:textAllCaps="true"
             android:textColor="#FFFFFF"
             android:textSize="18sp"

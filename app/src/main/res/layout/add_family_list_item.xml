@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/LinerLayout_add_family">
+
+    <TextView
+        android:id="@+id/family_member_hint"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="#FFFFFF"
+        android:layout_gravity="center"
+        android:textSize="20sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFC773"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="3dp"
+        android:text="@string/person_name_hint"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/add_person_name_input_family"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#E2E2E2" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFC773"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="3dp"
+        android:text="@string/person_gender_hint"
+        android:textSize="20sp" />
+
+    <Spinner
+        android:id="@+id/add_person_gender_spinner_family"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#E2E2E2" />
+
+</LinearLayout>

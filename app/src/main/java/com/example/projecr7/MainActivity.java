@@ -4,8 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.projecr7.database.Couple;
 import com.example.projecr7.database.DatabaseClient;
 import com.example.projecr7.database.Dinner;
+import com.example.projecr7.database.Family;
+import com.example.projecr7.database.Table;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -45,6 +48,34 @@ public class MainActivity extends AppCompatActivity {
 //                AppDatabase.class, "dinnerDatabase").allowMainThreadQueries().build();
 //        mDinnerDao = db.dinnerDao();
         allDinner = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().dinnerDao().getAll();
+
+        boolean d = false;
+        for(int i = 0; i < allDinner.size(); i++){
+            if(allDinner.get(i).getUid() == 4) {
+                d = true;
+                continue;
+            }
+        }
+        if(!d) {
+            Dinner defaultDinner = new Dinner("defaultDinner");
+            defaultDinner.setUid(4);
+            DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().dinnerDao().insert(defaultDinner);
+        }
+
+        Table defaultTable = new Table("default", 100000);
+        defaultTable.setUid(4);
+        defaultTable.setDinnerId(4);
+        DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().tableDao().insert(defaultTable);
+        Couple defaultCouple = new Couple();
+        defaultCouple.setUid(4);
+        defaultCouple.setDinnerId(4);
+        DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().coupleDao().insert(defaultCouple);
+        Family defaultFamily = new Family(100000);
+        defaultFamily.setUid(4);
+        defaultFamily.setDinnerId(4);
+        DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().familyDao().insert(defaultFamily);
+
+
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -131,10 +162,14 @@ public class MainActivity extends AppCompatActivity {
     public void updateDinnerList(){
         allDinner = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().dinnerDao().getAll();
         Dinner[] dinnerSet;
-        if(allDinner.size() != 0){
-            dinnerSet =  new Dinner[allDinner.size()];
+        if(allDinner.size() > 1){
+            dinnerSet =  new Dinner[allDinner.size() - 1];
+            int j = 0;
             for(int i = 0; i < allDinner.size(); i++){
-                dinnerSet[i] = allDinner.get(i);
+                if(allDinner.get(i).getUid() != 4) {
+                    dinnerSet[j] = allDinner.get(i);
+                    j++;
+                }
             }
             mAdapter = new MyAdapter(dinnerSet, mOnClickInterface);
             recyclerView.setAdapter(mAdapter);
