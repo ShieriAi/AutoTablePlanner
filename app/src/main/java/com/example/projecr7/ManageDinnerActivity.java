@@ -24,13 +24,17 @@ public class ManageDinnerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_dinner);
 
-        mSpinner = (Spinner)findViewById(R.id.deleteDinnerSpinner);
+        mSpinner = findViewById(R.id.deleteDinnerSpinner);
 
         List<Dinner> allDinner = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().dinnerDao().getAll();
 
-        Dinner[] arraySpinner = new Dinner[allDinner.size()];
+        Dinner[] arraySpinner = new Dinner[allDinner.size() - 1];
+        int j = 0;
         for(int i = 0; i < allDinner.size(); i++){
-            arraySpinner[i] = allDinner.get(i);
+            if(allDinner.get(i).getUid() != 4) {
+                arraySpinner[j] = allDinner.get(i);
+                j++;
+            }
         }
         ArrayAdapter<Dinner> adapter = new ArrayAdapter<Dinner>(this,
                 android.R.layout.simple_spinner_item, arraySpinner);
