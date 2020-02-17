@@ -217,7 +217,7 @@ public class PeopleListActivity extends AppCompatActivity {
         people = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().personDao().loadAllByDinner(dinnerId);
         ArrayList<Person> singlePeople = new ArrayList<Person>();
         for(int i = 0; i < people.size(); i++){
-            if(people.get(i).getCoupleId() == 4 )
+            if(people.get(i).getCoupleId() == 4 && people.get(i).getFamilyId() == 4 )
                 singlePeople.add(people.get(i));
         }
         Person[] peopleArray;
