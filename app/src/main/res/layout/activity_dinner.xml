@@ -90,6 +90,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:clickable="true"
+            android:onClick="goProximityList"
             android:paddingHorizontal="20dp"
             android:paddingVertical="10dp">
 
@@ -103,7 +105,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:autoSizeTextType="uniform"
-                android:clickable="true"
                 android:paddingHorizontal="15dp"
                 android:text="@string/relations"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"

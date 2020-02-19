@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.example.projecr7.database.DatabaseClient;
 import com.example.projecr7.peoplelist.PeopleListActivity;
+import com.example.projecr7.proximity.proximityListActivity;
 import com.example.projecr7.tablelist.TableListActivity;
 
 public class DinnerActivity extends AppCompatActivity {
@@ -48,6 +49,12 @@ public class DinnerActivity extends AppCompatActivity {
 
     public void goTableList(View view){
         Intent intent = new Intent(this, TableListActivity.class);
+        intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
+        startActivity(intent);
+    }
+
+    public void goProximityList(View view){
+        Intent intent = new Intent(this, proximityListActivity.class);
         intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
         startActivity(intent);
     }

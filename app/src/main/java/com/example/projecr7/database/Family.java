@@ -25,6 +25,8 @@ public class Family {
 
     public int familySize;
 
+    public String displayName;
+
     public Family(int familySize){
         Calendar calendar = Calendar.getInstance();
         String month = Integer.toString(calendar.get(Calendar.MONTH));
@@ -39,6 +41,14 @@ public class Family {
 
     public void setUid(int uid){
         this.uid = uid;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getDisplayName() {
+        return displayName;
     }
 
     public int getFamilySize() {

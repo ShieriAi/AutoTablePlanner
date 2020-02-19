@@ -4,7 +4,7 @@
     <string name="dinner1">Dinner1Test</string>
     <string name="guestList">Guest list</string>
     <string name="groups">Groups</string>
-    <string name="relations">Relationship</string>
+    <string name="relations">Proximity</string>
     <string name="tables">Tables</string>
     <string name="makeItButton">Make It</string>
     <string name="Bribes">Bribes</string>
@@ -29,4 +29,13 @@
     <string name="addCouplebtn">add couple</string>
     <string name="addFamilybtn">add family</string>
     <string name="familySizeHint">Size of family</string>
+    <string name="proximity_name_hint">Guest name</string>
+    <string name="addProximitbtn">Add</string>
+    <string name="addBtn">Add</string>
+    <string name="proximity_select_type_hint">Select target</string>
+    <string name="proximity_select_proximity_hint">Select their relationship:</string>
+    <string name="proximity_select_target_type_hint">Single/Couple/Family</string>
+    <string name="cancel">cancel</string>
+    <string name="dialog_fire_missiles">Do you want to delete?</string>
+    <string name="fire">delete</string>
 </resources>

@@ -92,6 +92,7 @@ public class AddFamilyActivity extends AppCompatActivity {
                 }
                 Family newFamily = new Family(familySize);
                 newFamily.setDinnerId(dinnerId);
+                newFamily.setDisplayName(enteredStrings[0] + ", " + enteredStrings[1] + "...");
                 DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().familyDao().insert(newFamily);
                 for(int i = 0; i < familySize; i++){
                     Person newPerson = new Person(enteredStrings[i],enteredGenders[i]);

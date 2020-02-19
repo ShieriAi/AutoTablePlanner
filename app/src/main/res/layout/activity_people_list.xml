@@ -17,7 +17,6 @@
             android:layout_height="50dp"
             android:background="#815463"
             android:gravity="center"
-            android:text="@string/makeItButton"
             android:textColor="#FFFFFF"
             android:textSize="22sp"
             android:textStyle="bold" />

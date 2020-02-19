@@ -23,6 +23,8 @@ public class Couple {
 
     @ColumnInfo(name = "dinner_id") public int dinnerId;
 
+    public String displayName;
+
     public Couple(){
         Calendar calendar = Calendar.getInstance();
         String month = Integer.toString(calendar.get(Calendar.MONTH));
@@ -32,6 +34,10 @@ public class Couple {
         String second = Integer.toString(calendar.get(Calendar.SECOND));
         String currentT = "1" + month + date + hour + minute + second;
         this.uid = Integer.parseInt(currentT);
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public void setUid(int uid){
@@ -44,6 +50,10 @@ public class Couple {
 
     public int getUid() {
         return uid;
+    }
+
+    public String getDisplayName() {
+        return displayName;
     }
 
     public int getDinnerId(){

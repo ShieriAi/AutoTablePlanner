@@ -55,6 +55,7 @@ public class AddCoupleActivity extends AppCompatActivity {
                 }
                 Couple newCouple = new Couple();
                 newCouple.setDinnerId(dinnerId);
+                newCouple.setDisplayName(couple1Name + ", " + couple2Name);
                 Person newPerson1 = new Person(couple1Name, couple1Gender);
                 newPerson1.setDinnerId(dinnerId);
                 newPerson1.setTableId(4);

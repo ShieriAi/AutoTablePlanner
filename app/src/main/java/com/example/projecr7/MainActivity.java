@@ -30,8 +30,6 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private static Context mContext;
-//    private AppDatabase db;
-//    private DinnerDao mDinnerDao;
     private List<Dinner> allDinner;
     private onClickInterface mOnClickInterface;
     private int selectDinnerId;
@@ -60,20 +58,19 @@ public class MainActivity extends AppCompatActivity {
             Dinner defaultDinner = new Dinner("defaultDinner");
             defaultDinner.setUid(4);
             DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().dinnerDao().insert(defaultDinner);
+            Table defaultTable = new Table("default", 100000);
+            defaultTable.setUid(4);
+            defaultTable.setDinnerId(4);
+            DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().tableDao().insert(defaultTable);
+            Couple defaultCouple = new Couple();
+            defaultCouple.setUid(4);
+            defaultCouple.setDinnerId(4);
+            DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().coupleDao().insert(defaultCouple);
+            Family defaultFamily = new Family(100000);
+            defaultFamily.setUid(4);
+            defaultFamily.setDinnerId(4);
+            DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().familyDao().insert(defaultFamily);
         }
-
-        Table defaultTable = new Table("default", 100000);
-        defaultTable.setUid(4);
-        defaultTable.setDinnerId(4);
-        DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().tableDao().insert(defaultTable);
-        Couple defaultCouple = new Couple();
-        defaultCouple.setUid(4);
-        defaultCouple.setDinnerId(4);
-        DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().coupleDao().insert(defaultCouple);
-        Family defaultFamily = new Family(100000);
-        defaultFamily.setUid(4);
-        defaultFamily.setDinnerId(4);
-        DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().familyDao().insert(defaultFamily);
 
 
 
