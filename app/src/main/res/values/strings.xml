@@ -38,4 +38,6 @@
     <string name="cancel">cancel</string>
     <string name="dialog_fire_missiles">Do you want to delete?</string>
     <string name="fire">delete</string>
+    <string name="addBribebtn">add bribe</string>
+    <string name="bribe_set_amount_hint">Amount</string>
 </resources>

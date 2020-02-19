@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.projecr7.bribes.BribeListActivity;
 import com.example.projecr7.database.DatabaseClient;
 import com.example.projecr7.peoplelist.PeopleListActivity;
 import com.example.projecr7.proximity.proximityListActivity;
@@ -55,6 +56,12 @@ public class DinnerActivity extends AppCompatActivity {
 
     public void goProximityList(View view){
         Intent intent = new Intent(this, proximityListActivity.class);
+        intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
+        startActivity(intent);
+    }
+
+    public void goBribeList(View view){
+        Intent intent = new Intent(this, BribeListActivity.class);
         intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
         startActivity(intent);
     }

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "bc85115774c56525fd6201eed0cc09f3",
+    "identityHash": "1d2ac7ce28a31dda38d799d15e4fb34d",
     "entities": [
       {
         "tableName": "Dinner",
@@ -502,12 +502,99 @@
             ]
           }
         ]
+      },
+      {
+        "tableName": "Bribe",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`bribe_uid` INTEGER NOT NULL, `dinner_id` INTEGER NOT NULL, `guest_Id` INTEGER NOT NULL, `guestType` INTEGER NOT NULL, `guestName` TEXT, `bribe_amount` INTEGER NOT NULL, PRIMARY KEY(`bribe_uid`), FOREIGN KEY(`dinner_id`) REFERENCES `Dinner`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "uid",
+            "columnName": "bribe_uid",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dinnerId",
+            "columnName": "dinner_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "guestId",
+            "columnName": "guest_Id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "guestType",
+            "columnName": "guestType",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "guestName",
+            "columnName": "guestName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "bribeAmount",
+            "columnName": "bribe_amount",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "bribe_uid"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_Bribe_bribe_uid",
+            "unique": true,
+            "columnNames": [
+              "bribe_uid"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_Bribe_bribe_uid` ON `${TABLE_NAME}` (`bribe_uid`)"
+          },
+          {
+            "name": "index_Bribe_dinner_id",
+            "unique": false,
+            "columnNames": [
+              "dinner_id"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Bribe_dinner_id` ON `${TABLE_NAME}` (`dinner_id`)"
+          },
+          {
+            "name": "index_Bribe_guest_Id",
+            "unique": false,
+            "columnNames": [
+              "guest_Id"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Bribe_guest_Id` ON `${TABLE_NAME}` (`guest_Id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "Dinner",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "dinner_id"
+            ],
+            "referencedColumns": [
+              "uid"
+            ]
+          }
+        ]
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'bc85115774c56525fd6201eed0cc09f3')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1d2ac7ce28a31dda38d799d15e4fb34d')"
     ]
   }
 }
