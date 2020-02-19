@@ -57,8 +57,8 @@ public class BribeListActivity extends AppCompatActivity {
                 Bribe selectBribe = (Bribe)i;
                 int selectBribeId = selectBribe.getUid();
                 Intent intent = new Intent(BribeListActivity.this, ManageBribeActivity.class);
-                intent.putExtra(MainActivity.EXTRA_INDEX, selectBribeId);
-                intent.putExtra(BribeListActivity.EXTRA_BRIBEID, selectBribe.getUid());
+                intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
+                intent.putExtra(BribeListActivity.EXTRA_BRIBEID, selectBribeId);
                 startActivity(intent);
             }
         };
