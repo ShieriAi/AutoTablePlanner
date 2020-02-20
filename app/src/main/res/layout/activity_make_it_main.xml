@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="30"
+    android:orientation="vertical"
+    tools:context=".makeit.MakeItMainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="28"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textViewDinnerName_makeit"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#815463"
+            android:gravity="center"
+            android:text="@string/makeItButton"
+            android:textColor="#FFFFFF"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textViewHint_makeit"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="#8F8F8F"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="10dp"
+            android:text="@string/makeit_hint"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            android:id="@+id/recyclerView_makeit"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2">
+
+        <Button
+            android:id="@+id/button_retry"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#647764"
+            android:text="@string/retryBtn"
+            android:textAllCaps="true"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+
+</LinearLayout>

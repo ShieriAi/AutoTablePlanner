@@ -29,6 +29,9 @@ public interface PersonDao {
     @Query("SELECT * FROM person WHERE person_family_id IS (:familyId)")
     List<Person> loadAllByFamily(int familyId);
 
+    @Query("SELECT * FROM person WHERE person_table_id IS (:tableId)")
+    List<Person> loadAllByTable(int tableId);
+
 //    @Query("SELECT * FROM dinner WHERE Dinner_Name LIKE :first")
 //    Dinner findByName(String first);
 

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "1d2ac7ce28a31dda38d799d15e4fb34d",
+    "identityHash": "b212b7ae39a04c128ef0edb0a4ec899c",
     "entities": [
       {
         "tableName": "Dinner",
@@ -32,7 +32,7 @@
       },
       {
         "tableName": "Person",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`person_uid` INTEGER NOT NULL, `dinner_id` INTEGER NOT NULL, `name` TEXT, `gender` TEXT, `currentHappiness` REAL NOT NULL, `person_table_id` INTEGER NOT NULL DEFAULT 4, `person_couple_id` INTEGER NOT NULL DEFAULT 4, `person_family_id` INTEGER NOT NULL DEFAULT 4, PRIMARY KEY(`person_uid`), FOREIGN KEY(`dinner_id`) REFERENCES `Dinner`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`person_table_id`) REFERENCES `Table`(`table_id`) ON UPDATE NO ACTION ON DELETE SET DEFAULT , FOREIGN KEY(`person_couple_id`) REFERENCES `Couple`(`couple_uid`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`person_family_id`) REFERENCES `Family`(`family_uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`person_uid` INTEGER NOT NULL, `dinner_id` INTEGER NOT NULL, `name` TEXT, `gender` TEXT, `currentHappiness` REAL NOT NULL, `person_table_id` INTEGER NOT NULL DEFAULT 4, `seatId` INTEGER NOT NULL, `person_couple_id` INTEGER NOT NULL DEFAULT 4, `person_family_id` INTEGER NOT NULL DEFAULT 4, PRIMARY KEY(`person_uid`), FOREIGN KEY(`dinner_id`) REFERENCES `Dinner`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`person_table_id`) REFERENCES `Table`(`table_id`) ON UPDATE NO ACTION ON DELETE SET DEFAULT , FOREIGN KEY(`person_couple_id`) REFERENCES `Couple`(`couple_uid`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`person_family_id`) REFERENCES `Family`(`family_uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "uid",
@@ -70,6 +70,12 @@
             "affinity": "INTEGER",
             "notNull": true,
             "defaultValue": "4"
+          },
+          {
+            "fieldPath": "seatId",
+            "columnName": "seatId",
+            "affinity": "INTEGER",
+            "notNull": true
           },
           {
             "fieldPath": "coupleId",
@@ -594,7 +600,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1d2ac7ce28a31dda38d799d15e4fb34d')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b212b7ae39a04c128ef0edb0a4ec899c')"
     ]
   }
 }

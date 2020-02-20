@@ -48,6 +48,8 @@ public class Person {
     @ColumnInfo(name = "person_table_id", defaultValue = "4")
     public int tableId;
 
+    public int seatId;
+
     @ColumnInfo(name = "person_couple_id", defaultValue = "4")
     public int coupleId;
 
@@ -109,6 +111,14 @@ public class Person {
 
     public void setFamilyId(int familyId) {
         this.familyId = familyId;
+    }
+
+    public void setSeatId(int seatId){
+        this.seatId = seatId;
+    }
+
+    public int getSeatId() {
+        return seatId;
     }
 
     public int getCoupleId(){

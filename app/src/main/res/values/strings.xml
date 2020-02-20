@@ -40,4 +40,6 @@
     <string name="fire">delete</string>
     <string name="addBribebtn">add bribe</string>
     <string name="bribe_set_amount_hint">Amount</string>
+    <string name="retryBtn">retry</string>
+    <string name="makeit_hint">*Select each table to see your result</string>
 </resources>
