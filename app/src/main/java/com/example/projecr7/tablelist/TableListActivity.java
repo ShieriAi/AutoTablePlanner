@@ -73,15 +73,11 @@ public class TableListActivity extends AppCompatActivity {
 
     private void updateTableList(){
         tableList = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().tableDao().loadAllByDinner(dinnerId);
-        Table[] tableArray;;
-        if(tableList.size() - 1 > 0){
-            tableArray =  new Table[tableList.size() - 1];
-            int j = 0;
+        Table[] tableArray;
+        if(tableList.size() > 0){
+            tableArray =  new Table[tableList.size()];
             for(int i = 0; i < tableList.size(); i++){
-                if(tableList.get(i).getUid() != 4){
-                    tableArray[j] = tableList.get(i);
-                    j++;
-                }
+                tableArray[i] = tableList.get(i);
             }
             mAdapter = new MyTableListAdapter(tableArray, mOnClickInterface);
             mRecyclerView.setAdapter(mAdapter);
