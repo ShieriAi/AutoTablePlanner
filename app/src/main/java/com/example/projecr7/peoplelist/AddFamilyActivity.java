@@ -17,6 +17,7 @@ import com.example.projecr7.R;
 import com.example.projecr7.database.DatabaseClient;
 import com.example.projecr7.database.Family;
 import com.example.projecr7.database.Person;
+import com.example.projecr7.database.Proximity;
 
 public class AddFamilyActivity extends AppCompatActivity {
     private int dinnerId;
@@ -94,12 +95,22 @@ public class AddFamilyActivity extends AppCompatActivity {
                 newFamily.setDinnerId(dinnerId);
                 newFamily.setDisplayName(enteredStrings[0] + ", " + enteredStrings[1] + "...");
                 DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().familyDao().insert(newFamily);
+                Person[] newPeople = new Person[familySize];
                 for(int i = 0; i < familySize; i++){
                     Person newPerson = new Person(enteredStrings[i],enteredGenders[i]);
                     newPerson.setOtherId(i);
                     newPerson.setDinnerId(dinnerId);
                     newPerson.setFamilyId(newFamily.getUid());
+                    newPeople[i] = newPerson;
                     DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().personDao().insert(newPerson);
+                }
+                for(int i = 0; i < familySize; i++){
+                    for(int j = i + 1; j < familySize; j++){
+                        Proximity newProximity1 = new Proximity(dinnerId, 1, 1, newPeople[i].getId(), newPeople[j].getId(), 5);
+                        Proximity newProximity2 = new Proximity(dinnerId, 1, 1, newPeople[j].getId(), newPeople[i].getId(), 5);
+                        DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().proximityDao().insert(newProximity1);
+                        DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().proximityDao().insert(newProximity2);
+                    }
                 }
                 Intent intent = new Intent(AddFamilyActivity.this, PeopleListActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);

@@ -56,6 +56,10 @@ public class Person {
     @ColumnInfo(name = "person_family_id", defaultValue = "4")
     public int familyId;
 
+    public int listPosition;
+
+    public int disLikeBy;
+
     public Person(String name, String gender){
         this.name = name;
         this.gender = gender;
@@ -71,6 +75,7 @@ public class Person {
         this.familyId = 4;
         this.coupleId = 4;
         this.tableId = 4;
+        this.disLikeBy = 0;
     }
 
     public void setOtherId(){
@@ -115,6 +120,22 @@ public class Person {
 
     public void setSeatId(int seatId){
         this.seatId = seatId;
+    }
+
+    public void increaseDisLikeBy() {
+        this.disLikeBy++;
+    }
+
+    public int getDisLikeBy() {
+        return disLikeBy;
+    }
+
+    public void setListPosition(int listPosition) {
+        this.listPosition = listPosition;
+    }
+
+    public int getListPosition() {
+        return listPosition;
     }
 
     public int getSeatId() {

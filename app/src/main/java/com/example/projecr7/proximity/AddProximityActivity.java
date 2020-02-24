@@ -174,13 +174,18 @@ public class AddProximityActivity extends AppCompatActivity {
                     if(guest2Id == proximityList.get(i).getGuest2Id()){
                         found = true;
                         foundIndex = i;
-                        continue;
+                        break;
                     }
                 }
                 if(!found) {
                     Proximity newProximity = new Proximity(dinnerId, guestType, typeSpinner.getSelectedItemPosition() + 1, guestId, guest2Id, proximityType);
                     newProximity.setGuest1String(guestName);
                     newProximity.setGuest2String(guestSpinner.getSelectedItem().toString());
+                    if(proximityType == 1) {
+                        Person dP = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().personDao().loadSingleById(guest2Id);
+                        dP.increaseDisLikeBy();
+                        DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().personDao().updateUsers(dP);
+                    }
                     DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().proximityDao().insert(newProximity);
                 }
                 else{

@@ -21,7 +21,7 @@ public interface ProximityDao {
     @Query("SELECT * FROM `proximity` WHERE proximity_uid IS (:proximityId)")
     Proximity loadSingleById(int proximityId);
 
-    @Query("SELECT * FROM `proximity` WHERE dinner_id IS (:dinnerID)")
+    @Query("SELECT * FROM `proximity` WHERE dinner_id IS (:dinnerID) ORDER BY type_1 DESC")
     List<Proximity> loadAllByDinner(int dinnerID);
 
     @Query("SELECT * FROM `proximity` WHERE guest1_Id IS (:guestId) ORDER BY proximity_type ASC")

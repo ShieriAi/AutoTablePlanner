@@ -25,6 +25,10 @@ public class Couple {
 
     public String displayName;
 
+    public int listPosition;
+
+    public int disLikeBy;
+
     public Couple(){
         Calendar calendar = Calendar.getInstance();
         String month = Integer.toString(calendar.get(Calendar.MONTH));
@@ -34,6 +38,7 @@ public class Couple {
         String second = Integer.toString(calendar.get(Calendar.SECOND));
         String currentT = "1" + month + date + hour + minute + second;
         this.uid = Integer.parseInt(currentT);
+        this.disLikeBy = 0;
     }
 
     public void setDisplayName(String displayName) {
@@ -46,6 +51,22 @@ public class Couple {
 
     public void setDinnerId(int dinnerId) {
         this.dinnerId = dinnerId;
+    }
+
+    public void setListPosition(int listPosition) {
+        this.listPosition = listPosition;
+    }
+
+    public void increaseDisLikeBy() {
+        this.disLikeBy++;
+    }
+
+    public int getDisLikeBy() {
+        return disLikeBy;
+    }
+
+    public int getListPosition() {
+        return listPosition;
     }
 
     public int getUid() {

@@ -14,7 +14,7 @@ import static androidx.room.ForeignKey.CASCADE;
         entity = Dinner.class,
         parentColumns = "uid",
         childColumns = "dinner_id"),
-        indices = {@Index(value = {"proximity_uid"}, unique = true), @Index(value = {"dinner_id"}), @Index(value = {"guest1_Id"}), @Index(value = {"guest2_Id"}), @Index(value = {"proximity_type"})})
+        indices = {@Index(value = {"proximity_uid"}, unique = true), @Index(value = {"dinner_id"}), @Index(value = {"guest1_Id"}), @Index(value = {"guest2_Id"}), @Index(value = {"proximity_type"}), @Index(value = {"type_1"})})
 public class Proximity {
     @PrimaryKey
     @ColumnInfo(name = "proximity_uid")
@@ -24,6 +24,7 @@ public class Proximity {
     public int dinnerId;
 
     // 1 for single, 2 for couple, 3 for family
+    @ColumnInfo(name = "type_1")
     public int type1;
 
     public int type2;

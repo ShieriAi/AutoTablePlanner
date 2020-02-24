@@ -14,7 +14,7 @@ import static androidx.room.ForeignKey.CASCADE;
         entity = Dinner.class,
         parentColumns = "uid",
         childColumns = "dinner_id"),
-        indices = {@Index(value = {"family_uid"}, unique = true), @Index(value = {"dinner_id"})})
+        indices = {@Index(value = {"family_uid"}, unique = true), @Index(value = {"dinner_id"}), @Index(value = "family_size")})
 public class Family {
 
     @PrimaryKey
@@ -23,9 +23,13 @@ public class Family {
 
     @ColumnInfo(name = "dinner_id") public int dinnerId;
 
-    public int familySize;
+    @ColumnInfo(name = "family_size") public int familySize;
 
     public String displayName;
+
+    public int listPosition;
+
+    public int disLikeBy;
 
     public Family(int familySize){
         Calendar calendar = Calendar.getInstance();
@@ -37,6 +41,7 @@ public class Family {
         String currentT = "4" + month + date + hour + minute + second.charAt(0);
         this.uid = Integer.parseInt(currentT);
         this.familySize = familySize;
+        this.disLikeBy = 0;
     }
 
     public void setUid(int uid){
@@ -45,6 +50,22 @@ public class Family {
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
+    }
+
+    public void setListPosition(int listPosition) {
+        this.listPosition = listPosition;
+    }
+
+    public int getListPosition() {
+        return listPosition;
+    }
+
+    public void increaseDisLikeBy() {
+        this.disLikeBy++;
+    }
+
+    public int getDisLikeBy() {
+        return disLikeBy;
     }
 
     public String getDisplayName() {

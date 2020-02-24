@@ -29,6 +29,9 @@ public interface PersonDao {
     @Query("SELECT * FROM person WHERE person_family_id IS (:familyId)")
     List<Person> loadAllByFamily(int familyId);
 
+    @Query("SELECT * FROM person WHERE person_family_id IS (4) AND person_couple_id IS (4) AND dinner_id IS (:dinnerId)")
+    List<Person> loadAllSingles(int dinnerId);
+
     @Query("SELECT * FROM person WHERE person_table_id IS (:tableId)")
     List<Person> loadAllByTable(int tableId);
 

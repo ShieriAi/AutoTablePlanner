@@ -15,6 +15,7 @@ import com.example.projecr7.R;
 import com.example.projecr7.database.Couple;
 import com.example.projecr7.database.DatabaseClient;
 import com.example.projecr7.database.Person;
+import com.example.projecr7.database.Proximity;
 
 public class AddCoupleActivity extends AppCompatActivity {
 
@@ -68,6 +69,10 @@ public class AddCoupleActivity extends AppCompatActivity {
                 DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().coupleDao().insert(newCouple);
                 DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().personDao().insert(newPerson1);
                 DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().personDao().insert(newPerson2);
+                Proximity newProximity1 = new Proximity(dinnerId, 1, 1, newPerson1.getId(), newPerson2.getId(), 5);
+                Proximity newProximity2 = new Proximity(dinnerId, 1, 1, newPerson2.getId(), newPerson1.getId(), 5);
+                DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().proximityDao().insert(newProximity1);
+                DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().proximityDao().insert(newProximity2);
                 Intent intent = new Intent(AddCoupleActivity.this, PeopleListActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
                 startActivity(intent);
