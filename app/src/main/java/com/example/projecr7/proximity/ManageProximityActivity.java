@@ -58,7 +58,7 @@ public class ManageProximityActivity extends AppCompatActivity {
                 int selectProximityId = selectProximity.getUid();
                 Intent intent = new Intent(ManageProximityActivity.this, ManageSingleProximityActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
-                intent.putExtra(proximityListActivity.EXTRA_ID, selectProximity.getUid());
+                intent.putExtra(proximityListActivity.EXTRA_ID, selectProximityId);
                 intent.putExtra(ManageProximityActivity.EXTRA_GUESTID, guestId);
                 intent.putExtra(ManageProximityActivity.EXTRA_GUESTTYPE, type);
                 startActivity(intent);

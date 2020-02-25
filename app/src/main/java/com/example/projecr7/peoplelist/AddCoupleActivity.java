@@ -70,7 +70,12 @@ public class AddCoupleActivity extends AppCompatActivity {
                 DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().personDao().insert(newPerson1);
                 DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().personDao().insert(newPerson2);
                 Proximity newProximity1 = new Proximity(dinnerId, 1, 1, newPerson1.getId(), newPerson2.getId(), 5);
+                newProximity1.setGuest1String(couple1Name);
+                newProximity1.setGuest2String(couple2Name);
                 Proximity newProximity2 = new Proximity(dinnerId, 1, 1, newPerson2.getId(), newPerson1.getId(), 5);
+                newProximity2.setOtherId();
+                newProximity2.setGuest2String(couple1Name);
+                newProximity2.setGuest1String(couple2Name);
                 DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().proximityDao().insert(newProximity1);
                 DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().proximityDao().insert(newProximity2);
                 Intent intent = new Intent(AddCoupleActivity.this, PeopleListActivity.class);

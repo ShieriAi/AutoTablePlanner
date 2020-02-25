@@ -64,6 +64,14 @@ public class Proximity {
         return uid;
     }
 
+    public void setOtherId(){
+        this.uid++;
+    }
+
+    public void setOtherId(int i){
+        this.uid += i;
+    }
+
     public int getGuest1Id() {
         return guest1Id;
     }

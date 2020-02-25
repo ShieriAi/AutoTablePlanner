@@ -104,10 +104,19 @@ public class AddFamilyActivity extends AppCompatActivity {
                     newPeople[i] = newPerson;
                     DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().personDao().insert(newPerson);
                 }
+                int id = 0;
                 for(int i = 0; i < familySize; i++){
                     for(int j = i + 1; j < familySize; j++){
                         Proximity newProximity1 = new Proximity(dinnerId, 1, 1, newPeople[i].getId(), newPeople[j].getId(), 5);
+                        newProximity1.setGuest1String(newPeople[i].getName());
+                        newProximity1.setGuest2String(newPeople[j].getName());
+                        newProximity1.setOtherId(id);
+                        id++;
                         Proximity newProximity2 = new Proximity(dinnerId, 1, 1, newPeople[j].getId(), newPeople[i].getId(), 5);
+                        newProximity2.setGuest2String(newPeople[i].getName());
+                        newProximity2.setGuest1String(newPeople[j].getName());
+                        newProximity2.setOtherId(id);
+                        id++;
                         DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().proximityDao().insert(newProximity1);
                         DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().proximityDao().insert(newProximity2);
                     }

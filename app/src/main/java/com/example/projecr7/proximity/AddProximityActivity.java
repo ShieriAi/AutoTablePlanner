@@ -72,10 +72,10 @@ public class AddProximityActivity extends AppCompatActivity {
 
         guestIdArray = new ArrayList<Integer>();
 
-        String[] typeArraySpinner = new String[3];
+        String[] typeArraySpinner = new String[1];
         typeArraySpinner[0] = "single";
-        typeArraySpinner[1] = "couple";
-        typeArraySpinner[2] = "family";
+//        typeArraySpinner[1] = "couple";
+//        typeArraySpinner[2] = "family";
 
         ArrayAdapter<String> typeSAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, typeArraySpinner);
@@ -224,7 +224,7 @@ public class AddProximityActivity extends AppCompatActivity {
         ArrayList<Person> list = new ArrayList<Person>();
         guestIdArray = new ArrayList<Integer>();
         for(int i = 0; i < personList.size(); i++){
-            if(personList.get(i).getCoupleId() == 4 && personList.get(i).getFamilyId() == 4 && personList.get(i).getId() != guestId){
+            if(personList.get(i).getId() != guestId){
                 guestIdArray.add(personList.get(i).getId());
                 list.add(personList.get(i));
             }

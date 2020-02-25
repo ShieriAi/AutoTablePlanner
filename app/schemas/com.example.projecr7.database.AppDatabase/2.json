@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "b212b7ae39a04c128ef0edb0a4ec899c",
+    "identityHash": "30bada5986e1b69a32f3072705f54dc4",
     "entities": [
       {
         "tableName": "Dinner",
@@ -32,7 +32,7 @@
       },
       {
         "tableName": "Person",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`person_uid` INTEGER NOT NULL, `dinner_id` INTEGER NOT NULL, `name` TEXT, `gender` TEXT, `currentHappiness` REAL NOT NULL, `person_table_id` INTEGER NOT NULL DEFAULT 4, `seatId` INTEGER NOT NULL, `person_couple_id` INTEGER NOT NULL DEFAULT 4, `person_family_id` INTEGER NOT NULL DEFAULT 4, PRIMARY KEY(`person_uid`), FOREIGN KEY(`dinner_id`) REFERENCES `Dinner`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`person_table_id`) REFERENCES `Table`(`table_id`) ON UPDATE NO ACTION ON DELETE SET DEFAULT , FOREIGN KEY(`person_couple_id`) REFERENCES `Couple`(`couple_uid`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`person_family_id`) REFERENCES `Family`(`family_uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`person_uid` INTEGER NOT NULL, `dinner_id` INTEGER NOT NULL, `name` TEXT, `gender` TEXT, `currentHappiness` REAL NOT NULL, `person_table_id` INTEGER NOT NULL DEFAULT 4, `seatId` INTEGER NOT NULL, `person_couple_id` INTEGER NOT NULL DEFAULT 4, `person_family_id` INTEGER NOT NULL DEFAULT 4, `listPosition` INTEGER NOT NULL, `disLikeBy` INTEGER NOT NULL, PRIMARY KEY(`person_uid`), FOREIGN KEY(`dinner_id`) REFERENCES `Dinner`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`person_table_id`) REFERENCES `Table`(`table_id`) ON UPDATE NO ACTION ON DELETE SET DEFAULT , FOREIGN KEY(`person_couple_id`) REFERENCES `Couple`(`couple_uid`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`person_family_id`) REFERENCES `Family`(`family_uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "uid",
@@ -90,6 +90,18 @@
             "affinity": "INTEGER",
             "notNull": true,
             "defaultValue": "4"
+          },
+          {
+            "fieldPath": "listPosition",
+            "columnName": "listPosition",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "disLikeBy",
+            "columnName": "disLikeBy",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -262,7 +274,7 @@
       },
       {
         "tableName": "Couple",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`couple_uid` INTEGER NOT NULL, `dinner_id` INTEGER NOT NULL, `displayName` TEXT, PRIMARY KEY(`couple_uid`), FOREIGN KEY(`dinner_id`) REFERENCES `Dinner`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`couple_uid` INTEGER NOT NULL, `dinner_id` INTEGER NOT NULL, `displayName` TEXT, `listPosition` INTEGER NOT NULL, `disLikeBy` INTEGER NOT NULL, PRIMARY KEY(`couple_uid`), FOREIGN KEY(`dinner_id`) REFERENCES `Dinner`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "uid",
@@ -281,6 +293,18 @@
             "columnName": "displayName",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "listPosition",
+            "columnName": "listPosition",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "disLikeBy",
+            "columnName": "disLikeBy",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -323,7 +347,7 @@
       },
       {
         "tableName": "Family",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`family_uid` INTEGER NOT NULL, `dinner_id` INTEGER NOT NULL, `familySize` INTEGER NOT NULL, `displayName` TEXT, PRIMARY KEY(`family_uid`), FOREIGN KEY(`dinner_id`) REFERENCES `Dinner`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`family_uid` INTEGER NOT NULL, `dinner_id` INTEGER NOT NULL, `family_size` INTEGER NOT NULL, `displayName` TEXT, `listPosition` INTEGER NOT NULL, `disLikeBy` INTEGER NOT NULL, PRIMARY KEY(`family_uid`), FOREIGN KEY(`dinner_id`) REFERENCES `Dinner`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "uid",
@@ -339,7 +363,7 @@
           },
           {
             "fieldPath": "familySize",
-            "columnName": "familySize",
+            "columnName": "family_size",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -348,6 +372,18 @@
             "columnName": "displayName",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "listPosition",
+            "columnName": "listPosition",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "disLikeBy",
+            "columnName": "disLikeBy",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -372,6 +408,14 @@
               "dinner_id"
             ],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_Family_dinner_id` ON `${TABLE_NAME}` (`dinner_id`)"
+          },
+          {
+            "name": "index_Family_family_size",
+            "unique": false,
+            "columnNames": [
+              "family_size"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Family_family_size` ON `${TABLE_NAME}` (`family_size`)"
           }
         ],
         "foreignKeys": [
@@ -390,7 +434,7 @@
       },
       {
         "tableName": "Proximity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`proximity_uid` INTEGER NOT NULL, `dinner_id` INTEGER NOT NULL, `type1` INTEGER NOT NULL, `type2` INTEGER NOT NULL, `guest1_Id` INTEGER NOT NULL, `guest2_Id` INTEGER NOT NULL, `proximity_type` INTEGER NOT NULL, `guest1String` TEXT, `guest2String` TEXT, PRIMARY KEY(`proximity_uid`), FOREIGN KEY(`dinner_id`) REFERENCES `Dinner`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`proximity_uid` INTEGER NOT NULL, `dinner_id` INTEGER NOT NULL, `type_1` INTEGER NOT NULL, `type2` INTEGER NOT NULL, `guest1_Id` INTEGER NOT NULL, `guest2_Id` INTEGER NOT NULL, `proximity_type` INTEGER NOT NULL, `guest1String` TEXT, `guest2String` TEXT, PRIMARY KEY(`proximity_uid`), FOREIGN KEY(`dinner_id`) REFERENCES `Dinner`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "uid",
@@ -406,7 +450,7 @@
           },
           {
             "fieldPath": "type1",
-            "columnName": "type1",
+            "columnName": "type_1",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -493,6 +537,14 @@
               "proximity_type"
             ],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_Proximity_proximity_type` ON `${TABLE_NAME}` (`proximity_type`)"
+          },
+          {
+            "name": "index_Proximity_type_1",
+            "unique": false,
+            "columnNames": [
+              "type_1"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Proximity_type_1` ON `${TABLE_NAME}` (`type_1`)"
           }
         ],
         "foreignKeys": [
@@ -600,7 +652,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b212b7ae39a04c128ef0edb0a4ec899c')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '30bada5986e1b69a32f3072705f54dc4')"
     ]
   }
 }

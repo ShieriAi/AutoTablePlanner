@@ -17,6 +17,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,6 +26,8 @@ import android.widget.Toast;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = "MainActivity";
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -152,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void goAddDinner(View view) {
+        Log.i(TAG, "start dinner========= ");
         Intent intent = new Intent(this, AddDinnerActivity.class);
         startActivity(intent);
     }

@@ -79,43 +79,43 @@ public class proximityListActivity extends AppCompatActivity {
         };
         updatePeopleList();
 
-        coupleRecyclerView = findViewById(R.id.my_recycler_view_couple_list);
-        coupleRecyclerView.setHasFixedSize(true);
-        coupleLayoutManager = new LinearLayoutManager(this);
-        coupleRecyclerView.setLayoutManager(coupleLayoutManager);
-
-        mCoupleOnClickInterface = new onClickInterface() {
-            @Override
-            public void setClick(Object i) {
-                Couple selectCouple = (Couple) i;
-                int selectCoupleId = selectCouple.getUid();
-                Intent intent = new Intent(com.example.projecr7.proximity.proximityListActivity.this, ManageProximityActivity.class);
-                intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
-                intent.putExtra(proximityListActivity.EXTRA_TYPE, 2);
-                intent.putExtra(proximityListActivity.EXTRA_ID, selectCoupleId);
-                startActivity(intent);
-            }
-        };
-        updateCoupleList();
-
-        familyRecyclerView = findViewById(R.id.my_recycler_view_family_list);
-        familyRecyclerView.setHasFixedSize(true);
-        familyLayoutManager = new LinearLayoutManager(this);
-        familyRecyclerView.setLayoutManager(familyLayoutManager);
-
-        mFamilyOnClickInterface = new onClickInterface() {
-            @Override
-            public void setClick(Object i) {
-                Family selectFamily = (Family) i;
-                int selectFamilyId = selectFamily.getUid();
-                Intent intent = new Intent(com.example.projecr7.proximity.proximityListActivity.this, ManageProximityActivity.class);
-                intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
-                intent.putExtra(proximityListActivity.EXTRA_TYPE, 3);
-                intent.putExtra(proximityListActivity.EXTRA_ID, selectFamilyId);
-                startActivity(intent);
-            }
-        };
-        updateFamilyList();
+//        coupleRecyclerView = findViewById(R.id.my_recycler_view_couple_list);
+//        coupleRecyclerView.setHasFixedSize(true);
+//        coupleLayoutManager = new LinearLayoutManager(this);
+//        coupleRecyclerView.setLayoutManager(coupleLayoutManager);
+//
+//        mCoupleOnClickInterface = new onClickInterface() {
+//            @Override
+//            public void setClick(Object i) {
+//                Couple selectCouple = (Couple) i;
+//                int selectCoupleId = selectCouple.getUid();
+//                Intent intent = new Intent(com.example.projecr7.proximity.proximityListActivity.this, ManageProximityActivity.class);
+//                intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
+//                intent.putExtra(proximityListActivity.EXTRA_TYPE, 2);
+//                intent.putExtra(proximityListActivity.EXTRA_ID, selectCoupleId);
+//                startActivity(intent);
+//            }
+//        };
+//        updateCoupleList();
+//
+//        familyRecyclerView = findViewById(R.id.my_recycler_view_family_list);
+//        familyRecyclerView.setHasFixedSize(true);
+//        familyLayoutManager = new LinearLayoutManager(this);
+//        familyRecyclerView.setLayoutManager(familyLayoutManager);
+//
+//        mFamilyOnClickInterface = new onClickInterface() {
+//            @Override
+//            public void setClick(Object i) {
+//                Family selectFamily = (Family) i;
+//                int selectFamilyId = selectFamily.getUid();
+//                Intent intent = new Intent(com.example.projecr7.proximity.proximityListActivity.this, ManageProximityActivity.class);
+//                intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
+//                intent.putExtra(proximityListActivity.EXTRA_TYPE, 3);
+//                intent.putExtra(proximityListActivity.EXTRA_ID, selectFamilyId);
+//                startActivity(intent);
+//            }
+//        };
+//        updateFamilyList();
 
         TextView textview = findViewById(R.id.textViewDinnerName_proximityList);
         textview.setText(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().dinnerDao().loadSingleById(dinnerId).toString());
@@ -158,16 +158,16 @@ public class proximityListActivity extends AppCompatActivity {
 
     public void updatePeopleList() {
         people = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().personDao().loadAllByDinner(dinnerId);
-        ArrayList<Person> singlePeople = new ArrayList<Person>();
-        for (int i = 0; i < people.size(); i++) {
-            if (people.get(i).getCoupleId() == 4 && people.get(i).getFamilyId() == 4)
-                singlePeople.add(people.get(i));
-        }
+//        ArrayList<Person> singlePeople = new ArrayList<Person>();
+//        for (int i = 0; i < people.size(); i++) {
+//            if (people.get(i).getCoupleId() == 4 && people.get(i).getFamilyId() == 4)
+//                singlePeople.add(people.get(i));
+//        }
         Person[] peopleArray;
-        if (singlePeople.size() != 0) {
-            peopleArray = new Person[singlePeople.size()];
-            for (int i = 0; i < singlePeople.size(); i++) {
-                peopleArray[i] = singlePeople.get(i);
+        if (people.size() != 0) {
+            peopleArray = new Person[people.size()];
+            for (int i = 0; i < people.size(); i++) {
+                peopleArray[i] = people.get(i);
             }
             mPeopleAdapter = new MyPeopleListAdapter(peopleArray, mOnClickInterface);
             peopleRecyclerView.setAdapter(mPeopleAdapter);
