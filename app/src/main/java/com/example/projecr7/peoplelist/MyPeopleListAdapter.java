@@ -38,7 +38,12 @@ public class MyPeopleListAdapter extends RecyclerView.Adapter<com.example.projec
     @Override
     public void onBindViewHolder(com.example.projecr7.peoplelist.MyPeopleListAdapter.ViewHolder holder, final int position) {
         holder.textView.setText(people[position].getName());
-        holder.imageView.setImageResource(R.drawable.single_icon);
+        if(people[position].getFamilyId() != 4)
+            holder.imageView.setImageResource(R.drawable.family_icon);
+        else if(people[position].getCoupleId() != 4)
+            holder.imageView.setImageResource(R.drawable.couple_icon);
+        else
+            holder.imageView.setImageResource(R.drawable.single_icon);
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

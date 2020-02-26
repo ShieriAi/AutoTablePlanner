@@ -19,11 +19,31 @@ import com.example.projecr7.database.DatabaseClient;
 import com.example.projecr7.database.Family;
 import com.example.projecr7.database.Person;
 import com.example.projecr7.database.Proximity;
+import com.example.projecr7.database.Table;
 import com.example.projecr7.peoplelist.AddFamilyActivity;
 import com.example.projecr7.peoplelist.PeopleListActivity;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+
+class SortbyCoupleP implements Comparator<Person>
+{
+    @Override
+    public int compare(Person o1, Person o2) {
+        return o1.getCoupleId() - o2.getCoupleId();
+    }
+}
+
+class SortbyFamilyP implements Comparator<Person>
+{
+    @Override
+    public int compare(Person o1, Person o2) {
+        return o1.getFamilyId() - o2.getFamilyId();
+    }
+}
 
 public class AddProximityActivity extends AppCompatActivity {
 
@@ -72,10 +92,10 @@ public class AddProximityActivity extends AppCompatActivity {
 
         guestIdArray = new ArrayList<Integer>();
 
-        String[] typeArraySpinner = new String[1];
+        String[] typeArraySpinner = new String[3];
         typeArraySpinner[0] = "single";
-//        typeArraySpinner[1] = "couple";
-//        typeArraySpinner[2] = "family";
+        typeArraySpinner[1] = "couple";
+        typeArraySpinner[2] = "family";
 
         ArrayAdapter<String> typeSAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, typeArraySpinner);
@@ -96,55 +116,56 @@ public class AddProximityActivity extends AppCompatActivity {
         typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                switch (position){
-                    case 0:
-                        updateGuestListSingle();
-                        break;
-                    case 1:
-                        List<Couple> coupleList = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().coupleDao().loadAllByDinner(dinnerId);
-                        guestIdArray = new ArrayList<>();
-                        if(guestType == 2){
-                            guestArraySpinner = new String[coupleList.size() - 1];
-                            int j = 0;
-                            for(int i = 0; i < coupleList.size(); i++){
-                                if(coupleList.get(i).getUid() != guestId) {
-                                    guestIdArray.add(coupleList.get(i).getUid());
-                                    guestArraySpinner[j] = coupleList.get(i).getDisplayName();
-                                    j++;
-                                }
-                            }
-                        }
-                        else{
-                            guestArraySpinner = new String[coupleList.size()];
-                            for(int i = 0; i < coupleList.size(); i++){
-                                guestIdArray.add(coupleList.get(i).getUid());
-                                guestArraySpinner[i] = coupleList.get(i).getDisplayName();
-                            }
-                        }
-                        break;
-                    case 2:
-                        List<Family> familyList = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().familyDao().loadAllByDinner(dinnerId);
-                        guestIdArray = new ArrayList<>();
-                        if(guestType == 3){
-                            guestArraySpinner = new String[familyList.size() - 1];
-                            int j = 0;
-                            for(int i = 0; i < familyList.size(); i++){
-                                if(familyList.get(i).getUid() != guestId) {
-                                    guestIdArray.add(familyList.get(i).getUid());
-                                    guestArraySpinner[j] = familyList.get(i).getDisplayName();
-                                    j++;
-                                }
-                            }
-                        }
-                        else{
-                            guestArraySpinner = new String[familyList.size()];
-                            for(int i = 0; i < familyList.size(); i++){
-                                guestIdArray.add(familyList.get(i).getUid());
-                                guestArraySpinner[i] = familyList.get(i).getDisplayName();
-                            }
-                        }
-                        break;
-                }
+                updateGuestListSingle(position);
+//                switch (position){
+//                    case 0:
+//                        updateGuestListSingle();
+//                        break;
+//                    case 1:
+//                        List<Couple> coupleList = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().coupleDao().loadAllByDinner(dinnerId);
+//                        guestIdArray = new ArrayList<>();
+//                        if(guestType == 2){
+//                            guestArraySpinner = new String[coupleList.size() - 1];
+//                            int j = 0;
+//                            for(int i = 0; i < coupleList.size(); i++){
+//                                if(coupleList.get(i).getUid() != guestId) {
+//                                    guestIdArray.add(coupleList.get(i).getUid());
+//                                    guestArraySpinner[j] = coupleList.get(i).getDisplayName();
+//                                    j++;
+//                                }
+//                            }
+//                        }
+//                        else{
+//                            guestArraySpinner = new String[coupleList.size()];
+//                            for(int i = 0; i < coupleList.size(); i++){
+//                                guestIdArray.add(coupleList.get(i).getUid());
+//                                guestArraySpinner[i] = coupleList.get(i).getDisplayName();
+//                            }
+//                        }
+//                        break;
+//                    case 2:
+//                        List<Family> familyList = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().familyDao().loadAllByDinner(dinnerId);
+//                        guestIdArray = new ArrayList<>();
+//                        if(guestType == 3){
+//                            guestArraySpinner = new String[familyList.size() - 1];
+//                            int j = 0;
+//                            for(int i = 0; i < familyList.size(); i++){
+//                                if(familyList.get(i).getUid() != guestId) {
+//                                    guestIdArray.add(familyList.get(i).getUid());
+//                                    guestArraySpinner[j] = familyList.get(i).getDisplayName();
+//                                    j++;
+//                                }
+//                            }
+//                        }
+//                        else{
+//                            guestArraySpinner = new String[familyList.size()];
+//                            for(int i = 0; i < familyList.size(); i++){
+//                                guestIdArray.add(familyList.get(i).getUid());
+//                                guestArraySpinner[i] = familyList.get(i).getDisplayName();
+//                            }
+//                        }
+//                        break;
+//                }
                 updateGuestSpinner();
             }
 
@@ -152,7 +173,7 @@ public class AddProximityActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {}
         });
 
-        updateGuestListSingle();
+        updateGuestListSingle(0);
 
         updateGuestSpinner();
 
@@ -219,12 +240,25 @@ public class AddProximityActivity extends AppCompatActivity {
 
     }
 
-    private void updateGuestListSingle(){
+    private void updateGuestListSingle(int position){
         List<Person> personList = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().personDao().loadAllByDinner(dinnerId);
         ArrayList<Person> list = new ArrayList<Person>();
         guestIdArray = new ArrayList<Integer>();
+        if(position == 1)
+            Collections.sort(personList, new SortbyCoupleP());
+        else if(position == 2)
+            Collections.sort(personList, new SortbyFamilyP());
+
         for(int i = 0; i < personList.size(); i++){
-            if(personList.get(i).getId() != guestId){
+            if(personList.get(i).getId() != guestId && position == 0 && personList.get(i).getCoupleId() == 4 && personList.get(i).getFamilyId() == 4){
+                guestIdArray.add(personList.get(i).getId());
+                list.add(personList.get(i));
+            }
+            else if(personList.get(i).getId() != guestId && position == 1 && personList.get(i).getCoupleId() != 4){
+                guestIdArray.add(personList.get(i).getId());
+                list.add(personList.get(i));
+            }
+            else if(personList.get(i).getId() != guestId && position == 2 && personList.get(i).getFamilyId() != 4){
                 guestIdArray.add(personList.get(i).getId());
                 list.add(personList.get(i));
             }

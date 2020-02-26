@@ -7,32 +7,38 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.example.projecr7.MainActivity;
 import com.example.projecr7.R;
 import com.example.projecr7.database.Couple;
 import com.example.projecr7.database.DatabaseClient;
-import com.example.projecr7.database.Dinner;
 import com.example.projecr7.database.Family;
 import com.example.projecr7.database.Person;
 import com.example.projecr7.onClickInterface;
-import com.example.projecr7.peoplelist.AddCoupleActivity;
-import com.example.projecr7.peoplelist.AddFamilyActivity;
-import com.example.projecr7.peoplelist.AddPersonActivity;
-import com.example.projecr7.peoplelist.ManageCoupleActivity;
-import com.example.projecr7.peoplelist.ManageFamilyActivity;
-import com.example.projecr7.peoplelist.ManagePersonActivity;
 import com.example.projecr7.peoplelist.MyCoupleListAdapter;
 import com.example.projecr7.peoplelist.MyFamilyListAdapter;
 import com.example.projecr7.peoplelist.MyPeopleListAdapter;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+
+class SortbyFamily implements Comparator<Person>
+{
+    @Override
+    public int compare(Person o1, Person o2) {
+        return o1.getFamilyId() - o2.getFamilyId();
+    }
+}
+class SortbyCouple implements Comparator<Person>
+{
+    @Override
+    public int compare(Person o1, Person o2) {
+        return o1.getCoupleId() - o2.getCoupleId();
+    }
+}
 
 public class proximityListActivity extends AppCompatActivity {
 
@@ -77,12 +83,11 @@ public class proximityListActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         };
-        updatePeopleList();
 
-//        coupleRecyclerView = findViewById(R.id.my_recycler_view_couple_list);
-//        coupleRecyclerView.setHasFixedSize(true);
-//        coupleLayoutManager = new LinearLayoutManager(this);
-//        coupleRecyclerView.setLayoutManager(coupleLayoutManager);
+        coupleRecyclerView = findViewById(R.id.my_recycler_view_couple_list);
+        coupleRecyclerView.setHasFixedSize(true);
+        coupleLayoutManager = new LinearLayoutManager(this);
+        coupleRecyclerView.setLayoutManager(coupleLayoutManager);
 //
 //        mCoupleOnClickInterface = new onClickInterface() {
 //            @Override
@@ -98,10 +103,12 @@ public class proximityListActivity extends AppCompatActivity {
 //        };
 //        updateCoupleList();
 //
-//        familyRecyclerView = findViewById(R.id.my_recycler_view_family_list);
-//        familyRecyclerView.setHasFixedSize(true);
-//        familyLayoutManager = new LinearLayoutManager(this);
-//        familyRecyclerView.setLayoutManager(familyLayoutManager);
+        familyRecyclerView = findViewById(R.id.my_recycler_view_family_list);
+        familyRecyclerView.setHasFixedSize(true);
+        familyLayoutManager = new LinearLayoutManager(this);
+        familyRecyclerView.setLayoutManager(familyLayoutManager);
+
+        updatePeopleList();
 //
 //        mFamilyOnClickInterface = new onClickInterface() {
 //            @Override
@@ -164,13 +171,40 @@ public class proximityListActivity extends AppCompatActivity {
 //                singlePeople.add(people.get(i));
 //        }
         Person[] peopleArray;
+        Person[] coupleA;
+        Person[] familyA;
+        ArrayList<Person> singleArray = new ArrayList<Person>();
+        ArrayList<Person> coupleArray = new ArrayList<Person>();
+        ArrayList<Person> familyArray = new ArrayList<Person>();
         if (people.size() != 0) {
-            peopleArray = new Person[people.size()];
-            for (int i = 0; i < people.size(); i++) {
-                peopleArray[i] = people.get(i);
+            for(int i = 0; i < people.size(); i++){
+                if(people.get(i).getFamilyId() != 4)
+                    familyArray.add(people.get(i));
+                else if(people.get(i).getCoupleId() != 4)
+                    coupleArray.add(people.get(i));
+                else
+                    singleArray.add(people.get(i));
+            }
+            Collections.sort(coupleArray, new SortbyCouple());
+            Collections.sort(familyArray, new SortbyFamily());
+            peopleArray = new Person[singleArray.size()];
+            coupleA = new Person[coupleArray.size()];
+            familyA = new Person[familyArray.size()];
+            for(int i = 0; i < familyArray.size(); i++){
+                familyA[i] = familyArray.get(i);
+            }
+            for(int i = 0; i < coupleArray.size(); i++){
+                coupleA[i] = coupleArray.get(i);
+            }
+            for(int i = 0; i < singleArray.size(); i++){
+                peopleArray[i] = singleArray.get(i);
             }
             mPeopleAdapter = new MyPeopleListAdapter(peopleArray, mOnClickInterface);
             peopleRecyclerView.setAdapter(mPeopleAdapter);
+            mCoupleAdapter = new MyPeopleListAdapter(coupleA, mOnClickInterface);
+            coupleRecyclerView.setAdapter(mCoupleAdapter);
+            mFamilyAdapter = new MyPeopleListAdapter(familyA, mOnClickInterface);
+            familyRecyclerView.setAdapter(mFamilyAdapter);
         }
     }
 }

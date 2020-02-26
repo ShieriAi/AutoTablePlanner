@@ -10,10 +10,6 @@
         android:id="@+id/scrollView_"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,7 +23,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:background="#815476"
+                android:background="#815463"
                 android:gravity="center"
                 android:text="@string/person"
                 android:textAllCaps="false"
@@ -42,7 +38,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:background="#815476"
+                android:background="#815463"
                 android:gravity="center"
                 android:text="@string/couple"
                 android:textAllCaps="false"
@@ -58,7 +54,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:background="#815476"
+                android:background="#815463"
                 android:gravity="center"
                 android:text="@string/family"
                 android:textAllCaps="false"
