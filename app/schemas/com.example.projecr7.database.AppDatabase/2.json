@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "30bada5986e1b69a32f3072705f54dc4",
+    "identityHash": "f3114462c583f54ca82f40e3bff7ea8e",
     "entities": [
       {
         "tableName": "Dinner",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER NOT NULL, `dinnerName` TEXT, PRIMARY KEY(`uid`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER NOT NULL, `dinnerName` TEXT, `dinnerYear` INTEGER NOT NULL, `dinnerMonth` INTEGER NOT NULL, `dinnerDate` INTEGER NOT NULL, PRIMARY KEY(`uid`))",
         "fields": [
           {
             "fieldPath": "uid",
@@ -19,6 +19,24 @@
             "columnName": "dinnerName",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "dinnerYear",
+            "columnName": "dinnerYear",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dinnerMonth",
+            "columnName": "dinnerMonth",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dinnerDate",
+            "columnName": "dinnerDate",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -652,7 +670,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '30bada5986e1b69a32f3072705f54dc4')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f3114462c583f54ca82f40e3bff7ea8e')"
     ]
   }
 }

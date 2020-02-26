@@ -3,67 +3,62 @@ package com.example.projecr7;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projecr7.database.Dinner;
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
-    private Dinner[] mDataset;
+import java.util.Date;
+
+public class MyAdapter extends RecyclerView.Adapter<com.example.projecr7.MyAdapter.ViewHolder> {
+    private Dinner[] dinners;
     private onClickInterface mOnClickInterface;
 
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
-        public TextView textView;
-        public MyViewHolder(TextView v) {
-            super(v);
-            textView = v;
-        }
+    // RecyclerView recyclerView;
+    public MyAdapter(Dinner[] dinners, onClickInterface mOnClickInterface) {
+        this.dinners = dinners;
+        this.mOnClickInterface = mOnClickInterface;
     }
-
-    // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(Dinner[] myDataset, onClickInterface mOnclickInterface) {
-        mDataset = myDataset;
-        this.mOnClickInterface = mOnclickInterface;
-    }
-
-    // Create new views (invoked by the layout manager)
     @Override
-    public MyAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
-                                                     int viewType) {
-        // create a new view
-        TextView v = (TextView) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.my_text_view, parent, false);
-        MyViewHolder vh = new MyViewHolder(v);
-        return vh;
+    public com.example.projecr7.MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        View listItem= layoutInflater.inflate(R.layout.dinner_list_item, parent, false);
+        com.example.projecr7.MyAdapter.ViewHolder viewHolder = new com.example.projecr7.MyAdapter.ViewHolder(listItem);
+        return viewHolder;
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(MyViewHolder holder, final int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
-        holder.textView.setText(mDataset[position].toString());
-        holder.textView.setOnClickListener(new View.OnClickListener() {
+    public void onBindViewHolder(com.example.projecr7.MyAdapter.ViewHolder holder, final int position) {
+        holder.textView_name.setText(dinners[position].getDinnerName());
+        holder.textView_date.setText(dinners[position].getDinnerDate() + "/" + dinners[position].getDinnerMonth() + "/" + dinners[position].getDinnerYear());
+
+        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                mOnClickInterface.setClick(mDataset[position]);
+            public void onClick(View view) {
+                mOnClickInterface.setClick(dinners[position]);
             }
         });
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
+
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        return dinners.length;
     }
 
-//    public Dinner getSelectedData(){
-//
-//    }
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView textView_name;
+        public TextView textView_date;
+        public LinearLayout linearLayout;
+        public ViewHolder(View itemView) {
+            super(itemView);
+            this.textView_name = itemView.findViewById(R.id.textView_dinner_name);
+            this.textView_date = itemView.findViewById(R.id.textView_dinner_time);
+            linearLayout = itemView.findViewById(R.id.LinerLayout_dinner_item);
+        }
+    }
+
 }
 

@@ -21,9 +21,25 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+
+class SortbyDate implements Comparator<Dinner>
+{
+    @Override
+    public int compare(Dinner o1, Dinner o2) {
+        Calendar myCalendar1 = new GregorianCalendar(o1.getDinnerYear(), o1.getDinnerMonth(), o1.getDinnerDate());
+        Date myDate1 = myCalendar1.getTime();
+        Calendar myCalendar2 = new GregorianCalendar(o2.getDinnerYear(), o2.getDinnerMonth(), o2.getDinnerDate());
+        Date myDate2 = myCalendar2.getTime();
+        return myDate1.compareTo(myDate2);
+    }
+}
 
 public class MainActivity extends AppCompatActivity {
 
@@ -144,12 +160,6 @@ public class MainActivity extends AppCompatActivity {
         this.selectDinnerId = selectDinnerId;
     }
 
-    // when pressing a dinner
-//    public void goDinner(View view) {
-//        Intent intent = new Intent(this, DinnerActivity.class);
-//        startActivity(intent);
-//    }
-
     public static Context getContext() {
         return mContext;
     }
@@ -162,6 +172,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void updateDinnerList(){
         allDinner = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().dinnerDao().getAll();
+        Collections.sort(allDinner, new SortbyDate());
         Dinner[] dinnerSet;
         if(allDinner.size() > 1){
             dinnerSet =  new Dinner[allDinner.size() - 1];

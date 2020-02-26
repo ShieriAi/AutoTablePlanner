@@ -53,7 +53,8 @@ public class PeopleListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_people_list);
 
         Intent intent = getIntent();
-        dinnerId = intent.getIntExtra(MainActivity.EXTRA_INDEX, 0);
+        if(intent.getIntExtra(MainActivity.EXTRA_INDEX, 0) != 0)
+            dinnerId = intent.getIntExtra(MainActivity.EXTRA_INDEX, 0);
 
         peopleRecyclerView = findViewById(R.id.my_recycler_view_people_list);
         peopleRecyclerView.setHasFixedSize(true);

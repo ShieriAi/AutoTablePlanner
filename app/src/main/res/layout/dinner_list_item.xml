@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/LinerLayout_single_person"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/LinerLayout_dinner_item"
     android:layout_width="match_parent"
     android:layout_height="?android:attr/listPreferredItemHeightLarge"
     android:orientation="horizontal"
+    android:padding="10dp"
     android:background="@drawable/border">
 
     <LinearLayout
@@ -12,13 +14,14 @@
         android:layout_weight="1">
 
         <ImageView
-            android:id="@+id/imageView_single"
+            android:id="@+id/imageView_dinner_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_gravity="center_vertical"
-            android:contentDescription="Icon" />
+            android:contentDescription="Icon"
+            app:srcCompat="@drawable/dinner_table" />
 
     </LinearLayout>
 
@@ -29,11 +32,24 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView_single_name"
+            android:id="@+id/textView_dinner_name"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
             android:gravity="center_vertical"
-            android:textSize="16sp"/>
+            android:text="@string/app_name"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView_dinner_time"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="2020.02.02"
+            android:textSize="10sp"/>
 
     </LinearLayout>
 

@@ -5,6 +5,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.util.Calendar;
+import java.util.Date;
 
 @Entity
 public class Dinner {
@@ -12,6 +13,8 @@ public class Dinner {
     public int uid;
 
     private String dinnerName;
+
+    public int dinnerYear, dinnerMonth, dinnerDate;
 
     public Dinner(String dinnerName){
         Calendar calendar = Calendar.getInstance();
@@ -32,6 +35,24 @@ public class Dinner {
 
     public void setUid(int givenUid){
         uid = givenUid;
+    }
+
+    public void setDinnerDate(int dinnerYear, int dinnerMonth, int dinnerDate) {
+        this.dinnerYear = dinnerYear;
+        this.dinnerMonth = dinnerMonth;
+        this.dinnerDate = dinnerDate;
+    }
+
+    public int getDinnerYear() {
+        return dinnerYear;
+    }
+
+    public int getDinnerMonth() {
+        return dinnerMonth;
+    }
+
+    public int getDinnerDate() {
+        return dinnerDate;
     }
 
     public int getUid() {

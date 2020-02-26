@@ -121,7 +121,7 @@ public class ManageCoupleActivity extends AppCompatActivity {
                 intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
                 DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().coupleDao().delete(currentCouple);
                 startActivity(intent);
-               //TODO NavUtils.navigateUpFromSameTask(ManageCoupleActivity.this);
+                //NavUtils.navigateUpFromSameTask(ManageCoupleActivity.this);
             }
         });
     }

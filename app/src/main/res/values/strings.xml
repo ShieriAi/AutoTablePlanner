@@ -42,4 +42,6 @@
     <string name="bribe_set_amount_hint">Amount</string>
     <string name="retryBtn">retry</string>
     <string name="makeit_hint">*Select each table to see your result</string>
+    <string name="dinnerNameHint">Name:</string>
+    <string name="dinnerDateHint">Date:</string>
 </resources>
