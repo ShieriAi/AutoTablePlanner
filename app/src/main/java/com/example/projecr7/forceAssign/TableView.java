@@ -10,20 +10,36 @@ import android.graphics.Point;
 import android.graphics.RectF;
 import android.graphics.Region;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 
+import androidx.core.content.ContextCompat;
+
+import com.example.projecr7.R;
+
 public class TableView extends View {
-    Paint mPaint, otherPaint, outerPaint, mTextPaint;
+    Paint mPaint, otherPaint, outerPaint, mTextPaint, mSmllTextPaint, tablePaint;
     RectF mRectF;
     int mPadding;
 
-    float arcLeft, arcTop, arcRight, arcBottom;
+    final String TAG = "TableView";
+
+    float arcLeft, arcTop, arcRight, arcBottom, circleTableR, seatR, smallSeatR, seatCircleR;
+
+    int numberOfSests, tableType;
+    String tableName;
+
+    Canvas mCanvas;
 
     Path mPath;
 
 
-    public TableView(Context context) {
+    public TableView(Context context, int numberOfSests, int tableType, String tableName) {
         super(context);
+
+        this.numberOfSests = numberOfSests;
+        this.tableType = tableType;
+        this.tableName = tableName;
 
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
@@ -34,10 +50,21 @@ public class TableView extends View {
 
 
         mTextPaint = new Paint(Paint.LINEAR_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
-        mTextPaint.setColor(Color.BLACK);
-        mTextPaint.setTextSize(pxFromDp(context, 24));
+        mTextPaint.setColor(Color.WHITE);
+        mTextPaint.setTextSize(pxFromDp(context, 15));
+
+        mSmllTextPaint = new Paint(Paint.LINEAR_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
+        mSmllTextPaint.setColor(Color.WHITE);
+        mSmllTextPaint.setTextSize(pxFromDp(context, 10));
 
         otherPaint = new Paint();
+        otherPaint.setStyle(Paint.Style.FILL);
+        otherPaint.setColor(Color.BLACK);
+
+        tablePaint = new Paint();
+        tablePaint.setStyle(Paint.Style.FILL);
+        int YYllo = ContextCompat.getColor(context, R.color.YYllo);
+        tablePaint.setColor(YYllo);
 
         outerPaint = new Paint();
         outerPaint.setStyle(Paint.Style.FILL);
@@ -58,6 +85,10 @@ public class TableView extends View {
 
         arcLeft = pxFromDp(context, 20);
         arcTop = pxFromDp(context, 20);
+        circleTableR = pxFromDp(context, 100);
+        seatCircleR = pxFromDp(context, 120);
+        seatR = pxFromDp(context, 15);
+        smallSeatR = pxFromDp(context, 10);
         arcRight = pxFromDp(context, 100);
         arcBottom = pxFromDp(context, 100);
 
@@ -79,32 +110,106 @@ public class TableView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        mCanvas = canvas;
 
-        canvas.drawRoundRect(mRectF, 10, 10, otherPaint);
-        canvas.clipRect(mRectF, Region.Op.DIFFERENCE);
-        canvas.drawPaint(outerPaint);
-
-        canvas.drawLine(250, 250, 400, 400, mPaint);
-        canvas.drawRect(mPadding, mPadding, getWidth() - mPadding, getHeight() - mPadding, mPaint);
-        canvas.drawArc(arcLeft, arcTop, arcRight, arcBottom, 75, 45, true, mPaint);
-
-
-        otherPaint.setColor(Color.GREEN);
-        otherPaint.setStyle(Paint.Style.FILL);
-
-        canvas.drawRect(
-                getLeft() + (getRight() - getLeft()) / 3,
+        canvas.drawColor(Color.WHITE);
+        if(tableType == -1){
+            Log.i(TAG, "return====================");
+            return;
+        }
+        Log.i(TAG, "not return====================");
+        float centerX = getWidth() / 2.0f;
+        float centerY = getHeight() / 2.0f;
+        float x, y, padding;
+        switch (tableType){
+            case 0:
+                canvas.drawCircle(centerX, centerY, circleTableR, tablePaint);
+                double angle = 360.0 / (double)numberOfSests;
+                double currentAngle = 0;
+                for(int i = 0; i < numberOfSests; i++){
+                    x = centerX + (float)Math.cos( Math.toRadians(currentAngle)) * seatCircleR;
+                    y = centerY + (float)Math.sin( Math.toRadians(currentAngle)) * seatCircleR;
+                    Log.i(TAG, x + "-" + y);
+                    canvas.drawCircle(x, y, seatR, otherPaint);
+                    canvas.drawText(Integer.toString(i+1), x - 20.0f, y + 17.0f, mTextPaint);
+                    currentAngle += angle;
+                }
+                break;
+            case 1:
+                canvas.drawRect(
+                getLeft() + (getRight() - getLeft()) / 9,
                 getTop() + (getBottom() - getTop()) / 3,
-                getRight() - (getRight() - getLeft()) / 3,
-                getBottom() - (getBottom() - getTop()) / 3, otherPaint);
+                getRight() - (getRight() - getLeft()) / 9,
+                getBottom() - (getBottom() - getTop()) / 3, tablePaint);
+                padding = (((getLeft() + (getRight() - getLeft()) / 9) * 7) - 60.0f) / ((numberOfSests / 2) - 1);
+                for(int i = 0; i < numberOfSests; i++){
+                    if(i < numberOfSests / 2){
+                        x = getLeft() + (getRight() - getLeft()) / 9.0f + 30.0f + padding * i;
+                        y = getTop() + (getBottom() - getTop()) / 3 - 50.0f;
+                    }
+                    else{
+                        x = getRight() - (getRight() - getLeft()) / 9.0f - 30.0f - padding * (i-(numberOfSests / 2));
+                        y = getBottom() - (getBottom() - getTop()) / 3 + 50.0f;
+                    }
+                    if(numberOfSests >= 14) {
+                        canvas.drawCircle(x, y, smallSeatR, otherPaint);
+                        canvas.drawText(Integer.toString(i + 1), x - 13.0f, y + 10.0f, mSmllTextPaint);
+                    }
+                    else {
+                        canvas.drawCircle(x, y, seatR, otherPaint);
+                        canvas.drawText(Integer.toString(i + 1), x - 20.0f, y + 17.0f, mTextPaint);
+                    }
+                }
+                break;
+            case 2:
+                canvas.drawRect(
+                        getLeft() + (getRight() - getLeft()) / 8,
+                        getTop() + (getBottom() - getTop()) / 3,
+                        getRight() - (getRight() - getLeft()) / 8,
+                        getBottom() - (getBottom() - getTop()) / 3, tablePaint);
+                padding = (((getLeft() + (getRight() - getLeft()) / 8) * 6) - 60.0f) / (((numberOfSests-2) / 2) - 1);
+                for(int i = 0; i < numberOfSests; i++){
+                    if(i < (numberOfSests / 2) - 1){
+                        x = getLeft() + (getRight() - getLeft()) / 8.0f + 30.0f + padding * i;
+                        y = getTop() + (getBottom() - getTop()) / 3 - 50.0f;
+                    }
+                    else if(i == (numberOfSests / 2) - 1){
+                        x = getRight() - (getRight() - getLeft()) / 8.0f + 50.0f;
+                        y = centerY;
+                    }
+                    else if(i == numberOfSests - 1){
+                        x = getLeft() + (getRight() - getLeft()) / 8.0f - 50.0f;
+                        y = centerY;
+                    }
+                    else{
+                        x = getRight() - (getRight() - getLeft()) / 8.0f - 30.0f - padding * (i-(numberOfSests / 2));
+                        y = getBottom() - (getBottom() - getTop()) / 3 + 50.0f;
+                    }
+                    if(numberOfSests >= 14) {
+                        canvas.drawCircle(x, y, smallSeatR, otherPaint);
+                        canvas.drawText(Integer.toString(i + 1), x - 13.0f, y + 10.0f, mSmllTextPaint);
+                    }
+                    else {
+                        canvas.drawCircle(x, y, seatR, otherPaint);
+                        canvas.drawText(Integer.toString(i + 1), x - 20.0f, y + 17.0f, mTextPaint);
+                    }
+                }
+                break;
+
+        }
 
 
-        canvas.drawPath(mPath, mPaint);
-        otherPaint.setColor(Color.BLACK);
-        canvas.drawCircle(getWidth() / 2, getHeight() / 2, arcLeft, otherPaint);
 
-        canvas.drawText("Canvas basics", (float) (getWidth() * 0.3), (float) (getHeight() * 0.8), mTextPaint);
 
+
+//        canvas.drawText("Canvas basics", (float) (getWidth() * 0.3), (float) (getHeight() * 0.8), mTextPaint);
+
+    }
+
+    public void update(int numberOfSests, int tableType, String tableName){
+        this.numberOfSests = numberOfSests;
+        this.tableType = tableType;
+        this.tableName = tableName;
     }
 
 

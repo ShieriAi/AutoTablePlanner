@@ -534,6 +534,8 @@ public class MainAlgorithm {
                             currentPersonHappiness += (double) relationshipTable[currentID][allTables[tableI].seats[tableSize - 1]];
                         if (allTables[tableI].seats[1] != -1)
                             currentPersonHappiness += (double) relationshipTable[currentID][allTables[tableI].seats[1]];
+                        if(allTables[tableI].seats[tableSize - i - 2] != -1) // opposite
+                            currentPersonHappiness += ((double) relationshipTable[currentID][allTables[tableI].seats[tableSize - i - 2]]) / 2.0;
                         allGuests[currentID].happiness = currentPersonHappiness;
                         currentScore += currentPersonHappiness;
                     } else if (i == tableSize - 1) {

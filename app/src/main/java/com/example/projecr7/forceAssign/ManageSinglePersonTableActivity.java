@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -31,6 +32,9 @@ public class ManageSinglePersonTableActivity extends AppCompatActivity {
     private ArrayAdapter<String> seatAdapter;
     private Spinner seatSpinner;
 
+    private LinearLayout drawTableboard;
+    private TableView tableDraw;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +54,7 @@ public class ManageSinglePersonTableActivity extends AppCompatActivity {
 
         Spinner tableSpinner = findViewById(R.id.single_select_table_spinner);
         seatSpinner = findViewById(R.id.single_select_seat_spinner);
+        drawTableboard = findViewById(R.id.table_display_draw_add_person);
 
         String[] tableArraySpinner = new String[(tables.size() + 1)];
         tableArraySpinner[0] = "no assign table";
@@ -84,6 +89,8 @@ public class ManageSinglePersonTableActivity extends AppCompatActivity {
             tableSpinner.setSelection(tableIndex);
             seatSpinner.setSelection(currentPerson.getSeatId());
         }
+        tableDraw = new TableView(ManageSinglePersonTableActivity.this, 0, -1, null);
+        drawTableboard.addView(tableDraw);
         tableSelect = -1;
         tableSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -96,10 +103,14 @@ public class ManageSinglePersonTableActivity extends AppCompatActivity {
                     for (int i = 0; i < currentTable.getTableSize(); i++) {
                         seatArraySpinner[i] = "seat: " + Integer.toString(i + 1);
                     }
+                    tableDraw.update(currentTable.getTableSize(), currentTable.getTableType(), currentTable.getTableName());
+                    tableDraw.invalidate();
                 }
                 else {
                     tableSelect = -1;
                     seatArraySpinner = new String[0];
+                    tableDraw.update(0, -1, null);
+                    tableDraw.invalidate();
                 }
                 seatAdapter = new ArrayAdapter<String>(ManageSinglePersonTableActivity.this,
                         android.R.layout.simple_spinner_item, seatArraySpinner);
