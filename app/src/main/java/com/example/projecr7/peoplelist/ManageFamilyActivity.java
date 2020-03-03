@@ -81,6 +81,7 @@ public class ManageFamilyActivity extends AppCompatActivity {
                         newPerson.setId(currentP.get(i).getId());
                         newPerson.setDinnerId(currentP.get(i).getDinnerId());
                         newPerson.setTableId(currentP.get(i).getTableId());
+                        newPerson.setSeatId(currentP.get(i).getSeatId());
                         newPerson.setFamilyId(familyId);
                         DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().personDao().updateUsers(newPerson);
                     }

@@ -198,7 +198,34 @@ public class AddProximityActivity extends AppCompatActivity {
                         break;
                     }
                 }
-                if(!found) {
+                List<Proximity> proximityListOther = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().proximityDao().loadAllByGuest1(guest2Id);
+                boolean foundOther = false;
+                for(int i = 0; i < proximityListOther.size(); i++){
+                    if(guestId == proximityListOther.get(i).getGuest2Id()){
+                        foundOther = true;
+                        break;
+                    }
+                }
+                if(!found && !foundOther) {
+                    Proximity newProximity = new Proximity(dinnerId, guestType, typeSpinner.getSelectedItemPosition() + 1, guestId, guest2Id, proximityType);
+                    newProximity.setGuest1String(guestName);
+                    newProximity.setGuest2String(guestSpinner.getSelectedItem().toString());
+                    Proximity newProximity2 = new Proximity(dinnerId, typeSpinner.getSelectedItemPosition() + 1, guestType, guest2Id, guestId, proximityType);
+                    newProximity2.setGuest1String(guestSpinner.getSelectedItem().toString());
+                    newProximity2.setGuest2String(guestName);
+                    newProximity2.setOtherId();
+                    if(proximityType == 1) {
+                        Person dP = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().personDao().loadSingleById(guest2Id);
+                        dP.increaseDisLikeBy();
+                        DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().personDao().updateUsers(dP);
+                        Person dP2 = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().personDao().loadSingleById(guestId);
+                        dP2.increaseDisLikeBy();
+                        DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().personDao().updateUsers(dP2);
+                    }
+                    DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().proximityDao().insert(newProximity);
+                    DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().proximityDao().insert(newProximity2);
+                }
+                else if(!found && foundOther){
                     Proximity newProximity = new Proximity(dinnerId, guestType, typeSpinner.getSelectedItemPosition() + 1, guestId, guest2Id, proximityType);
                     newProximity.setGuest1String(guestName);
                     newProximity.setGuest2String(guestSpinner.getSelectedItem().toString());
@@ -209,7 +236,7 @@ public class AddProximityActivity extends AppCompatActivity {
                     }
                     DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().proximityDao().insert(newProximity);
                 }
-                else{
+                else if(found){
                     Proximity newProximity = new Proximity(dinnerId, guestType, typeSpinner.getSelectedItemPosition() + 1, guestId, guest2Id, proximityType);
                     newProximity.setGuest1String(guestName);
                     newProximity.setGuest2String(guestSpinner.getSelectedItem().toString());

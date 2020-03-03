@@ -101,6 +101,7 @@ public class AddFamilyActivity extends AppCompatActivity {
                     newPerson.setOtherId(i);
                     newPerson.setDinnerId(dinnerId);
                     newPerson.setFamilyId(newFamily.getUid());
+                    newPerson.setSeatId(-1);
                     newPeople[i] = newPerson;
                     DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().personDao().insert(newPerson);
                 }

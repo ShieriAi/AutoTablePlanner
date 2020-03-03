@@ -9,7 +9,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.projecr7.MainActivity;
 import com.example.projecr7.R;
@@ -30,6 +32,9 @@ public class AddBribeActivity extends AppCompatActivity {
 
     private String[] guestArraySpinner;
     private ArrayList<Integer> guestIdArray;
+
+    private int satis;
+    private TextView seekbar_display;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,12 +92,32 @@ public class AddBribeActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {}
         });
 
+        SeekBar satis_seekbar = findViewById(R.id.seekBar_add_bribe);
+        seekbar_display = findViewById(R.id.bribe_satis_seekbar_display);
+        satis = 0;
+        satis_seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                satis = progress;
+                seekbar_display.setText(Integer.toString(satis));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+
         addBribeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int guestId = guestIdArray.get(guestSpinner.getSelectedItemPosition());
                 int guestType = typeSpinner.getSelectedItemPosition() + 1;
                 Bribe newBribe = new Bribe(dinnerId, guestId, guestType, guestSpinner.getSelectedItem().toString(), Integer.parseInt(amountInput.getText().toString()));
+                newBribe.setSatis(satis);
                 DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().bribeDao().insert(newBribe);
                 Intent intent = new Intent(AddBribeActivity.this, BribeListActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);

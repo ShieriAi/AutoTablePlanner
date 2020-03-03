@@ -97,6 +97,7 @@ public class ManageCoupleActivity extends AppCompatActivity {
                     newPerson1.setId(couple[0].getId());
                     newPerson1.setDinnerId(couple[0].getDinnerId());
                     newPerson1.setTableId(couple[0].getTableId());
+                    newPerson1.setSeatId(couple[0].getSeatId());
                     newPerson1.setCoupleId(coupleId);
                     DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().personDao().updateUsers(newPerson1);
                 }
@@ -105,6 +106,7 @@ public class ManageCoupleActivity extends AppCompatActivity {
                     newPerson2.setId(couple[1].getId());
                     newPerson2.setDinnerId(couple[1].getDinnerId());
                     newPerson2.setCoupleId(coupleId);
+                    newPerson2.setSeatId(couple[1].getSeatId());
                     newPerson2.setTableId(couple[1].getTableId());
                     DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().personDao().updateUsers(newPerson2);
                 }

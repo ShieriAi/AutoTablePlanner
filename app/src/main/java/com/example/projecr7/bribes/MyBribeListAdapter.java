@@ -31,7 +31,8 @@ public class MyBribeListAdapter extends RecyclerView.Adapter<MyBribeListAdapter.
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.textViewName.setText(bribedata[position].getGuestName());
-        holder.textViewAmount.setText("£ " + Integer.toString(bribedata[position].getBribeAmount()));
+        holder.textViewAmount.setText("£ " + bribedata[position].getBribeAmount());
+        holder.textViewSatis.setText(Integer.toString(bribedata[position].getSatis()));
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,11 +49,13 @@ public class MyBribeListAdapter extends RecyclerView.Adapter<MyBribeListAdapter.
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView textViewName;
+        public TextView textViewSatis;
         public TextView textViewAmount;
         public LinearLayout linearLayout;
         public ViewHolder(View itemView) {
             super(itemView);
             this.textViewName = itemView.findViewById(R.id.bribe_item_name_textview);
+            this.textViewSatis = itemView.findViewById(R.id.bribe_item_satis_textview);
             this.textViewAmount = itemView.findViewById(R.id.bribe_item_amount_textview);
             linearLayout = itemView.findViewById(R.id.bribe_item_linerLayout);
         }

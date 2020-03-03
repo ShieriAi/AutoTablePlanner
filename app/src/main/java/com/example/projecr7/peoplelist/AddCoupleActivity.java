@@ -60,11 +60,13 @@ public class AddCoupleActivity extends AppCompatActivity {
                 Person newPerson1 = new Person(couple1Name, couple1Gender);
                 newPerson1.setDinnerId(dinnerId);
                 newPerson1.setTableId(4);
+                newPerson1.setSeatId(-1);
                 newPerson1.setCoupleId(newCouple.getUid());
                 Person newPerson2 = new Person(couple2Name, couple2Gender);
                 newPerson2.setDinnerId(dinnerId);
                 newPerson2.setOtherId();
                 newPerson2.setTableId(4);
+                newPerson2.setSeatId(-1);
                 newPerson2.setCoupleId(newCouple.getUid());
                 DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().coupleDao().insert(newCouple);
                 DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().personDao().insert(newPerson1);

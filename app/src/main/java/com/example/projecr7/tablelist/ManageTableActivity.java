@@ -14,6 +14,7 @@ import com.example.projecr7.MainActivity;
 import com.example.projecr7.R;
 import com.example.projecr7.database.DatabaseClient;
 import com.example.projecr7.database.Table;
+import com.google.android.material.snackbar.Snackbar;
 
 public class ManageTableActivity extends AppCompatActivity {
 
@@ -58,7 +59,11 @@ public class ManageTableActivity extends AppCompatActivity {
                 if (tableName.matches("")) {
                     return;
                 }
-                Table newTable = new Table(tableName, tableSize);
+                if(currentTable.getTableType() != 0 && (tableSize % 2 != 0 || tableSize < 6)){
+                    Snackbar.make(findViewById(R.id.manage_table_layout), R.string.table_size_warning, Snackbar.LENGTH_SHORT).show();
+                    return;
+                }
+                Table newTable = new Table(tableName, tableSize, currentTable.getTableType());
                 newTable.setDinnerId(currentTable.getDinnerId());
                 newTable.setScore(currentTable.getScore());
                 newTable.setUid(currentTable.getUid());

@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".makeit.SingleTableResultActivity"></activity>
+        <activity android:name=".forceAssign.ManageSinglePersonTableActivity"></activity>
+        <activity android:name=".forceAssign.ForceAssignActivity" />
+        <activity android:name=".makeit.SingleTableResultActivity" />
         <activity android:name=".makeit.MakeItMainActivity" />
         <activity android:name=".bribes.ManageBribeActivity" />
         <activity android:name=".bribes.AddBribeActivity" />
@@ -51,7 +53,8 @@
                 android:value=".peoplelist.PeopleListActivity" />
         </activity>
         <activity android:name=".peoplelist.AddPersonActivity" />
-        <activity android:name=".ManageDinnerActivity"
+        <activity
+            android:name=".ManageDinnerActivity"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

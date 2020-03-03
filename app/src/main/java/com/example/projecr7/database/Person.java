@@ -60,6 +60,10 @@ public class Person {
 
     public int disLikeBy;
 
+    public boolean lock;
+
+   // public int index;
+
     public Person(String name, String gender){
         this.name = name;
         this.gender = gender;
@@ -122,8 +126,28 @@ public class Person {
         this.seatId = seatId;
     }
 
+    public boolean isLock() {
+        return lock;
+    }
+
+    public void setLock(boolean lock) {
+        this.lock = lock;
+    }
+
+    //    public void setIndex(int index) {
+//        this.index = index;
+//    }
+//
+//    public int getIndex() {
+//        return index;
+//    }
+
     public void increaseDisLikeBy() {
         this.disLikeBy++;
+    }
+
+    public void decreaseDisLikeBy() {
+        this.disLikeBy--;
     }
 
     public int getDisLikeBy() {

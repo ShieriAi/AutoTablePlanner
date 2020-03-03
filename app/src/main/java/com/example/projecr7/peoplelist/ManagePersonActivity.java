@@ -28,7 +28,7 @@ public class ManagePersonActivity extends AppCompatActivity {
         personId = intent.getIntExtra(MainActivity.EXTRA_INDEX, 0);
         currentPerson = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().personDao().loadSingleById(personId);
 
-        Button addPersonBtn = findViewById(R.id.button_add_person_with_name);
+        Button addPersonBtn = findViewById(R.id.button_manage_person_with_name);
         final EditText personNameInput = findViewById(R.id.edit_person_name_input);
         final Spinner personGenderSpinner = findViewById(R.id.edit_person_gender_spinner);
         String[] arraySpinner = new String[3];
@@ -62,6 +62,7 @@ public class ManagePersonActivity extends AppCompatActivity {
                 newPerson.setDinnerId(currentPerson.getDinnerId());
                 newPerson.setCoupleId(4);
                 newPerson.setTableId(currentPerson.getTableId());
+                newPerson.setSeatId(currentPerson.getSeatId());
                 Intent intent = new Intent(ManagePersonActivity.this, PeopleListActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, currentPerson.getDinnerId());
                 DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().personDao().updateUsers(newPerson);

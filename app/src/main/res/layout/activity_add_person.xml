@@ -27,7 +27,8 @@
             android:id="@+id/add_person_name_input"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="#E2E2E2" />
+            android:background="#E2E2E2"
+            android:inputType="text" />
 
         <TextView
             android:layout_width="match_parent"
@@ -44,13 +45,44 @@
             android:layout_height="40dp"
             android:background="#E2E2E2" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFC773"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="3dp"
+            android:text="@string/muti_add_person"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/editText_muti_input"
+            android:layout_width="match_parent"
+            android:layout_height="450dp"
+            android:ems="10"
+            android:gravity="start|top"
+            android:layout_margin="10dp"
+            android:inputType="textMultiLine"
+            android:background="@drawable/rectangle_bg"/>
+
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2">
 
+        <Button
+            android:id="@+id/button_add_person_muti"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#647764"
+            android:text="@string/AddMuti"
+            android:textAllCaps="true"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold" />
         <Button
             android:id="@+id/button_add_person_with_name"
             android:layout_width="match_parent"

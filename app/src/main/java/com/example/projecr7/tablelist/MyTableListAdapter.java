@@ -34,7 +34,12 @@ public class MyTableListAdapter extends RecyclerView.Adapter<MyTableListAdapter.
     public void onBindViewHolder(ViewHolder holder, final int position) {
         //final MyListData myListData = listdata[position];
         holder.textView.setText(tabledata[position].getTableName());
-        holder.imageView.setImageResource(R.drawable.table_icon);
+        if(tabledata[position].getTableType() == 0)
+            holder.imageView.setImageResource(R.drawable.circlet);
+        else if(tabledata[position].getTableType() == 1)
+            holder.imageView.setImageResource(R.drawable.rectangle2);
+        else
+            holder.imageView.setImageResource(R.drawable.rectangle);
         holder.textView_tablesize.setText(Integer.toString(tabledata[position].getTableSize()));
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override

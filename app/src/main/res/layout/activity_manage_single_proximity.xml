@@ -23,21 +23,21 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="3"
-        android:layout_gravity="center"/>
+        android:gravity="center"/>
 
     <ImageView
         android:id="@+id/proximity_manage_item_imageview"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:layout_gravity="center"/>
+        android:gravity="center"/>
 
     <TextView
         android:id="@+id/proximity_manage_item_other_textview"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="3"
-        android:layout_gravity="center"/>
+        android:gravity="center"/>
     </LinearLayout>
 
     </LinearLayout>

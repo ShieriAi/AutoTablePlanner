@@ -14,7 +14,7 @@ import static androidx.room.ForeignKey.CASCADE;
         entity = Dinner.class,
         parentColumns = "uid",
         childColumns = "dinner_id"),
-        indices = {@Index(value = {"bribe_uid"}, unique = true), @Index(value = {"dinner_id"}), @Index(value = {"guest_Id"})})
+        indices = {@Index(value = {"bribe_uid"}, unique = true), @Index(value = {"dinner_id"}), @Index(value = {"guest_Id"}), @Index(value = {"bribe_satis"})})
 public class Bribe {
     @PrimaryKey
     @ColumnInfo(name = "bribe_uid")
@@ -32,6 +32,9 @@ public class Bribe {
 
     @ColumnInfo(name = "bribe_amount")
     public int bribeAmount;
+
+    @ColumnInfo(name = "bribe_satis")
+    public int satis;
 
     public Bribe(int dinnerId, int guestId, int guestType, String guestName, int bribeAmount){
         this.dinnerId = dinnerId;
@@ -67,6 +70,14 @@ public class Bribe {
 
     public String getGuestName() {
         return guestName;
+    }
+
+    public int getSatis() {
+        return satis;
+    }
+
+    public void setSatis(int satis) {
+        this.satis = satis;
     }
 
     public void setBribeAmount(int bribeAmount) {

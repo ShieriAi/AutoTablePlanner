@@ -44,4 +44,16 @@
     <string name="makeit_hint">*Select each table to see your result</string>
     <string name="dinnerNameHint">Name:</string>
     <string name="dinnerDateHint">Date:</string>
+    <string name="Table_type_hint">Select Table Type:</string>
+    <string name="table_size_warning">With rectangle table, table size must be an even number and greater or equal to 6</string>
+    <string name="name_warning">Enter the name</string>
+    <string name="AddMuti">Add Muti</string>
+    <string name="muti_add_person">Fast add people (name,gender)</string>
+    <string name="bribe_satis_hint">How do you think about this amount</string>
+    <string name="seekbar_min">min</string>
+    <string name="seekbar_max">max</string>
+    <string name="zero">1</string>
+    <string name="force_assign">Force assign</string>
+    <string name="single_select_table">Select table</string>
+    <string name="single_select_seat">Select_seat</string>
 </resources>

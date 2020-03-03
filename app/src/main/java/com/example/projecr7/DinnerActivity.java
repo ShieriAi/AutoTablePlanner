@@ -3,6 +3,7 @@ package com.example.projecr7;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.example.projecr7.CalculateTableAlgorithm.MainAlgorithm;
 import com.example.projecr7.bribes.BribeListActivity;
 import com.example.projecr7.database.DatabaseClient;
+import com.example.projecr7.forceAssign.ForceAssignActivity;
 import com.example.projecr7.makeit.MakeItMainActivity;
 import com.example.projecr7.makeit.ViewDialog;
 import com.example.projecr7.peoplelist.PeopleListActivity;
@@ -26,6 +28,8 @@ public class DinnerActivity extends AppCompatActivity {
     private int dinnerId;
 
     private ViewDialog viewDialog;
+
+    private MainAlgorithm algo;
 
     private static final String TAG = "DinnerActivity";
 
@@ -89,17 +93,32 @@ public class DinnerActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void goForce(View view){
+        Intent intent = new Intent(this, ForceAssignActivity.class);
+        intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
+        startActivity(intent);
+    }
+
     public void goMakeIt() {
-        MainAlgorithm algo = new MainAlgorithm(dinnerId);
+        algo = new MainAlgorithm(dinnerId);
         if(!algo.checkDinnerSize())
             return;
         viewDialog.showDialog();
         Log.i(TAG, "start algo========= ");
-        algo.start();
-        viewDialog.hideDialog();
-        Intent intent = new Intent(this, MakeItMainActivity.class);
-        intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
-        startActivity(intent);
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Do something after 5s = 5000ms
+                algo.start();
+                viewDialog.hideDialog();
+                Intent intent = new Intent(DinnerActivity.this, MakeItMainActivity.class);
+                intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
+                startActivity(intent);
+            }
+        }, 10);
+        //viewDialog.hideDialog();
+
     }
 
 }

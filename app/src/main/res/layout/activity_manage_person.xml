@@ -58,7 +58,7 @@
             android:layout_weight="2">
 
             <Button
-                android:id="@+id/button_add_person_with_name"
+                android:id="@+id/button_manage_person_with_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

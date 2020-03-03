@@ -12,11 +12,25 @@ import android.widget.TextView;
 import com.example.projecr7.MainActivity;
 import com.example.projecr7.R;
 import com.example.projecr7.database.DatabaseClient;
+import com.example.projecr7.database.Dinner;
 import com.example.projecr7.database.Table;
 import com.example.projecr7.onClickInterface;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+
+class SortbyTableType implements Comparator<Table>
+{
+    @Override
+    public int compare(Table o1, Table o2) {
+        return o1.getTableType() - o2.getTableType();
+    }
+}
 
 public class TableListActivity extends AppCompatActivity {
 
@@ -73,6 +87,7 @@ public class TableListActivity extends AppCompatActivity {
 
     private void updateTableList(){
         tableList = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().tableDao().loadAllByDinner(dinnerId);
+        Collections.sort(tableList, new SortbyTableType());
         Table[] tableArray;
         if(tableList.size() > 0){
             tableArray =  new Table[tableList.size()];

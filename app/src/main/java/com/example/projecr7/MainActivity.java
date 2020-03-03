@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mContext = getApplicationContext();
+        //mContext.deleteDatabase("dinnerDatabase.db");
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 //        db = Room.databaseBuilder(getApplicationContext(),
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
             Dinner defaultDinner = new Dinner("defaultDinner");
             defaultDinner.setUid(4);
             DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().dinnerDao().insert(defaultDinner);
-            Table defaultTable = new Table("default", 100000);
+            Table defaultTable = new Table("default", 100000, 0);
             defaultTable.setUid(4);
             defaultTable.setDinnerId(4);
             DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().tableDao().insert(defaultTable);

@@ -29,7 +29,9 @@ public class Table {
     public double score;
     public String tableName;
 
-    public Table(String tableName, int size){
+    public int tableType; // 0 for circle, 1 for rectangle, 2 for with side
+
+    public Table(String tableName, int size, int tableType){
         this.tableName = tableName;
         this.size = size;
         Calendar calendar = Calendar.getInstance();
@@ -40,6 +42,7 @@ public class Table {
         String second = Integer.toString(calendar.get(Calendar.SECOND));
         String currentT = "1" + month + date + hour + minute + second;
         this.uid = Integer.parseInt(currentT);
+        this.tableType = tableType;
         score = 0;
         //peopleList = new Person[size];
     }
@@ -63,6 +66,10 @@ public class Table {
 
     public int getDinnerId(){
         return dinnerId;
+    }
+
+    public int getTableType(){
+        return  tableType;
     }
 
     public int getUid(){

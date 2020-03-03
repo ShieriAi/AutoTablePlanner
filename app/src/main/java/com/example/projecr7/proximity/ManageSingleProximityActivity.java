@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.example.projecr7.MainActivity;
 import com.example.projecr7.R;
 import com.example.projecr7.database.DatabaseClient;
+import com.example.projecr7.database.Person;
 import com.example.projecr7.database.Proximity;
 
 public class ManageSingleProximityActivity extends AppCompatActivity {
@@ -56,6 +57,9 @@ public class ManageSingleProximityActivity extends AppCompatActivity {
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Person disPerson = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().personDao().loadSingleById(currentProximity.getGuest2Id());
+                disPerson.decreaseDisLikeBy();
+                DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().personDao().updateUsers(disPerson);
                 DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().proximityDao().delete(currentProximity);
                 Intent intent = new Intent(ManageSingleProximityActivity.this, ManageProximityActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
