@@ -327,10 +327,11 @@ public class MainAlgorithm {
         for(int i = 0; i < numberOfGuest; i++){
             if(allGuests[i].table == -1){ // if a guest has not been assign
                 Log.i(TAG, "left " + i);
+                Log.i(TAG, "left1: " + allTables[0].seatLeft +", "+ allTables[0].seats[9]);
                 for(int j = 0; j < tableList.size(); j++){
                     if(allTables[j].seatLeft > 0){
                         allGuests[i].table = j;
-                        for(int k = 0; i < tableList.get(j).getTableSize(); k++){
+                        for(int k = 0; k < tableList.get(j).getTableSize(); k++){
                             if(allTables[j].seats[k] == -1){
                                 allGuests[j].seat = k;
                                 allTables[j].seats[k] = i;

@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.projecr7.MainActivity;
 import com.example.projecr7.R;
@@ -21,6 +22,8 @@ import com.example.projecr7.onClickInterface;
 import java.util.List;
 
 public class SingleTableResultActivity extends AppCompatActivity {
+
+    private static final String TAG = "SingleTableResultActivity";
 
     private int tableId;
     private List<Person> personList;
@@ -48,6 +51,7 @@ public class SingleTableResultActivity extends AppCompatActivity {
             seatsNameDisplay[i] = "";
         }
         for(int i = 0; i < personList.size(); i++){
+            Log.i(TAG, personList.get(i).getName() + "Table: " + personList.get(i).getTableId() + "Seat: " + personList.get(i).getSeatId());
             seatsNameDisplay[personList.get(i).getSeatId()] = personList.get(i).getName();
         }
 
