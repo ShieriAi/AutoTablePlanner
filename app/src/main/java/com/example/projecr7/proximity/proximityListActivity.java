@@ -1,5 +1,6 @@
 package com.example.projecr7.proximity;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -165,14 +166,9 @@ public class proximityListActivity extends AppCompatActivity {
 
     public void updatePeopleList() {
         people = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().personDao().loadAllByDinner(dinnerId);
-//        ArrayList<Person> singlePeople = new ArrayList<Person>();
-//        for (int i = 0; i < people.size(); i++) {
-//            if (people.get(i).getCoupleId() == 4 && people.get(i).getFamilyId() == 4)
-//                singlePeople.add(people.get(i));
-//        }
-        Person[] peopleArray;
-        Person[] coupleA;
-        Person[] familyA;
+        Person[] peopleArray = new Person[0];
+        Person[] coupleA = new Person[0];
+        Person[] familyA = new Person[0];
         ArrayList<Person> singleArray = new ArrayList<Person>();
         ArrayList<Person> coupleArray = new ArrayList<Person>();
         ArrayList<Person> familyArray = new ArrayList<Person>();
@@ -199,12 +195,13 @@ public class proximityListActivity extends AppCompatActivity {
             for(int i = 0; i < singleArray.size(); i++){
                 peopleArray[i] = singleArray.get(i);
             }
-            mPeopleAdapter = new MyPeopleListAdapter(peopleArray, mOnClickInterface);
-            peopleRecyclerView.setAdapter(mPeopleAdapter);
-            mCoupleAdapter = new MyPeopleListAdapter(coupleA, mOnClickInterface);
-            coupleRecyclerView.setAdapter(mCoupleAdapter);
-            mFamilyAdapter = new MyPeopleListAdapter(familyA, mOnClickInterface);
-            familyRecyclerView.setAdapter(mFamilyAdapter);
         }
+        mPeopleAdapter = new MyPeopleListAdapter(peopleArray, mOnClickInterface);
+        peopleRecyclerView.setAdapter(mPeopleAdapter);
+        mCoupleAdapter = new MyPeopleListAdapter(coupleA, mOnClickInterface);
+        coupleRecyclerView.setAdapter(mCoupleAdapter);
+        mFamilyAdapter = new MyPeopleListAdapter(familyA, mOnClickInterface);
+        familyRecyclerView.setAdapter(mFamilyAdapter);
+
     }
 }

@@ -18,6 +18,13 @@
         android:background="#815463"
         android:gravity="center"/>
 
+    <LinearLayout
+        android:id="@+id/table_result_display"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:orientation="vertical" />
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

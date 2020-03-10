@@ -1,5 +1,6 @@
 package com.example.projecr7.forceAssign;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -74,7 +75,7 @@ public class ForceAssignActivity extends AppCompatActivity {
                 Intent intent = new Intent(com.example.projecr7.forceAssign.ForceAssignActivity.this, ManageSinglePersonTableActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
                 intent.putExtra(ForceAssignActivity.EXTRA_ID, selectPeopleId);
-                startActivity(intent);
+                startActivityForResult(intent,1);
             }
         };
 
@@ -93,6 +94,17 @@ public class ForceAssignActivity extends AppCompatActivity {
         TextView textview1 = findViewById(R.id.textViewDinnerName_forceAssign1);
         textview1.setText(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().dinnerDao().loadSingleById(dinnerId).toString());
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1){
+            if(resultCode ==  RESULT_OK){
+                dinnerId = data.getIntExtra(MainActivity.EXTRA_INDEX, 4);
+                updatePeopleList();
+            }
+        }
     }
 
     public void updatePeopleList() {

@@ -66,7 +66,8 @@ public class ManagePersonActivity extends AppCompatActivity {
                 Intent intent = new Intent(ManagePersonActivity.this, PeopleListActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, currentPerson.getDinnerId());
                 DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().personDao().updateUsers(newPerson);
-                startActivity(intent);
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
         Button deletePersonBtn = findViewById(R.id.button_delete_person);
@@ -76,7 +77,8 @@ public class ManagePersonActivity extends AppCompatActivity {
                 Intent intent = new Intent(ManagePersonActivity.this, PeopleListActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, currentPerson.getDinnerId());
                 DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().personDao().delete(currentPerson);
-                startActivity(intent);
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
     }

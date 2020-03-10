@@ -1,5 +1,6 @@
 package com.example.projecr7.peoplelist;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -7,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -27,6 +29,7 @@ import java.util.List;
 public class PeopleListActivity extends AppCompatActivity {
 
     public static final String EXTRA_COUPLEID = "com.example.projecr7.COUPLEID";
+    private static final String TAG  = "PeopleListActivity";
     private RecyclerView peopleRecyclerView, coupleRecyclerView, familyRecyclerView;
     private RecyclerView.Adapter mPeopleAdapter, mCoupleAdapter, mFamilyAdapter;
     private RecyclerView.LayoutManager layoutManager, coupleLayoutManager, familyLayoutManager;
@@ -68,7 +71,7 @@ public class PeopleListActivity extends AppCompatActivity {
                 int selectPeopleId = selectPerson.getId();
                 Intent intent = new Intent(PeopleListActivity.this, ManagePersonActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, selectPeopleId);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         };
         updatePeopleList();
@@ -86,7 +89,7 @@ public class PeopleListActivity extends AppCompatActivity {
                 Intent intent = new Intent(PeopleListActivity.this, ManageCoupleActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
                 intent.putExtra(PeopleListActivity.EXTRA_COUPLEID, selectCoupleId);
-                startActivity(intent);
+                startActivityForResult(intent, 2);
             }
         };
         updateCoupleList();
@@ -104,23 +107,13 @@ public class PeopleListActivity extends AppCompatActivity {
                 Intent intent = new Intent(PeopleListActivity.this, ManageFamilyActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
                 intent.putExtra(PeopleListActivity.EXTRA_COUPLEID, selectFamilyId);
-                startActivity(intent);
+                startActivityForResult(intent, 3);
             }
         };
         updateFamilyList();
 
         TextView textview = findViewById(R.id.textViewDinnerName_peoplelist);
         textview.setText(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().dinnerDao().loadSingleById(dinnerId).toString());
-
-//        FloatingActionButton fab = findViewById(R.id.fab_people);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(PeopleListActivity.this,AddPersonActivity.class);
-//                intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
-//                startActivity(intent);
-//            }
-//        });
 
         fab_main = findViewById(R.id.fab_main_people);
         fab1_person = findViewById(R.id.fab_people);
@@ -154,7 +147,7 @@ public class PeopleListActivity extends AppCompatActivity {
                 fabClose();
                 Intent intent = new Intent(PeopleListActivity.this, AddCoupleActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
-                startActivity(intent);
+                startActivityForResult(intent, 2);
             }
         });
 
@@ -164,7 +157,7 @@ public class PeopleListActivity extends AppCompatActivity {
                 fabClose();
                 Intent intent = new Intent(PeopleListActivity.this, AddFamilyActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
-                startActivity(intent);
+                startActivityForResult(intent, 3);
             }
         });
 
@@ -174,15 +167,39 @@ public class PeopleListActivity extends AppCompatActivity {
                 fabClose();
                 Intent intent = new Intent(PeopleListActivity.this, AddPersonActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         });
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 1){
+            if(resultCode ==  RESULT_OK){
+                dinnerId = data.getIntExtra(MainActivity.EXTRA_INDEX, 4);
+                updatePeopleList();
+            }
+        }
+        else if(requestCode == 2){
+            if(resultCode ==  RESULT_OK){
+                dinnerId = data.getIntExtra(MainActivity.EXTRA_INDEX, 4);
+                updateCoupleList();
+            }
+        }
+        else if(requestCode == 3){
+            if(resultCode ==  RESULT_OK){
+                dinnerId = data.getIntExtra(MainActivity.EXTRA_INDEX, 4);
+                updateFamilyList();
+            }
+        }
+    }
+
     private void updateFamilyList() {
         families = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().familyDao().loadAllByDinner(dinnerId);
-        Family[] familyArray;
+        Family[] familyArray = new Family[0];
         if(families.size() > 0){
             familyArray =  new Family[families.size()];
             int j = 0;
@@ -192,14 +209,14 @@ public class PeopleListActivity extends AppCompatActivity {
                     j++;
                 }
             }
-            mFamilyAdapter = new MyFamilyListAdapter(familyArray, mFamilyOnClickInterface);
-            familyRecyclerView.setAdapter(mFamilyAdapter);
         }
+        mFamilyAdapter = new MyFamilyListAdapter(familyArray, mFamilyOnClickInterface);
+        familyRecyclerView.setAdapter(mFamilyAdapter);
     }
 
     private void updateCoupleList() {
         couples = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().coupleDao().loadAllByDinner(dinnerId);
-        Couple[] coupleArray;
+        Couple[] coupleArray = new Couple[0];
         if(couples.size() > 0){
             coupleArray =  new Couple[couples.size()];
             int j = 0;
@@ -209,9 +226,9 @@ public class PeopleListActivity extends AppCompatActivity {
                     j++;
                 }
             }
-            mCoupleAdapter = new MyCoupleListAdapter(coupleArray, mCoupleOnClickInterface);
-            coupleRecyclerView.setAdapter(mCoupleAdapter);
         }
+        mCoupleAdapter = new MyCoupleListAdapter(coupleArray, mCoupleOnClickInterface);
+        coupleRecyclerView.setAdapter(mCoupleAdapter);
     }
 
     public void updatePeopleList(){
@@ -222,15 +239,15 @@ public class PeopleListActivity extends AppCompatActivity {
             if(people.get(i).getCoupleId() == 4 && people.get(i).getFamilyId() == 4 )
                 singlePeople.add(people.get(i));
         }
-        Person[] peopleArray;
+        Person[] peopleArray = new Person[0];
         if(singlePeople.size() != 0){
             peopleArray =  new Person[singlePeople.size()];
             for(int i = 0; i < singlePeople.size(); i++){
                 peopleArray[i] = singlePeople.get(i);
             }
-            mPeopleAdapter = new MyPeopleListAdapter(peopleArray, mOnClickInterface);
-            peopleRecyclerView.setAdapter(mPeopleAdapter);
         }
+        mPeopleAdapter = new MyPeopleListAdapter(peopleArray, mOnClickInterface);
+        peopleRecyclerView.setAdapter(mPeopleAdapter);
     }
 
     private void fabOpen(){

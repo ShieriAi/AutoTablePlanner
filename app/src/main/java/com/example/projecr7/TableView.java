@@ -1,4 +1,4 @@
-package com.example.projecr7.forceAssign;
+package com.example.projecr7;
 
 import android.app.Activity;
 import android.content.Context;
@@ -27,6 +27,7 @@ public class TableView extends View {
     float arcLeft, arcTop, arcRight, arcBottom, circleTableR, seatR, smallSeatR, seatCircleR;
 
     int numberOfSests, tableType;
+    Boolean withName;
     String tableName;
 
     Canvas mCanvas;
@@ -34,12 +35,13 @@ public class TableView extends View {
     Path mPath;
 
 
-    public TableView(Context context, int numberOfSests, int tableType, String tableName) {
+    public TableView(Context context, int numberOfSests, int tableType, String tableName, Boolean withName) {
         super(context);
 
         this.numberOfSests = numberOfSests;
         this.tableType = tableType;
         this.tableName = tableName;
+        this.withName = withName;
 
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
@@ -109,15 +111,11 @@ public class TableView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        Log.i(TAG, "Drawing" + tableType);
         super.onDraw(canvas);
         mCanvas = canvas;
 
         canvas.drawColor(Color.WHITE);
-        if(tableType == -1){
-            Log.i(TAG, "return====================");
-            return;
-        }
-        Log.i(TAG, "not return====================");
         float centerX = getWidth() / 2.0f;
         float centerY = getHeight() / 2.0f;
         float x, y, padding;
@@ -197,12 +195,6 @@ public class TableView extends View {
                 break;
 
         }
-
-
-
-
-
-//        canvas.drawText("Canvas basics", (float) (getWidth() * 0.3), (float) (getHeight() * 0.8), mTextPaint);
 
     }
 

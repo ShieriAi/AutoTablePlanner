@@ -43,7 +43,8 @@ public class ManageBribeActivity extends AppCompatActivity {
                 DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().bribeDao().delete(currentBribe);
                 Intent intent = new Intent(ManageBribeActivity.this, BribeListActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
-                startActivity(intent);
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
 
@@ -58,7 +59,8 @@ public class ManageBribeActivity extends AppCompatActivity {
                 }
                 Intent intent = new Intent(ManageBribeActivity.this, BribeListActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
-                startActivity(intent);
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
     }

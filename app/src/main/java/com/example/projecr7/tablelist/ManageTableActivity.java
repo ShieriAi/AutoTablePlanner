@@ -70,7 +70,8 @@ public class ManageTableActivity extends AppCompatActivity {
                 Intent intent = new Intent(ManageTableActivity.this, TableListActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, currentTable.getDinnerId());
                 DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().tableDao().updateUsers(newTable);
-                startActivity(intent);
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
 
@@ -80,7 +81,8 @@ public class ManageTableActivity extends AppCompatActivity {
                 Intent intent = new Intent(ManageTableActivity.this, TableListActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, currentTable.getDinnerId());
                 DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().tableDao().delete(currentTable);
-                startActivity(intent);
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
 

@@ -65,7 +65,8 @@ public class ManageSingleProximityActivity extends AppCompatActivity {
                 intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
                 intent.putExtra(proximityListActivity.EXTRA_TYPE, guestType);
                 intent.putExtra(proximityListActivity.EXTRA_ID, guestId);
-                startActivity(intent);
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
 

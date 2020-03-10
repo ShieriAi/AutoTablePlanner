@@ -1,11 +1,13 @@
 package com.example.projecr7.tablelist;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -33,6 +35,8 @@ class SortbyTableType implements Comparator<Table>
 }
 
 public class TableListActivity extends AppCompatActivity {
+
+    private static final String TAG = "TableListActivity";
 
     private int dinnerId;
     private List<Table> tableList;
@@ -66,7 +70,7 @@ public class TableListActivity extends AppCompatActivity {
                 int selectTableId = selectTable.getUid();
                 Intent intent = new Intent(TableListActivity.this, ManageTableActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, selectTableId);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         };
 
@@ -78,24 +82,36 @@ public class TableListActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(TableListActivity.this, AddTableActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         });
 
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1){
+            if(resultCode ==  RESULT_OK){
+                dinnerId = data.getIntExtra(MainActivity.EXTRA_INDEX, 4);
+                updateTableList();
+            }
+        }
+    }
+
     private void updateTableList(){
         tableList = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().tableDao().loadAllByDinner(dinnerId);
         Collections.sort(tableList, new SortbyTableType());
-        Table[] tableArray;
+        Table[] tableArray = new Table[0];
+        Log.i(TAG, "updating table list: " + tableList.size());
         if(tableList.size() > 0){
             tableArray =  new Table[tableList.size()];
             for(int i = 0; i < tableList.size(); i++){
                 tableArray[i] = tableList.get(i);
             }
-            mAdapter = new MyTableListAdapter(tableArray, mOnClickInterface);
-            mRecyclerView.setAdapter(mAdapter);
         }
+        mAdapter = new MyTableListAdapter(tableArray, mOnClickInterface);
+        mRecyclerView.setAdapter(mAdapter);
     }
 }

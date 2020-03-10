@@ -5,6 +5,7 @@ import android.util.Log;
 import com.example.projecr7.MainActivity;
 import com.example.projecr7.database.Bribe;
 import com.example.projecr7.database.DatabaseClient;
+import com.example.projecr7.database.Dinner;
 import com.example.projecr7.database.Person;
 import com.example.projecr7.database.Proximity;
 import com.example.projecr7.database.Table;
@@ -91,6 +92,7 @@ public class MainAlgorithm {
 
     private int dinnerId;
     private int dinnerSize, numberOfGuest;
+    private Dinner currentDinner;
     private List<Person> personList;
     private List<Person> coupleList; // sort by couple
     private List<Person> familyList; // sort by family
@@ -109,6 +111,7 @@ public class MainAlgorithm {
 
     public MainAlgorithm(int dinnerId){
         this.dinnerId = dinnerId;
+        currentDinner = DatabaseClient.getInstance(MainActivity.getContext()).getAppDatabase().dinnerDao().loadSingleById(dinnerId);
         personList = DatabaseClient.getInstance(MainActivity.getContext()).getAppDatabase().personDao().loadAllByDinner(dinnerId);
         Collections.sort(personList, new SortbyDislikeS());
         coupleList = DatabaseClient.getInstance(MainActivity.getContext()).getAppDatabase().personDao().loadAllByDinner(dinnerId);
@@ -128,6 +131,7 @@ public class MainAlgorithm {
             allTables[i] = new TableAlgo();
             allTables[i].lock = new Boolean[tableList.get(i).getTableSize()];
             allTables[i].seats = new int[tableList.get(i).getTableSize()];
+
             allTables[i].id = tableList.get(i).getUid();
             allTables[i].seatLeft = tableList.get(i).getTableSize();
             allTables[i].tableSize = tableList.get(i).getTableSize();
@@ -167,11 +171,10 @@ public class MainAlgorithm {
     }
 
     public void start(){
+        initDataStart();
         step1_hate();
         step2_randomInsertOther();
         for(int i = 0; i < tableList.size(); i++) {
-//            Log.i(TAG, "score1: " + calculateSingleTableScore(0));
-//            Log.i(TAG, "score2: " + calculateSingleTableScore(1));
             double currentS = calculateSingleTableScore(i);
             tableList.get(i).setScore(currentS);
             overallScore += currentS;
@@ -192,6 +195,12 @@ public class MainAlgorithm {
 //        for(int i = 0; i<10; i++){
 //            Log.i(TAG, "Table2:" + tables[1].get(i) + " Name: " + personList.get(tables[1].get(i)).getName() + " Happiness: " + allGuests[tables[1].get(i)].happiness);
 //        }
+    }
+
+    public void retry(){
+        initDataRetry();
+        step3_evolution();
+        updateDatabase();
     }
 
     // check if it's too much people
@@ -227,9 +236,42 @@ public class MainAlgorithm {
             currentPerson.setSeatId(allGuests[i].seat);
             DatabaseClient.getInstance(MainActivity.getContext()).getAppDatabase().personDao().updateUsers(currentPerson);
         }
+        currentDinner.setScore(overallScore);
+        DatabaseClient.getInstance(MainActivity.getContext()).getAppDatabase().dinnerDao().updateUsers(currentDinner);
     }
 
-    public void step1_hate(){
+    public void initDataRetry(){
+        Log.i(TAG, "retrying");
+        overallScore = currentDinner.getScore();
+        allGuests = new Guest[numberOfGuest];
+        for(int i = 0; i < numberOfGuest; i++){
+            allGuests[i] = new Guest();
+            Log.i(TAG, "current uid==== " + personList.get(i).getId());
+            allGuests[i].id = personList.get(i).getId();
+            int tableIndex = 0;
+            int currentTableId = tableList.get(0).getUid();
+            while(currentTableId != personList.get(i).getTableId()){
+                tableIndex++;
+                currentTableId = tableList.get(tableIndex).getUid();
+            }
+            allGuests[i].table = tableIndex;
+            allGuests[i].seat = personList.get(i).getSeatId();
+            allGuests[i].lock = personList.get(i).isLock();
+            for(int j = 0; j < tableList.size(); j++){
+                if(allTables[j].id == currentTableId){
+                    allTables[j].seats[personList.get(i).getSeatId()] = i;
+                    allTables[j].lock[personList.get(i).getSeatId()] = true;
+                    Log.i(TAG, "Lock seat:" + personList.get(i).getSeatId());
+                    allTables[j].seatLeft--;
+                }
+            }
+            allGuests[i].happiness = 0;
+        }
+
+        Log.i(TAG, "numberOfGuest " + numberOfGuest);
+    }
+
+    public void initDataStart(){
         allGuests = new Guest[numberOfGuest];
         for(int i = 0; i < numberOfGuest; i++){
             allGuests[i] = new Guest();
@@ -263,7 +305,9 @@ public class MainAlgorithm {
         }
 
         Log.i(TAG, "numberOfGuest " + numberOfGuest);
+    }
 
+    public void step1_hate(){
         int current1P = -1, current2P = -1;
         boolean found = false;
         long startT = System.nanoTime();
@@ -326,8 +370,8 @@ public class MainAlgorithm {
     private void step2_randomInsertOther(){
         for(int i = 0; i < numberOfGuest; i++){
             if(allGuests[i].table == -1){ // if a guest has not been assign
-                Log.i(TAG, "left " + i);
-                Log.i(TAG, "left1: " + allTables[0].seatLeft +", "+ allTables[0].seats[9]);
+//                Log.i(TAG, "left " + i);
+//                Log.i(TAG, "left1: " + allTables[0].seatLeft +", "+ allTables[0].seats[9]);
                 for(int j = 0; j < tableList.size(); j++){
                     if(allTables[j].seatLeft > 0){
                         allGuests[i].table = j;
@@ -416,16 +460,16 @@ public class MainAlgorithm {
         double currentBestScore = overallScore;
         int currentBestIndex = 0;
         int evolutionCount = 0;
-        while(evolutionCount < 500000 && evolutionCount - currentBestIndex < 5000){
+        while(evolutionCount < 500000 && evolutionCount - currentBestIndex < 500){
             double c = updatingSwap(30);
-            if(c > overallScore){
+            if(c > currentBestScore){
                 currentBestScore = c;
                 Log.i(TAG, "FindBest: " + currentBestScore);
-                overallScore = currentBestScore;
                 currentBestIndex = evolutionCount;
             }
             evolutionCount++;
         }
+        overallScore = currentBestScore;
         for(int i = 0; i < tableList.size(); i++){
             for(int j = 0; j < allTables[i].tableSize; j++){
                 if(allTables[i].seats[j] != -1){

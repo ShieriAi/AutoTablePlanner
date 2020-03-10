@@ -82,7 +82,8 @@ public class AddCoupleActivity extends AppCompatActivity {
                 DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().proximityDao().insert(newProximity2);
                 Intent intent = new Intent(AddCoupleActivity.this, PeopleListActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
-                startActivity(intent);
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
 

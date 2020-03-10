@@ -88,7 +88,8 @@ public class ManageFamilyActivity extends AppCompatActivity {
                 }
                 Intent intent = new Intent(ManageFamilyActivity.this, PeopleListActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
-                startActivity(intent);
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
 
@@ -98,8 +99,8 @@ public class ManageFamilyActivity extends AppCompatActivity {
                 Intent intent = new Intent(ManageFamilyActivity.this, PeopleListActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
                 DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().familyDao().delete(currentF);
-                startActivity(intent);
-                //TODO NavUtils.navigateUpFromSameTask(ManageCoupleActivity.this);
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
     }

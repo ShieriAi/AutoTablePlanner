@@ -1,5 +1,6 @@
 package com.example.projecr7.proximity;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -61,7 +62,7 @@ public class ManageProximityActivity extends AppCompatActivity {
                 intent.putExtra(proximityListActivity.EXTRA_ID, selectProximityId);
                 intent.putExtra(ManageProximityActivity.EXTRA_GUESTID, guestId);
                 intent.putExtra(ManageProximityActivity.EXTRA_GUESTTYPE, type);
-                startActivity(intent);
+                startActivityForResult(intent,1);
             }
         };
 
@@ -88,14 +89,27 @@ public class ManageProximityActivity extends AppCompatActivity {
                 intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
                 intent.putExtra(ManageProximityActivity.EXTRA_GUESTID, guestId);
                 intent.putExtra(ManageProximityActivity.EXTRA_GUESTTYPE, type);
-                startActivity(intent);
+                startActivityForResult(intent,1);
             }
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1){
+            if(resultCode ==  RESULT_OK){
+                dinnerId = data.getIntExtra(MainActivity.EXTRA_INDEX, 4);
+                type = data.getIntExtra(ManageProximityActivity.EXTRA_GUESTTYPE, 1);
+                guestId = data.getIntExtra(proximityListActivity.EXTRA_ID,4);
+                updateProximityList();
+            }
+        }
+    }
+
     public void updateProximityList(){
         proximityList = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().proximityDao().loadAllByGuest1(guestId);
-        Proximity[] proximityArray;;
+        Proximity[] proximityArray = new Proximity[0];
         if(proximityList.size() > 0) {
             proximityArray = new Proximity[proximityList.size()];
             for (int i = 0; i < proximityList.size(); i++) {
@@ -103,8 +117,8 @@ public class ManageProximityActivity extends AppCompatActivity {
                     proximityArray[i] = proximityList.get(i);
                 }
             }
-            mAdapter = new MyProximityListAdapter(proximityArray, mOnClickInterface);
-            mRecyclerView.setAdapter(mAdapter);
         }
+        mAdapter = new MyProximityListAdapter(proximityArray, mOnClickInterface);
+        mRecyclerView.setAdapter(mAdapter);
     }
 }

@@ -81,7 +81,8 @@ public class AddTableActivity extends AppCompatActivity {
                 DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().tableDao().insert(newTable);
                 Intent intent = new Intent(AddTableActivity.this, TableListActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
-                startActivity(intent);
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
 

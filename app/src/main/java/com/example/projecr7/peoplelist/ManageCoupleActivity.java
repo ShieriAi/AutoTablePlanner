@@ -112,17 +112,19 @@ public class ManageCoupleActivity extends AppCompatActivity {
                 }
                 Intent intent = new Intent(ManageCoupleActivity.this, PeopleListActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
-                startActivity(intent);
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
 
         deleteCoupleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().coupleDao().delete(currentCouple);
                 Intent intent = new Intent(ManageCoupleActivity.this, PeopleListActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
-                DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().coupleDao().delete(currentCouple);
-                startActivity(intent);
+                setResult(RESULT_OK, intent);
+                finish();
                 //NavUtils.navigateUpFromSameTask(ManageCoupleActivity.this);
             }
         });

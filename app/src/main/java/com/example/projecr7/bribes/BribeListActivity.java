@@ -1,5 +1,6 @@
 package com.example.projecr7.bribes;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -59,7 +60,7 @@ public class BribeListActivity extends AppCompatActivity {
                 Intent intent = new Intent(BribeListActivity.this, ManageBribeActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
                 intent.putExtra(BribeListActivity.EXTRA_BRIBEID, selectBribeId);
-                startActivity(intent);
+                startActivityForResult(intent,1);
             }
         };
 
@@ -73,21 +74,32 @@ public class BribeListActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(BribeListActivity.this, AddBribeActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
-                startActivity(intent);
+                startActivityForResult(intent,1);
             }
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1){
+            if(resultCode ==  RESULT_OK){
+                dinnerId = data.getIntExtra(MainActivity.EXTRA_INDEX, 4);
+                updateBribeList();
+            }
+        }
+    }
+
     private void updateBribeList() {
         bribeList = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().bribeDao().loadAllByDinner(dinnerId);
-        Bribe[] bribeArray;;
+        Bribe[] bribeArray = new Bribe[0];
         if(bribeList.size() > 0){
             bribeArray =  new Bribe[bribeList.size()];
             for(int i = 0; i < bribeList.size(); i++){
                 bribeArray[i] = bribeList.get(i);
             }
-            mAdapter = new MyBribeListAdapter(bribeArray, mOnClickInterface);
-            mRecyclerView.setAdapter(mAdapter);
         }
+        mAdapter = new MyBribeListAdapter(bribeArray, mOnClickInterface);
+        mRecyclerView.setAdapter(mAdapter);
     }
 }

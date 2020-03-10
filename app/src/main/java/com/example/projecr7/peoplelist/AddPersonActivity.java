@@ -60,7 +60,8 @@ public class AddPersonActivity extends AppCompatActivity {
                 DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().personDao().insert(newPerson);
                 Intent intent = new Intent(AddPersonActivity.this, PeopleListActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
-                startActivity(intent);
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
         addMutiBtn.setOnClickListener(new View.OnClickListener() {
@@ -94,7 +95,8 @@ public class AddPersonActivity extends AppCompatActivity {
                 }
                 Intent intent = new Intent(AddPersonActivity.this, PeopleListActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
-                startActivity(intent);
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
     }

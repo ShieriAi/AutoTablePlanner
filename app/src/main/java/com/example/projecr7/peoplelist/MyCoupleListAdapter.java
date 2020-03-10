@@ -40,8 +40,10 @@ public class MyCoupleListAdapter extends RecyclerView.Adapter<com.example.projec
     public void onBindViewHolder(com.example.projecr7.peoplelist.MyCoupleListAdapter.ViewHolder holder, final int position) {
         //final MyListData myListData = listdata[position];
         List<Person> couple = DatabaseClient.getInstance(MainActivity.getContext()).getAppDatabase().personDao().loadAllByCouple(coupledata[position].getUid());
-        holder.textView1.setText(couple.get(0).getName());
-        holder.textView2.setText(couple.get(1).getName());
+        if(couple.size() >= 2) {
+            holder.textView1.setText(couple.get(0).getName());
+            holder.textView2.setText(couple.get(1).getName());
+        }
         holder.imageView.setImageResource(R.drawable.couple_icon);
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override

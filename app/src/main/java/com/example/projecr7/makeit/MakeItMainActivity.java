@@ -6,11 +6,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.projecr7.CalculateTableAlgorithm.MainAlgorithm;
 import com.example.projecr7.MainActivity;
 import com.example.projecr7.R;
 import com.example.projecr7.database.DatabaseClient;
+import com.example.projecr7.database.Dinner;
 import com.example.projecr7.database.Table;
 import com.example.projecr7.onClickInterface;
 import com.example.projecr7.tablelist.ManageTableActivity;
@@ -26,6 +30,7 @@ public class MakeItMainActivity extends AppCompatActivity {
     private int dinnerId;
     private TextView dinnerNameTextview;
 
+    private Dinner currentDinner;
     private List<Table> tableList;
 
     private RecyclerView mRecyclerView;
@@ -41,9 +46,13 @@ public class MakeItMainActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         dinnerId = intent.getIntExtra(MainActivity.EXTRA_INDEX, 4);
+        currentDinner = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().dinnerDao().loadSingleById(dinnerId);
 
         TextView textview = findViewById(R.id.textViewDinnerName_makeit);
-        textview.setText(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().dinnerDao().loadSingleById(dinnerId).toString() + " Result");
+        textview.setText(currentDinner.toString() + " Result");
+
+        TextView scoreTextview = findViewById(R.id.textViewScore_makeit);
+        scoreTextview.setText("Current score = " + currentDinner.score);
 
         tableList = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().tableDao().loadAllByDinner(dinnerId);
 
@@ -62,6 +71,16 @@ public class MakeItMainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         };
+
+        Button retryBtn = findViewById(R.id.button_retry);
+        retryBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainAlgorithm mainAlgorithm = new MainAlgorithm(dinnerId);
+                mainAlgorithm.retry();
+                updateTableList();
+            }
+        });
 
         updateTableList();
     }

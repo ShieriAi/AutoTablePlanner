@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.projecr7.MainActivity;
 import com.example.projecr7.R;
+import com.example.projecr7.TableView;
 import com.example.projecr7.database.DatabaseClient;
 import com.example.projecr7.database.Person;
 import com.example.projecr7.database.Table;
@@ -72,7 +73,7 @@ public class ManageSinglePersonTableActivity extends AppCompatActivity {
 
         Log.i(TAG, "tableIndex=" +tableIndex + currentPerson.getName() + " tableId: " + currentPerson.getTableId() + "===" + currentPerson.getSeatId());
 
-        if(currentPerson.getSeatId() != -1){
+        if(currentPerson.getSeatId() != -1 && tableIndex != 0){
             seatArraySpinner = new String[tables.get(tableIndex-1).getTableSize()];
             for (int i = 0; i < tables.get(tableIndex-1).getTableSize(); i++) {
                 seatArraySpinner[i] = "seat: " + Integer.toString(i + 1);
@@ -89,7 +90,7 @@ public class ManageSinglePersonTableActivity extends AppCompatActivity {
             tableSpinner.setSelection(tableIndex);
             seatSpinner.setSelection(currentPerson.getSeatId());
         }
-        tableDraw = new TableView(ManageSinglePersonTableActivity.this, 0, -1, null);
+        tableDraw = new TableView(ManageSinglePersonTableActivity.this, 0, -1, null, false);
         drawTableboard.addView(tableDraw);
         tableSelect = -1;
         tableSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -145,7 +146,8 @@ public class ManageSinglePersonTableActivity extends AppCompatActivity {
                 DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().personDao().updateUsers(currentPerson);
                 Intent intent = new Intent(com.example.projecr7.forceAssign.ManageSinglePersonTableActivity.this, ForceAssignActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
-                startActivity(intent);
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
 

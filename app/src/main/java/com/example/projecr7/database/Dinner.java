@@ -16,6 +16,9 @@ public class Dinner {
 
     public int dinnerYear, dinnerMonth, dinnerDate;
 
+    @ColumnInfo(name = "dinner_score")
+    public double score;
+
     public Dinner(String dinnerName){
         Calendar calendar = Calendar.getInstance();
         String year = Integer.toString(calendar.get(Calendar.YEAR));
@@ -41,6 +44,14 @@ public class Dinner {
         this.dinnerYear = dinnerYear;
         this.dinnerMonth = dinnerMonth;
         this.dinnerDate = dinnerDate;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
+    }
+
+    public double getScore() {
+        return score;
     }
 
     public int getDinnerYear() {

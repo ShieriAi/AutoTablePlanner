@@ -121,7 +121,8 @@ public class AddBribeActivity extends AppCompatActivity {
                 DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().bribeDao().insert(newBribe);
                 Intent intent = new Intent(AddBribeActivity.this, BribeListActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
-                startActivity(intent);
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
 

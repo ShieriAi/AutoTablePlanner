@@ -36,6 +36,17 @@
             android:textColor="#FFFFFF"
             android:textSize="12sp" />
 
+        <TextView
+            android:id="@+id/textViewScore_makeit"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="#8F8F8F"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="10dp"
+            android:text="@string/zero"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"

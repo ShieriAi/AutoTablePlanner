@@ -124,7 +124,8 @@ public class AddFamilyActivity extends AppCompatActivity {
                 }
                 Intent intent = new Intent(AddFamilyActivity.this, PeopleListActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
-                startActivity(intent);
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
     }
