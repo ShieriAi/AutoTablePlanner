@@ -406,6 +406,7 @@ public class MainAlgorithm {
     }
 
     private double updatingSwap(int n){
+        Log.i(TAG, "updating=================================================");
         TableAlgo[][] newTables = new TableAlgo[n][tableList.size()];
         for(int i = 0; i < n; i++){
             for(int j = 0; j < tableList.size(); j++){
@@ -452,7 +453,9 @@ public class MainAlgorithm {
             allTables = newTables[currentBestIndex];
             tableList.get(bestSwapTable1).setScore(calculateSingleTableScore(bestSwapTable1));
             tableList.get(bestSwapTable2).setScore(calculateSingleTableScore(bestSwapTable2));
+            overallScore = currentBest;
         }
+        Log.i(TAG, "updating end---------------------------------------");
         return currentBest;
     }
 
@@ -461,7 +464,7 @@ public class MainAlgorithm {
         int currentBestIndex = 0;
         int evolutionCount = 0;
         while(evolutionCount < 500000 && evolutionCount - currentBestIndex < 500){
-            double c = updatingSwap(30);
+            double c = updatingSwap(50);
             if(c > currentBestScore){
                 currentBestScore = c;
                 Log.i(TAG, "FindBest: " + currentBestScore);

@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -36,8 +37,11 @@ public class MakeItMainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private MyTableListAdapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
+    private TextView scoreTextview;
 
     private onClickInterface mOnClickInterface;
+
+    private ViewDialog viewDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +55,7 @@ public class MakeItMainActivity extends AppCompatActivity {
         TextView textview = findViewById(R.id.textViewDinnerName_makeit);
         textview.setText(currentDinner.toString() + " Result");
 
-        TextView scoreTextview = findViewById(R.id.textViewScore_makeit);
+        scoreTextview = findViewById(R.id.textViewScore_makeit);
         scoreTextview.setText("Current score = " + currentDinner.score);
 
         tableList = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().tableDao().loadAllByDinner(dinnerId);
@@ -72,17 +76,33 @@ public class MakeItMainActivity extends AppCompatActivity {
             }
         };
 
+        viewDialog = new ViewDialog(this);
+
         Button retryBtn = findViewById(R.id.button_retry);
         retryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainAlgorithm mainAlgorithm = new MainAlgorithm(dinnerId);
-                mainAlgorithm.retry();
-                updateTableList();
+                viewDialog.showDialog();
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        MainAlgorithm mainAlgorithm = new MainAlgorithm(dinnerId);
+                        mainAlgorithm.retry();
+                        updateTableList();
+                        updateScore();
+                        viewDialog.hideDialog();
+                    }
+                }, 500);
             }
         });
 
         updateTableList();
+    }
+
+    private void updateScore(){
+        currentDinner = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().dinnerDao().loadSingleById(dinnerId);
+        scoreTextview.setText("Current score = " + currentDinner.score);
     }
 
     private void updateTableList(){
