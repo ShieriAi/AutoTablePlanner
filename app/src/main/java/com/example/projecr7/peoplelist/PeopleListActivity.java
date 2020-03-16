@@ -68,7 +68,7 @@ public class PeopleListActivity extends AppCompatActivity {
             @Override
             public void setClick(Object i) {
                 Person selectPerson = (Person)i;
-                int selectPeopleId = selectPerson.getId();
+                long selectPeopleId = selectPerson.getId();
                 Intent intent = new Intent(PeopleListActivity.this, ManagePersonActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, selectPeopleId);
                 startActivityForResult(intent, 1);
@@ -85,7 +85,7 @@ public class PeopleListActivity extends AppCompatActivity {
             @Override
             public void setClick(Object i) {
                 Couple selectCouple = (Couple)i;
-                int selectCoupleId = selectCouple.getUid();
+                long selectCoupleId = selectCouple.getUid();
                 Intent intent = new Intent(PeopleListActivity.this, ManageCoupleActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
                 intent.putExtra(PeopleListActivity.EXTRA_COUPLEID, selectCoupleId);
@@ -103,7 +103,7 @@ public class PeopleListActivity extends AppCompatActivity {
             @Override
             public void setClick(Object i) {
                 Family selectFamily = (Family)i;
-                int selectFamilyId = selectFamily.getUid();
+                long selectFamilyId = selectFamily.getUid();
                 Intent intent = new Intent(PeopleListActivity.this, ManageFamilyActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
                 intent.putExtra(PeopleListActivity.EXTRA_COUPLEID, selectFamilyId);

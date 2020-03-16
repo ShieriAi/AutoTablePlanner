@@ -110,7 +110,10 @@ public class DinnerActivity extends AppCompatActivity {
             @Override
             public void run() {
                 // Do something after 5s = 5000ms
+                long startT = System.nanoTime();
                 algo.start();
+                long elapsedTime = System.nanoTime() - startT;
+                Log.i(TAG, "Time used for inserting proximity: " + (double) elapsedTime / 1_000_000_000);
                 viewDialog.hideDialog();
                 Intent intent = new Intent(DinnerActivity.this, MakeItMainActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);

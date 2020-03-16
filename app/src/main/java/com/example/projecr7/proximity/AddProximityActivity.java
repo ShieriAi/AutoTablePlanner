@@ -33,7 +33,7 @@ class SortbyCoupleP implements Comparator<Person>
 {
     @Override
     public int compare(Person o1, Person o2) {
-        return o1.getCoupleId() - o2.getCoupleId();
+        return Long.compare(o1.getCoupleId(), o2.getCoupleId());
     }
 }
 
@@ -41,14 +41,14 @@ class SortbyFamilyP implements Comparator<Person>
 {
     @Override
     public int compare(Person o1, Person o2) {
-        return o1.getFamilyId() - o2.getFamilyId();
+        return Long.compare(o1.getFamilyId(), o2.getFamilyId());
     }
 }
 
 public class AddProximityActivity extends AppCompatActivity {
 
     private int dinnerId;
-    private int guestId;
+    private Long guestId;
     private int guestType;
 
     private ImageView icon;
@@ -57,7 +57,7 @@ public class AddProximityActivity extends AppCompatActivity {
 
     private String[] guestArraySpinner;
     private String guestName;
-    private ArrayList<Integer> guestIdArray;
+    private ArrayList<Long> guestIdArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +66,7 @@ public class AddProximityActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         dinnerId = intent.getIntExtra(MainActivity.EXTRA_INDEX, 4);
-        guestId = intent.getIntExtra(ManageProximityActivity.EXTRA_GUESTID, 4);
+        guestId = intent.getLongExtra(ManageProximityActivity.EXTRA_GUESTID, 4);
         guestType = intent.getIntExtra(ManageProximityActivity.EXTRA_GUESTTYPE, 4);
 
         icon = findViewById(R.id.proximity_guest1_name_icon_display);
@@ -90,7 +90,7 @@ public class AddProximityActivity extends AppCompatActivity {
                 break;
         }
 
-        guestIdArray = new ArrayList<Integer>();
+        guestIdArray = new ArrayList<Long>();
 
         String[] typeArraySpinner = new String[3];
         typeArraySpinner[0] = "single";
@@ -187,7 +187,7 @@ public class AddProximityActivity extends AppCompatActivity {
                 if(proximityType >= 3){
                     proximityType++;
                 }
-                int guest2Id = guestIdArray.get(guestSpinner.getSelectedItemPosition());
+                Long guest2Id = guestIdArray.get(guestSpinner.getSelectedItemPosition());
                 List<Proximity> proximityList = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().proximityDao().loadAllByGuest1(guestId);
                 boolean found = false;
                 int foundIndex = 0;
@@ -271,7 +271,7 @@ public class AddProximityActivity extends AppCompatActivity {
     private void updateGuestListSingle(int position){
         List<Person> personList = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().personDao().loadAllByDinner(dinnerId);
         ArrayList<Person> list = new ArrayList<Person>();
-        guestIdArray = new ArrayList<Integer>();
+        guestIdArray = new ArrayList<Long>();
         if(position == 1)
             Collections.sort(personList, new SortbyCoupleP());
         else if(position == 2)

@@ -30,10 +30,10 @@ public class Proximity {
     public int type2;
 
     @ColumnInfo(name = "guest1_Id")
-    public int guest1Id;
+    public long guest1Id;
 
     @ColumnInfo(name = "guest2_Id")
-    public int guest2Id;
+    public long guest2Id;
 
     // 1 - 5, bad - good
     @ColumnInfo(name = "proximity_type")
@@ -43,7 +43,7 @@ public class Proximity {
 
     public String guest2String;
 
-    public Proximity(int dinnerId, int type1, int type2, int guest1Id, int guest2Id, int proximityType){
+    public Proximity(int dinnerId, int type1, int type2, long guest1Id, long guest2Id, int proximityType){
         this.dinnerId = dinnerId;
         this.type1 = type1;
         this.type2 = type2;
@@ -72,11 +72,11 @@ public class Proximity {
         this.uid += i;
     }
 
-    public int getGuest1Id() {
+    public long getGuest1Id() {
         return guest1Id;
     }
 
-    public int getGuest2Id() {
+    public long getGuest2Id() {
         return guest2Id;
     }
 

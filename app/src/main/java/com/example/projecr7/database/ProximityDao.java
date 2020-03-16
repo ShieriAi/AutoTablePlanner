@@ -25,7 +25,7 @@ public interface ProximityDao {
     List<Proximity> loadAllByDinner(int dinnerID);
 
     @Query("SELECT * FROM `proximity` WHERE guest1_Id IS (:guestId) ORDER BY proximity_type ASC")
-    List<Proximity> loadAllByGuest1(int guestId);
+    List<Proximity> loadAllByGuest1(Long guestId);
 
 //    @Query("SELECT * FROM dinner WHERE Dinner_Name LIKE :first")
 //    Dinner findByName(String first);

@@ -20,7 +20,8 @@ import java.util.List;
 
 public class ManageFamilyActivity extends AppCompatActivity {
 
-    private int dinnerId, familyId;
+    private int dinnerId;
+    private long familyId;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -34,7 +35,7 @@ public class ManageFamilyActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         dinnerId = intent.getIntExtra(MainActivity.EXTRA_INDEX, 0);
-        familyId = intent.getIntExtra(PeopleListActivity.EXTRA_COUPLEID, 0);
+        familyId = intent.getLongExtra(PeopleListActivity.EXTRA_COUPLEID, 0);
 
         mRecyclerView = findViewById(R.id.my_recycler_view_edit_family_list);
         mRecyclerView.setHasFixedSize(true);

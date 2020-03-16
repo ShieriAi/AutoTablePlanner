@@ -17,7 +17,7 @@ import com.example.projecr7.database.Person;
 
 public class ManagePersonActivity extends AppCompatActivity {
 
-    private int personId;
+    private long personId;
     private Person currentPerson;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +25,7 @@ public class ManagePersonActivity extends AppCompatActivity {
         setContentView(R.layout.activity_manage_person);
 
         Intent intent = getIntent();
-        personId = intent.getIntExtra(MainActivity.EXTRA_INDEX, 0);
+        personId = intent.getLongExtra(MainActivity.EXTRA_INDEX, 0);
         currentPerson = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().personDao().loadSingleById(personId);
 
         Button addPersonBtn = findViewById(R.id.button_manage_person_with_name);

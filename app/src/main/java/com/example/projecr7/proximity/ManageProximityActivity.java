@@ -28,7 +28,8 @@ public class ManageProximityActivity extends AppCompatActivity {
     public static final String EXTRA_GUESTID = "com.example.projecr7.guestId";
     public static final String EXTRA_GUESTTYPE = "com.example.projecr7.guestType";
 
-    private int type, dinnerId, guestId;
+    private int type, dinnerId;
+    private long guestId;
     private List<Proximity> proximityList;
 
     private RecyclerView mRecyclerView;
@@ -44,7 +45,7 @@ public class ManageProximityActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         type = intent.getIntExtra(proximityListActivity.EXTRA_TYPE,0);
-        guestId = intent.getIntExtra(proximityListActivity.EXTRA_ID, 4);
+        guestId = intent.getLongExtra(proximityListActivity.EXTRA_ID, 4);
         dinnerId = intent.getIntExtra(MainActivity.EXTRA_INDEX, 4);
 
         mRecyclerView = findViewById(R.id.my_recycler_view_proximity_list);
@@ -101,7 +102,7 @@ public class ManageProximityActivity extends AppCompatActivity {
             if(resultCode ==  RESULT_OK){
                 dinnerId = data.getIntExtra(MainActivity.EXTRA_INDEX, 4);
                 type = data.getIntExtra(ManageProximityActivity.EXTRA_GUESTTYPE, 1);
-                guestId = data.getIntExtra(proximityListActivity.EXTRA_ID,4);
+                guestId = data.getLongExtra(proximityListActivity.EXTRA_ID,4);
                 updateProximityList();
             }
         }

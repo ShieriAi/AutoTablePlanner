@@ -15,8 +15,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 //class SortbyDislikeF implements Comparator<Family>
@@ -47,7 +49,7 @@ class SortbyCouple implements Comparator<Person>
 {
     @Override
     public int compare(Person o1, Person o2) {
-        return o2.getCoupleId() - o1.getCoupleId();
+        return Long.compare(o2.getCoupleId(), o1.getCoupleId());
     }
 }
 
@@ -55,7 +57,7 @@ class SortbyFamily implements Comparator<Person>
 {
     @Override
     public int compare(Person o1, Person o2) {
-        return o2.getFamilyId() - o1.getFamilyId();
+        return Long.compare(o2.getFamilyId(), o1.getFamilyId());
     }
 }
 
@@ -76,7 +78,8 @@ class SortbyBribeSatis implements Comparator<Bribe>
 }
 
 class Guest{
-    int id, table, seat, happiness;
+    int table, seat, happiness;
+    long id;
     Boolean lock;
     LinkedList<Guest> loves;
     LinkedList<Guest> hates;
@@ -105,6 +108,8 @@ public class MainAlgorithm {
     private LinkedList<Integer>[] hates;
     private LinkedList<Integer>[] loves;
 
+    private int coupleSCount;
+
     private double overallScore;
 
     private static final String TAG = "MainAlgorithm";
@@ -123,6 +128,7 @@ public class MainAlgorithm {
         Collections.sort(tableList, new SortbyTableSize());
         bribeList = DatabaseClient.getInstance(MainActivity.getContext()).getAppDatabase().bribeDao().loadAllByDinner(dinnerId);
         Collections.sort(bribeList, new SortbyBribeSatis());
+        coupleSCount = 0;
 
         dinnerSize = 0;
         overallScore = 0;
@@ -179,12 +185,16 @@ public class MainAlgorithm {
             tableList.get(i).setScore(currentS);
             overallScore += currentS;
         }
+        for(int i = 0; i < numberOfGuest; i++){
+            Log.i(TAG, "guest" + i + ": " + allGuests[i].table + " name: " + personList.get(i).getName() + " seat: " + allGuests[i].seat);
+        }
+        Log.i(TAG, "=======-=-=-=-==");
         step3_evolution();
         for(int i = 0; i < numberOfGuest; i++){
             Log.i(TAG, "guest" + i + ": " + allGuests[i].table + " name: " + personList.get(i).getName() + " seat: " + allGuests[i].seat);
         }
         updateDatabase();
-//        Log.i(TAG, "score1: " + calculateSingleTableScore(0));
+        Log.i(TAG, "couple count: " + coupleSCount);
 //        Log.i(TAG, "score2: " + calculateSingleTableScore(1));
 //
 //        Log.i(TAG, "-------------------------");
@@ -198,8 +208,11 @@ public class MainAlgorithm {
     }
 
     public void retry(){
+        Log.i(TAG, "INIT DATA===");
         initDataRetry();
+        Log.i(TAG, "EVOLUTION===");
         step3_evolution();
+        Log.i(TAG, "UPDATING===");
         updateDatabase();
     }
 
@@ -260,7 +273,7 @@ public class MainAlgorithm {
             for(int j = 0; j < tableList.size(); j++){
                 if(allTables[j].id == currentTableId){
                     allTables[j].seats[personList.get(i).getSeatId()] = i;
-                    allTables[j].lock[personList.get(i).getSeatId()] = true;
+                    allTables[j].lock[personList.get(i).getSeatId()] = allGuests[i].lock;
                     Log.i(TAG, "Lock seat:" + personList.get(i).getSeatId());
                     allTables[j].seatLeft--;
                 }
@@ -345,7 +358,6 @@ public class MainAlgorithm {
                         relationshipTable[current1P][current2P] = 20;
                         break;
                     case 5:
-                        hates[current1P].add(current2P);
                         relationshipTable[current1P][current2P] = 50;
                         break;
                 }
@@ -405,8 +417,168 @@ public class MainAlgorithm {
         return copy;
     }
 
+    private int findLeft(int tableI, int personI){
+        if(personI > 0)
+            return personI - 1;
+        else
+            return tableList.get(tableI).getTableSize() - 1;
+    }
+
+    private int findRight(int tableI, int personI){
+        if(personI < tableList.get(tableI).getTableSize() - 1)
+            return personI + 1;
+        else
+            return 0;
+    }
+
+    private static int getRandomNumberInRange(int min, int max) {
+        Random r = new Random();
+        return r.nextInt((max - min) + 1) + min;
+    }
+
+    private double updatingSwapCouple(int n){
+//        Log.i(TAG, "updating=================================================");
+        TableAlgo[][] newTables = new TableAlgo[n][tableList.size()];
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < tableList.size(); j++){
+                newTables[i][j] = makeDeepCopy(allTables[j]);
+            }
+        }
+        double currentBest = overallScore;
+        double currentScore;
+        int bestSwapTable1 = -1, bestSwapTable2 = -1;
+        int currentBestIndex = -1;
+        int isCouple1 = 0; // 0 is not, 1 is left, 2 is right
+        int isCouple2 = 0; // 0 is not, 1 is left, 2 is right
+        int swapTable1 = -1, swapTable2 = -1, swapPerson1 = -1, swapPerson2 = -1, swapPerson1Id = -1, swapPerson2Id = -1, swapTable1Type = -1, swapTable2Type = -1;
+        for(int i = 0; i < n; i++){
+            isCouple1 = 0; isCouple2 = 0; currentScore = 0;
+            swapTable1 = -1; swapTable2 = -1; swapPerson1 = -1; swapPerson2 = -1; swapPerson1Id = -1; swapPerson2Id = -1; swapTable1Type = -1; swapTable2Type = -1;
+            swapTable1 = getRandomNumberInRange(0, tableList.size() - 1);
+            swapTable2 = getRandomNumberInRange(0, tableList.size() - 1);
+            swapPerson1 = getRandomNumberInRange(0, tableList.get(swapTable1).getTableSize() - 1);
+            swapPerson2 = getRandomNumberInRange(0, tableList.get(swapTable2).getTableSize() - 1);
+            int lockCount = 0;
+            while (allTables[swapTable1].lock[swapPerson1] && lockCount < 500){
+//                Log.i(TAG, "lock1=================================================" + lockCount);
+                swapTable1 = getRandomNumberInRange(0, tableList.size() - 1);
+                swapPerson1 = getRandomNumberInRange(0, tableList.get(swapTable1).getTableSize() - 1);
+                lockCount++;
+            }
+            lockCount = 0;
+            while (allTables[swapTable2].lock[swapPerson2] && lockCount < 500){
+//                Log.i(TAG, "lock2=================================================" + lockCount);
+                swapTable2 = getRandomNumberInRange(0, tableList.size() - 1);
+                swapPerson2 = getRandomNumberInRange(0, tableList.get(swapTable2).getTableSize() - 1);
+                lockCount++;
+            }
+            swapPerson1Id = allTables[swapTable1].seats[swapPerson1];
+            swapPerson2Id = allTables[swapTable2].seats[swapPerson2];
+            int swapPerson1LeftId , swapPerson1RightId , swapPerson2LeftId , swapPerson2RightId;
+            swapPerson1LeftId =  allTables[swapTable1].seats[findLeft(swapTable1, swapPerson1)]; swapPerson1RightId =  allTables[swapTable1].seats[findRight(swapTable1, swapPerson1)];
+            swapPerson2LeftId =  allTables[swapTable2].seats[findLeft(swapTable2, swapPerson2)]; swapPerson2RightId =  allTables[swapTable2].seats[findRight(swapTable2, swapPerson2)];
+            if(personList.get(swapPerson1Id).getCoupleId() != 4){
+                if(personList.get(swapPerson1LeftId).getCoupleId() == personList.get(swapPerson1Id).getCoupleId())
+                    isCouple1 = 1;
+                else if(personList.get(swapPerson1RightId).getCoupleId() == personList.get(swapPerson1Id).getCoupleId())
+                    isCouple1 = 2;
+            }
+            if(personList.get(swapPerson2Id).getCoupleId() != 4){
+                if(personList.get(swapPerson2LeftId).getCoupleId() == personList.get(swapPerson2Id).getCoupleId())
+                    isCouple2 = 1;
+                else if(personList.get(swapPerson2RightId).getCoupleId() == personList.get(swapPerson2Id).getCoupleId())
+                    isCouple2 = 2;
+            }
+            if(swapTable1 == swapTable2 && (findLeft(swapTable1,swapPerson1) == findRight(swapTable2,swapPerson2) || findRight(swapTable1,swapPerson1) == findLeft(swapTable2,swapPerson2))){
+                isCouple1 = 0; isCouple2 = 0;
+            }
+            coupleSCount++;
+           // Log.i(TAG, "i=" + i + " swaping coupele, " + isCouple1 + "&" + isCouple2);
+            if(isCouple1 != 0 && isCouple2 != 0){
+                //Log.i(TAG, "i=" + i + " swaping coupele, " + isCouple1 + "&" + isCouple2);
+                newTables[i][swapTable1].seats[swapPerson1] = swapPerson2Id;
+                newTables[i][swapTable2].seats[swapPerson2] = swapPerson1Id;
+                if(isCouple1 == 1 && isCouple2 == 1) {
+                    newTables[i][swapTable1].seats[findLeft(swapTable1, swapPerson1)] = swapPerson2LeftId;
+                    newTables[i][swapTable2].seats[findLeft(swapTable2, swapPerson2)] = swapPerson1LeftId;
+                }
+                else if(isCouple1 == 2 && isCouple2 == 1) {
+                    newTables[i][swapTable1].seats[findRight(swapTable1, swapPerson1)] = swapPerson2LeftId;
+                    newTables[i][swapTable2].seats[findLeft(swapTable2, swapPerson2)] = swapPerson1RightId;
+                }
+                else if(isCouple1 == 1 && isCouple2 == 2) {
+                    newTables[i][swapTable1].seats[findLeft(swapTable1, swapPerson1)] = swapPerson2RightId;
+                    newTables[i][swapTable2].seats[findRight(swapTable2, swapPerson2)] = swapPerson1LeftId;
+                }
+                else if(isCouple1 == 2 && isCouple2 == 2) {
+                    newTables[i][swapTable1].seats[findRight(swapTable1, swapPerson1)] = swapPerson2RightId;
+                    newTables[i][swapTable2].seats[findRight(swapTable2, swapPerson2)] = swapPerson1RightId;
+                }
+            }
+            else if(isCouple1 == 0 && isCouple2 != 0){
+                newTables[i][swapTable1].seats[swapPerson1] = swapPerson2Id;
+                newTables[i][swapTable2].seats[swapPerson2] = swapPerson1Id;
+                if(isCouple2 == 1) {
+                    newTables[i][swapTable1].seats[findRight(swapTable1, swapPerson1)] = swapPerson2LeftId;
+                    newTables[i][swapTable2].seats[findLeft(swapTable2, swapPerson2)] = swapPerson1RightId;
+                }
+                else if(isCouple2 == 2) {
+                    newTables[i][swapTable1].seats[findLeft(swapTable1, swapPerson1)] = swapPerson2RightId;
+                    newTables[i][swapTable2].seats[findRight(swapTable2, swapPerson2)] = swapPerson1LeftId;
+                }
+            }
+            else if(isCouple1 != 0 && isCouple2 == 0){
+                newTables[i][swapTable1].seats[swapPerson1] = swapPerson2Id;
+                newTables[i][swapTable2].seats[swapPerson2] = swapPerson1Id;
+                if(isCouple1 == 1) {
+                    newTables[i][swapTable1].seats[findLeft(swapTable1, swapPerson1)] = swapPerson2RightId;
+                    newTables[i][swapTable2].seats[findRight(swapTable2, swapPerson2)] = swapPerson1LeftId;
+                }
+                else if(isCouple1 == 2) {
+                    newTables[i][swapTable1].seats[findRight(swapTable1, swapPerson1)] = swapPerson2LeftId;
+                    newTables[i][swapTable2].seats[findLeft(swapTable2, swapPerson2)] = swapPerson1RightId;
+                }
+            }
+            else {
+                coupleSCount--;
+                newTables[i][swapTable1].seats[swapPerson1] = swapPerson2Id;
+                newTables[i][swapTable2].seats[swapPerson2] = swapPerson1Id;
+            }
+            swapTable1Type = tableList.get(swapTable1).getTableType();
+            swapTable2Type = tableList.get(swapTable2).getTableType();
+            if (swapTable1 != swapTable2)
+                currentScore = overallScore - tableList.get(swapTable1).getScore() - tableList.get(swapTable2).getScore()
+                        + calculateSingleTableScore(newTables[i][swapTable1], swapTable1Type) + calculateSingleTableScore(newTables[i][swapTable2], swapTable2Type);
+            else
+                currentScore = overallScore - tableList.get(swapTable1).getScore() + calculateSingleTableScore(newTables[i][swapTable1], swapTable1Type);
+
+            if(currentBest < currentScore){
+                currentBest = currentScore;
+                currentBestIndex = i;
+                bestSwapTable1 = swapTable1;
+                bestSwapTable2 = swapTable2;
+            }
+        }
+        if(currentBestIndex >= 0){
+//            Log.i(TAG, "=-=-=-=-=-=-=-=-=-=-=-");
+//            Log.i(TAG, "iscouple1 = " + isCouple1 + " iscouple2 = " + isCouple2);
+//            Log.i(TAG, "swaptable1 = " + swapTable1 + " swaptable2 = " + swapTable2);
+//            Log.i(TAG, "swapPerson1 = " + swapPerson1 + " swapPerson2 = " + swapPerson2);
+//            for(int i = 0; i < allTables.length; i++){
+//                for(int j = 0; j < allTables[i].tableSize; j++)
+//                    Log.i(TAG, "table" + i  + " seat " + j + ": " + allTables[i].seats[j] + " name: " + personList.get(allTables[i].seats[j]).getName() + " coupleId: " + personList.get(allTables[i].seats[j]).getCoupleId() );
+//            }
+            allTables = newTables[currentBestIndex];
+            tableList.get(bestSwapTable1).setScore(calculateSingleTableScore(bestSwapTable1));
+            tableList.get(bestSwapTable2).setScore(calculateSingleTableScore(bestSwapTable2));
+            overallScore = currentBest;
+        }
+//        Log.i(TAG, "updating end---------------------------------------");
+        return currentBest;
+    }
+
     private double updatingSwap(int n){
-        Log.i(TAG, "updating=================================================");
+//        Log.i(TAG, "updating=================================================");
         TableAlgo[][] newTables = new TableAlgo[n][tableList.size()];
         for(int i = 0; i < n; i++){
             for(int j = 0; j < tableList.size(); j++){
@@ -419,17 +591,18 @@ public class MainAlgorithm {
         int currentBestIndex = -1;
         for(int i = 0; i < n; i++){
             int swapTable1, swapTable2, swapPerson1, swapPerson2, swapPerson1Id, swapPerson2Id, swapTable1Type, swapTable2Type;
-            swapTable1 = ThreadLocalRandom.current().nextInt(0, tableList.size());
-            swapTable2 = ThreadLocalRandom.current().nextInt(0, tableList.size());
-            swapPerson1 = ThreadLocalRandom.current().nextInt(0, tableList.get(swapTable1).getTableSize());
-            swapPerson2 = ThreadLocalRandom.current().nextInt(0, tableList.get(swapTable2).getTableSize());
+            swapTable1 = getRandomNumberInRange(0, tableList.size() - 1);
+            swapTable2 = getRandomNumberInRange(0, tableList.size() - 1);
+            swapPerson1 = getRandomNumberInRange(0, tableList.get(swapTable1).getTableSize() - 1);
+            swapPerson2 = getRandomNumberInRange(0, tableList.get(swapTable2).getTableSize() - 1);
+            //Log.i(TAG, "swapTable1:" + swapTable1 + ", " + swapPerson1 + "swapTable2:" + swapTable2 + ", " + swapPerson2);
             while (allTables[swapTable1].lock[swapPerson1]){
-                swapTable1 = ThreadLocalRandom.current().nextInt(0, tableList.size());
-                swapPerson1 = ThreadLocalRandom.current().nextInt(0, tableList.get(swapTable1).getTableSize());
+                swapTable1 = getRandomNumberInRange(0, tableList.size() - 1);
+                swapPerson1 = getRandomNumberInRange(0, tableList.get(swapTable1).getTableSize() - 1);
             }
             while (allTables[swapTable2].lock[swapPerson2]){
-                swapTable2 = ThreadLocalRandom.current().nextInt(0, tableList.size());
-                swapPerson2 = ThreadLocalRandom.current().nextInt(0, tableList.get(swapTable2).getTableSize());
+                swapTable2 = getRandomNumberInRange(0, tableList.size() - 1);
+                swapPerson2 = getRandomNumberInRange(0, tableList.get(swapTable2).getTableSize() - 1);
             }
             swapPerson1Id = allTables[swapTable1].seats[swapPerson1];
             swapPerson2Id = allTables[swapTable2].seats[swapPerson2];
@@ -455,16 +628,17 @@ public class MainAlgorithm {
             tableList.get(bestSwapTable2).setScore(calculateSingleTableScore(bestSwapTable2));
             overallScore = currentBest;
         }
-        Log.i(TAG, "updating end---------------------------------------");
+//        Log.i(TAG, "updating end---------------------------------------");
         return currentBest;
     }
 
     public void step3_evolution(){
         double currentBestScore = overallScore;
         int currentBestIndex = 0;
-        int evolutionCount = 0;
+        int evolutionCount = 1;
         while(evolutionCount < 500000 && evolutionCount - currentBestIndex < 500){
-            double c = updatingSwap(50);
+            Log.i(TAG, "count"+ evolutionCount);
+            double c = updatingSwapCouple(50);
             if(c > currentBestScore){
                 currentBestScore = c;
                 Log.i(TAG, "FindBest: " + currentBestScore);
@@ -481,7 +655,7 @@ public class MainAlgorithm {
                 }
             }
         }
-        Log.i(TAG, "currentBestIndex " + currentBestIndex);
+        Log.i(TAG, "currentBestIndex " + currentBestIndex + ", count: " + evolutionCount);
         Log.i(TAG, "currentScore " + overallScore);
     } // step3_evolution
 
@@ -502,14 +676,27 @@ public class MainAlgorithm {
         int tableType = tableList.get(tableI).getTableType();
         //Log.i(TAG, "table:" + tableI + "type:" + tableType);
         double currentScore = 0;
-        switch (tableType) {
-            case 0:
-                for (int i = 0; i < tableSize; i++) {
-                    currentID = allTables[tableI].seats[i];
-                    if (currentID == -1)
-                        continue;
+        int isHate[] = new int[personList.size()];
+        Arrays.fill(isHate, 0);
+        for (int i = 0; i < tableSize; i++){
+            currentID = allTables[tableI].seats[i];
+            Iterator<Integer> it = hates[currentID].iterator();
+            while (it.hasNext()) {
+                int j = it.next();
+                isHate[j]++;
+            }
+        }
+        for (int i = 0; i < tableSize; i++) {
+            currentID = allTables[tableI].seats[i];
+            currentPersonHappiness = 0;
+            if (currentID == -1)
+                continue;
+
+            currentPersonHappiness -= isHate[currentID] * 50;
+
+            switch (tableType) {
+                case 0:
                     if (i == 0) {
-                        currentPersonHappiness = 0;
                         if (allTables[tableI].seats[tableSize - 1] != -1)
                             currentPersonHappiness += (double) relationshipTable[currentID][allTables[tableI].seats[tableSize - 1]];
                         if (allTables[tableI].seats[1] != -1)
@@ -517,7 +704,6 @@ public class MainAlgorithm {
                         allGuests[currentID].happiness = currentPersonHappiness;
                         currentScore += currentPersonHappiness;
                     } else if (i == tableSize - 1) {
-                        currentPersonHappiness = 0;
                         if (allTables[tableI].seats[i - 1] != -1)
                             currentPersonHappiness += (double) relationshipTable[currentID][allTables[tableI].seats[i - 1]];
                         if (allTables[tableI].seats[0] != -1)
@@ -525,7 +711,6 @@ public class MainAlgorithm {
                         allGuests[currentID].happiness = currentPersonHappiness;
                         currentScore += currentPersonHappiness;
                     } else {
-                        currentPersonHappiness = 0;
                         if (allTables[tableI].seats[i - 1] != -1)
                             currentPersonHappiness += (double) relationshipTable[currentID][allTables[tableI].seats[i - 1]];
                         if (allTables[tableI].seats[i + 1] != -1)
@@ -533,16 +718,10 @@ public class MainAlgorithm {
                         allGuests[currentID].happiness = currentPersonHappiness;
                         currentScore += currentPersonHappiness;
                     }
-                }
-                break;
+                    break;
 
-            case 1:
-                for (int i = 0; i < tableSize; i++) {
-                    currentID = allTables[tableI].seats[i];
-                    if (currentID == -1)
-                        continue;
+                case 1:
                     if (i == 0) {
-                        currentPersonHappiness = 0;
                         if (allTables[tableI].seats[tableSize - 1] != -1)
                             currentPersonHappiness += (double) relationshipTable[currentID][allTables[tableI].seats[tableSize - 1]];
                         if (allTables[tableI].seats[1] != -1)
@@ -550,7 +729,6 @@ public class MainAlgorithm {
                         allGuests[currentID].happiness = currentPersonHappiness;
                         currentScore += currentPersonHappiness;
                     } else if (i == tableSize - 1) {
-                        currentPersonHappiness = 0;
                         if (allTables[tableI].seats[i - 1] != -1)
                             currentPersonHappiness += (double) relationshipTable[currentID][allTables[tableI].seats[i - 1]];
                         if (allTables[tableI].seats[0] != -1)
@@ -558,65 +736,54 @@ public class MainAlgorithm {
                         allGuests[currentID].happiness = currentPersonHappiness;
                         currentScore += currentPersonHappiness;
                     } else {
-                        currentPersonHappiness = 0;
                         if (allTables[tableI].seats[i - 1] != -1)
                             currentPersonHappiness += (double) relationshipTable[currentID][allTables[tableI].seats[i - 1]];
                         if (allTables[tableI].seats[i + 1] != -1)
                             currentPersonHappiness += (double) relationshipTable[currentID][allTables[tableI].seats[i + 1]];
-                        if(allTables[tableI].seats[tableSize - 1 - i] != -1) // opposite
+                        if (allTables[tableI].seats[tableSize - 1 - i] != -1) // opposite
                             currentPersonHappiness += ((double) relationshipTable[currentID][allTables[tableI].seats[tableSize - 1 - i]]) / 2.0;
                         allGuests[currentID].happiness = currentPersonHappiness;
                         currentScore += currentPersonHappiness;
                     }
-                }
-                break;
+                    break;
 
-            case 2:
-                for (int i = 0; i < tableSize; i++) {
-                    currentID = allTables[tableI].seats[i];
-                    if (currentID == -1)
-                        continue;
+                case 2:
                     if (i == 0) {
-                        currentPersonHappiness = 0;
                         if (allTables[tableI].seats[tableSize - 1] != -1)
                             currentPersonHappiness += (double) relationshipTable[currentID][allTables[tableI].seats[tableSize - 1]];
                         if (allTables[tableI].seats[1] != -1)
                             currentPersonHappiness += (double) relationshipTable[currentID][allTables[tableI].seats[1]];
-                        if(allTables[tableI].seats[tableSize - i - 2] != -1) // opposite
+                        if (allTables[tableI].seats[tableSize - i - 2] != -1) // opposite
                             currentPersonHappiness += ((double) relationshipTable[currentID][allTables[tableI].seats[tableSize - i - 2]]) / 2.0;
                         allGuests[currentID].happiness = currentPersonHappiness;
                         currentScore += currentPersonHappiness;
                     } else if (i == tableSize - 1) {
-                        currentPersonHappiness = 0;
                         if (allTables[tableI].seats[i - 1] != -1)
                             currentPersonHappiness += (double) relationshipTable[currentID][allTables[tableI].seats[i - 1]];
                         if (allTables[tableI].seats[0] != -1)
                             currentPersonHappiness += (double) relationshipTable[currentID][allTables[tableI].seats[0]];
                         allGuests[currentID].happiness = currentPersonHappiness;
                         currentScore += currentPersonHappiness;
-                    }
-                    else if(i == (tableSize - 2) / 2) {
-                        currentPersonHappiness = 0;
+                    } else if (i == (tableSize - 2) / 2) {
                         if (allTables[tableI].seats[i - 1] != -1)
                             currentPersonHappiness += (double) relationshipTable[currentID][allTables[tableI].seats[i - 1]];
                         if (allTables[tableI].seats[i + 1] != -1)
                             currentPersonHappiness += (double) relationshipTable[currentID][allTables[tableI].seats[i + 1]];
                         allGuests[currentID].happiness = currentPersonHappiness;
                         currentScore += currentPersonHappiness;
-                    }else{
-                        currentPersonHappiness = 0;
+                    } else {
                         if (allTables[tableI].seats[i - 1] != -1)
                             currentPersonHappiness += (double) relationshipTable[currentID][allTables[tableI].seats[i - 1]];
                         if (allTables[tableI].seats[i + 1] != -1)
                             currentPersonHappiness += (double) relationshipTable[currentID][allTables[tableI].seats[i + 1]];
-                        if(allTables[tableI].seats[tableSize - i - 2] != -1) // opposite
+                        if (allTables[tableI].seats[tableSize - i - 2] != -1) // opposite
                             currentPersonHappiness += ((double) relationshipTable[currentID][allTables[tableI].seats[tableSize - i - 2]]) / 2.0;
                         allGuests[currentID].happiness = currentPersonHappiness;
                         currentScore += currentPersonHappiness;
                     }
-                }
-                break;
+                    break;
 
+            }
         }
         return currentScore;
     }
@@ -626,14 +793,25 @@ public class MainAlgorithm {
         int currentPersonHappiness;
         final int tableSize = tablegiven.tableSize;
         double currentScore = 0;
-        switch (tableType) {
-            case 0:
-                for (int i = 0; i < tableSize; i++) {
-                    currentID = tablegiven.seats[i];
-                    if (currentID == -1)
-                        continue;
+        int isHate[] = new int[personList.size()];
+        Arrays.fill(isHate, 0);
+        for (int i = 0; i < tableSize; i++){
+            currentID = tablegiven.seats[i];
+            Iterator<Integer> it = hates[currentID].iterator();
+            while (it.hasNext()) {
+                int j = it.next();
+                isHate[j]++;
+            }
+        }
+        for (int i = 0; i < tableSize; i++) {
+            currentID = tablegiven.seats[i];
+            currentPersonHappiness = 0;
+            if (currentID == -1)
+                continue;
+            currentPersonHappiness -= isHate[currentID] * 50;
+            switch (tableType) {
+                case 0:
                     if (i == 0) {
-                        currentPersonHappiness = 0;
                         if (tablegiven.seats[tableSize - 1] != -1)
                             currentPersonHappiness += (double) relationshipTable[currentID][tablegiven.seats[tableSize - 1]];
                         if (tablegiven.seats[1] != -1)
@@ -641,7 +819,6 @@ public class MainAlgorithm {
                         allGuests[currentID].happiness = currentPersonHappiness;
                         currentScore += currentPersonHappiness;
                     } else if (i == tableSize - 1) {
-                        currentPersonHappiness = 0;
                         if (tablegiven.seats[i - 1] != -1)
                             currentPersonHappiness += (double) relationshipTable[currentID][tablegiven.seats[i - 1]];
                         if (tablegiven.seats[0] != -1)
@@ -649,7 +826,6 @@ public class MainAlgorithm {
                         allGuests[currentID].happiness = currentPersonHappiness;
                         currentScore += currentPersonHappiness;
                     } else {
-                        currentPersonHappiness = 0;
                         if (tablegiven.seats[i - 1] != -1)
                             currentPersonHappiness += (double) relationshipTable[currentID][tablegiven.seats[i - 1]];
                         if (tablegiven.seats[i + 1] != -1)
@@ -657,16 +833,10 @@ public class MainAlgorithm {
                         allGuests[currentID].happiness = currentPersonHappiness;
                         currentScore += currentPersonHappiness;
                     }
-                }
-                break;
+                    break;
 
-            case 1:
-                for (int i = 0; i < tableSize; i++) {
-                    currentID = tablegiven.seats[i];
-                    if (currentID == -1)
-                        continue;
+                case 1:
                     if (i == 0) {
-                        currentPersonHappiness = 0;
                         if (tablegiven.seats[tableSize - 1] != -1)
                             currentPersonHappiness += (double) relationshipTable[currentID][tablegiven.seats[tableSize - 1]];
                         if (tablegiven.seats[1] != -1)
@@ -674,7 +844,6 @@ public class MainAlgorithm {
                         allGuests[currentID].happiness = currentPersonHappiness;
                         currentScore += currentPersonHappiness;
                     } else if (i == tableSize - 1) {
-                        currentPersonHappiness = 0;
                         if (tablegiven.seats[i - 1] != -1)
                             currentPersonHappiness += (double) relationshipTable[currentID][tablegiven.seats[i - 1]];
                         if (tablegiven.seats[0] != -1)
@@ -682,26 +851,19 @@ public class MainAlgorithm {
                         allGuests[currentID].happiness = currentPersonHappiness;
                         currentScore += currentPersonHappiness;
                     } else {
-                        currentPersonHappiness = 0;
                         if (tablegiven.seats[i - 1] != -1)
                             currentPersonHappiness += (double) relationshipTable[currentID][tablegiven.seats[i - 1]];
                         if (tablegiven.seats[i + 1] != -1)
                             currentPersonHappiness += (double) relationshipTable[currentID][tablegiven.seats[i + 1]];
-                        if(tablegiven.seats[tableSize - 1 - i] != -1) // opposite
+                        if (tablegiven.seats[tableSize - 1 - i] != -1) // opposite
                             currentPersonHappiness += ((double) relationshipTable[currentID][tablegiven.seats[tableSize - 1 - i]]) / 2.0;
                         allGuests[currentID].happiness = currentPersonHappiness;
                         currentScore += currentPersonHappiness;
                     }
-                }
-                break;
+                    break;
 
-            case 2:
-                for (int i = 0; i < tableSize; i++) {
-                    currentID = tablegiven.seats[i];
-                    if (currentID == -1)
-                        continue;
+                case 2:
                     if (i == 0) {
-                        currentPersonHappiness = 0;
                         if (tablegiven.seats[tableSize - 1] != -1)
                             currentPersonHappiness += (double) relationshipTable[currentID][tablegiven.seats[tableSize - 1]];
                         if (tablegiven.seats[1] != -1)
@@ -709,36 +871,32 @@ public class MainAlgorithm {
                         allGuests[currentID].happiness = currentPersonHappiness;
                         currentScore += currentPersonHappiness;
                     } else if (i == tableSize - 1) {
-                        currentPersonHappiness = 0;
                         if (tablegiven.seats[i - 1] != -1)
                             currentPersonHappiness += (double) relationshipTable[currentID][tablegiven.seats[i - 1]];
                         if (tablegiven.seats[0] != -1)
                             currentPersonHappiness += (double) relationshipTable[currentID][tablegiven.seats[0]];
                         allGuests[currentID].happiness = currentPersonHappiness;
                         currentScore += currentPersonHappiness;
-                    }
-                    else if(i == (tableSize - 2) / 2) {
-                        currentPersonHappiness = 0;
+                    } else if (i == (tableSize - 2) / 2) {
                         if (tablegiven.seats[i - 1] != -1)
                             currentPersonHappiness += (double) relationshipTable[currentID][tablegiven.seats[i - 1]];
                         if (tablegiven.seats[i + 1] != -1)
                             currentPersonHappiness += (double) relationshipTable[currentID][tablegiven.seats[i + 1]];
                         allGuests[currentID].happiness = currentPersonHappiness;
                         currentScore += currentPersonHappiness;
-                    }else{
-                        currentPersonHappiness = 0;
+                    } else {
                         if (tablegiven.seats[i - 1] != -1)
                             currentPersonHappiness += (double) relationshipTable[currentID][tablegiven.seats[i - 1]];
                         if (tablegiven.seats[i + 1] != -1)
                             currentPersonHappiness += (double) relationshipTable[currentID][tablegiven.seats[i + 1]];
-                        if(tablegiven.seats[tableSize - i - 2] != -1) // opposite
+                        if (tablegiven.seats[tableSize - i - 2] != -1) // opposite
                             currentPersonHappiness += ((double) relationshipTable[currentID][tablegiven.seats[tableSize - i - 2]]) / 2.0;
                         allGuests[currentID].happiness = currentPersonHappiness;
                         currentScore += currentPersonHappiness;
                     }
-                }
-                break;
+                    break;
 
+            }
         }
         return currentScore;
     }

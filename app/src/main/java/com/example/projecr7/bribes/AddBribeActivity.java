@@ -31,7 +31,7 @@ public class AddBribeActivity extends AppCompatActivity {
     EditText amountInput;
 
     private String[] guestArraySpinner;
-    private ArrayList<Integer> guestIdArray;
+    private ArrayList<Long> guestIdArray;
 
     private int satis;
     private TextView seekbar_display;
@@ -114,7 +114,7 @@ public class AddBribeActivity extends AppCompatActivity {
         addBribeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int guestId = guestIdArray.get(guestSpinner.getSelectedItemPosition());
+                long guestId = guestIdArray.get(guestSpinner.getSelectedItemPosition());
                 int guestType = typeSpinner.getSelectedItemPosition() + 1;
                 Bribe newBribe = new Bribe(dinnerId, guestId, guestType, guestSpinner.getSelectedItem().toString(), Integer.parseInt(amountInput.getText().toString()));
                 newBribe.setSatis(satis);
@@ -131,7 +131,7 @@ public class AddBribeActivity extends AppCompatActivity {
     private void updateGuestListSingle(){
         List<Person> personList = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().personDao().loadAllByDinner(dinnerId);
         ArrayList<Person> list = new ArrayList<Person>();
-        guestIdArray = new ArrayList<Integer>();
+        guestIdArray = new ArrayList<Long>();
         for(int i = 0; i < personList.size(); i++){
             if(personList.get(i).getCoupleId() == 4 && personList.get(i).getFamilyId() == 4){
                 guestIdArray.add(personList.get(i).getId());

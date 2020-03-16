@@ -15,13 +15,13 @@ public interface CoupleDao {
     List<Couple> getAll();
 
     @Query("SELECT * FROM couple WHERE couple_uid IN (:userIds)")
-    List<Couple> loadAllByIds(int[] userIds);
+    List<Couple> loadAllByIds(long[] userIds);
 
     @Query("SELECT * FROM couple WHERE dinner_id IS (:dinnerId)")
     List<Couple> loadAllByDinner(int dinnerId);
 
     @Query("SELECT * FROM couple WHERE couple_uid IS (:coupleId)")
-    Couple loadSingleById(int coupleId);
+    Couple loadSingleById(long coupleId);
 
 //    @Query("SELECT * FROM couple WHERE Dinner_Name LIKE :first")
 //    Couple findByName(String first);

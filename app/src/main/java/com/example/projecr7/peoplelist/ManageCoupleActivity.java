@@ -22,7 +22,7 @@ import java.util.List;
 
 public class ManageCoupleActivity extends AppCompatActivity {
 
-    private int coupleId;
+    private long coupleId;
     private int dinnerId;
     private Couple currentCouple;
 
@@ -32,7 +32,7 @@ public class ManageCoupleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_manage_couple);
 
         Intent intent = getIntent();
-        coupleId = intent.getIntExtra(PeopleListActivity.EXTRA_COUPLEID, 0);
+        coupleId = intent.getLongExtra(PeopleListActivity.EXTRA_COUPLEID, 0);
         dinnerId = intent.getIntExtra(MainActivity.EXTRA_INDEX, 0);
 
         currentCouple = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().coupleDao().loadSingleById(coupleId);

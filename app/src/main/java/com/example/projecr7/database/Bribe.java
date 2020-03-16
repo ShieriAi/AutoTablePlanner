@@ -24,7 +24,7 @@ public class Bribe {
     public int dinnerId;
 
     @ColumnInfo(name = "guest_Id")
-    public int guestId;
+    public long guestId;
 
     public int guestType;
 
@@ -36,7 +36,7 @@ public class Bribe {
     @ColumnInfo(name = "bribe_satis")
     public int satis;
 
-    public Bribe(int dinnerId, int guestId, int guestType, String guestName, int bribeAmount){
+    public Bribe(int dinnerId, long guestId, int guestType, String guestName, int bribeAmount){
         this.dinnerId = dinnerId;
         this.guestId = guestId;
         this.bribeAmount = bribeAmount;
@@ -56,7 +56,7 @@ public class Bribe {
         return uid;
     }
 
-    public int getGuestId() {
+    public long getGuestId() {
         return guestId;
     }
 

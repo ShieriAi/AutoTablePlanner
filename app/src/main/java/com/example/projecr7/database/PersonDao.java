@@ -15,19 +15,19 @@ public interface PersonDao {
     List<Person> getAll();
 
     @Query("SELECT * FROM person WHERE person_uid IN (:peopleIds)")
-    List<Person> loadAllByIds(int[] peopleIds);
+    List<Person> loadAllByIds(long[] peopleIds);
 
     @Query("SELECT * FROM person WHERE person_uid IS (:personId)")
-    Person loadSingleById(int personId);
+    Person loadSingleById(long personId);
 
     @Query("SELECT * FROM person WHERE dinner_id IS (:dinnerID)")
     List<Person> loadAllByDinner(int dinnerID);
 
     @Query("SELECT * FROM person WHERE person_couple_id IS (:coupleId)")
-    List<Person> loadAllByCouple(int coupleId);
+    List<Person> loadAllByCouple(long coupleId);
 
     @Query("SELECT * FROM person WHERE person_family_id IS (:familyId)")
-    List<Person> loadAllByFamily(int familyId);
+    List<Person> loadAllByFamily(long familyId);
 
     @Query("SELECT * FROM person WHERE person_family_id IS (4) AND person_couple_id IS (4) AND dinner_id IS (:dinnerId)")
     List<Person> loadAllSingles(int dinnerId);

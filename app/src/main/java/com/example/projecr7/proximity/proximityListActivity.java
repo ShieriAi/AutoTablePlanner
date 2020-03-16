@@ -30,14 +30,14 @@ class SortbyFamily implements Comparator<Person>
 {
     @Override
     public int compare(Person o1, Person o2) {
-        return o1.getFamilyId() - o2.getFamilyId();
+        return Long.compare(o1.getFamilyId(), o2.getFamilyId());
     }
 }
 class SortbyCouple implements Comparator<Person>
 {
     @Override
     public int compare(Person o1, Person o2) {
-        return o1.getCoupleId() - o2.getCoupleId();
+        return Long.compare(o1.getCoupleId(), o2.getCoupleId());
     }
 }
 
@@ -76,7 +76,7 @@ public class proximityListActivity extends AppCompatActivity {
             @Override
             public void setClick(Object i) {
                 Person selectPerson = (Person) i;
-                int selectPeopleId = selectPerson.getId();
+                long selectPeopleId = selectPerson.getId();
                 Intent intent = new Intent(com.example.projecr7.proximity.proximityListActivity.this, ManageProximityActivity.class);
                 intent.putExtra(MainActivity.EXTRA_INDEX, dinnerId);
                 intent.putExtra(proximityListActivity.EXTRA_TYPE, 1);

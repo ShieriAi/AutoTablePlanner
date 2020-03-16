@@ -26,7 +26,8 @@ public class ManageSinglePersonTableActivity extends AppCompatActivity {
 
     private static final String TAG = "ManageSinglePersonTableActivity";
 
-    private int dinnerId, personId, tableSelect, seatSelect;
+    private int dinnerId, tableSelect, seatSelect;
+    private Long personId;
     private Person currentPerson;
     private List<Table> tables;
     private String[] seatArraySpinner;
@@ -43,7 +44,7 @@ public class ManageSinglePersonTableActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         dinnerId = intent.getIntExtra(MainActivity.EXTRA_INDEX, 0);
-        personId = intent.getIntExtra(ForceAssignActivity.EXTRA_ID, 4);
+        personId = intent.getLongExtra(ForceAssignActivity.EXTRA_ID, 4);
 
         TextView nameDisplay = findViewById(R.id.single_person_table_name);
         currentPerson = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().personDao().loadSingleById(personId);

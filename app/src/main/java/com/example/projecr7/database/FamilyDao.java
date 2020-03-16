@@ -15,13 +15,13 @@ public interface FamilyDao {
     List<Family> getAll();
 
     @Query("SELECT * FROM family WHERE family_uid IN (:userIds)")
-    List<Family> loadAllByIds(int[] userIds);
+    List<Family> loadAllByIds(long[] userIds);
 
     @Query("SELECT * FROM family WHERE dinner_id IS (:dinnerId) ORDER BY family_size DESC")
     List<Family> loadAllByDinner(int dinnerId);
 
     @Query("SELECT * FROM family WHERE family_uid IS (:familyId)")
-    Family loadSingleById(int familyId);
+    Family loadSingleById(long familyId);
 
 //    @Query("SELECT * FROM family WHERE Dinner_Name LIKE :first")
 //    Family findByName(String first);

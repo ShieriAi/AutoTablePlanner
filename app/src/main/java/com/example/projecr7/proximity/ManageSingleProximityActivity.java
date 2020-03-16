@@ -18,7 +18,8 @@ import com.example.projecr7.database.Proximity;
 public class ManageSingleProximityActivity extends AppCompatActivity {
 
     private Proximity currentProximity;
-    private int dinnerId, guestId, guestType, proximityId;
+    private int dinnerId, guestType, proximityId;
+    private long guestId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +28,7 @@ public class ManageSingleProximityActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         dinnerId = intent.getIntExtra(MainActivity.EXTRA_INDEX, 4);
-        guestId = intent.getIntExtra(ManageProximityActivity.EXTRA_GUESTID, 4);
+        guestId = intent.getLongExtra(ManageProximityActivity.EXTRA_GUESTID, 4);
         guestType = intent.getIntExtra(ManageProximityActivity.EXTRA_GUESTTYPE, 4);
         proximityId = intent.getIntExtra(proximityListActivity.EXTRA_ID, 4);
 

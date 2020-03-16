@@ -19,7 +19,7 @@ public class Family {
 
     @PrimaryKey
     @ColumnInfo(name = "family_uid")
-    public int uid;
+    public long uid;
 
     @ColumnInfo(name = "dinner_id") public int dinnerId;
 
@@ -39,12 +39,12 @@ public class Family {
         String minute = Integer.toString(calendar.get(Calendar.MINUTE));
         String second = Integer.toString(calendar.get(Calendar.SECOND));
         String currentT = "4" + month + date + hour + minute + second.charAt(0);
-        this.uid = Integer.parseInt(currentT);
+        this.uid = Long.parseLong(currentT);
         this.familySize = familySize;
         this.disLikeBy = 0;
     }
 
-    public void setUid(int uid){
+    public void setUid(long uid){
         this.uid = uid;
     }
 
@@ -80,7 +80,7 @@ public class Family {
         this.dinnerId = dinnerId;
     }
 
-    public int getUid() {
+    public long getUid() {
         return uid;
     }
 

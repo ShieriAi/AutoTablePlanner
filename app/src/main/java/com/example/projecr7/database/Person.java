@@ -35,7 +35,7 @@ public class Person {
 
     @PrimaryKey
     @ColumnInfo(name = "person_uid")
-    public int uid;
+    public long uid;
 
     @ColumnInfo(name = "dinner_id")
     public int dinnerId;
@@ -51,10 +51,10 @@ public class Person {
     public int seatId;
 
     @ColumnInfo(name = "person_couple_id", defaultValue = "4")
-    public int coupleId;
+    public long coupleId;
 
     @ColumnInfo(name = "person_family_id", defaultValue = "4")
-    public int familyId;
+    public long familyId;
 
     public int listPosition;
 
@@ -74,7 +74,7 @@ public class Person {
         String minute = Integer.toString(calendar.get(Calendar.MINUTE));
         String second = Integer.toString(calendar.get(Calendar.SECOND));
         String currentT = "2" + month + date + hour + minute + second;
-        this.uid = Integer.parseInt(currentT);
+        this.uid =  Long.parseLong(currentT);
         this.currentHappiness = 0;
         this.familyId = 4;
         this.coupleId = 4;
@@ -98,7 +98,7 @@ public class Person {
         this.gender = gender;
     }
 
-    public void setId(int uid){
+    public void setId(long uid){
         this.uid = uid;
     }
 
@@ -114,11 +114,11 @@ public class Person {
         this.dinnerId = dinnerId;
     }
 
-    public void setCoupleId(int coupleId){
+    public void setCoupleId(long coupleId){
         this.coupleId = coupleId;
     }
 
-    public void setFamilyId(int familyId) {
+    public void setFamilyId(long familyId) {
         this.familyId = familyId;
     }
 
@@ -166,11 +166,11 @@ public class Person {
         return seatId;
     }
 
-    public int getCoupleId(){
+    public long getCoupleId(){
         return  coupleId;
     }
 
-    public int getFamilyId(){
+    public long getFamilyId(){
         return familyId;
     }
 
@@ -186,7 +186,7 @@ public class Person {
         return tableId;
     }
 
-    public int getId(){
+    public long getId(){
         return uid;
     }
 

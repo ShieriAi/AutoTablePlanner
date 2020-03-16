@@ -19,7 +19,7 @@ public class Couple {
 
     @PrimaryKey
     @ColumnInfo(name = "couple_uid")
-    public int uid;
+    public long uid;
 
     @ColumnInfo(name = "dinner_id") public int dinnerId;
 
@@ -37,7 +37,7 @@ public class Couple {
         String minute = Integer.toString(calendar.get(Calendar.MINUTE));
         String second = Integer.toString(calendar.get(Calendar.SECOND));
         String currentT = "1" + month + date + hour + minute + second;
-        this.uid = Integer.parseInt(currentT);
+        this.uid = Long.parseLong(currentT);
         this.disLikeBy = 0;
     }
 
@@ -45,7 +45,7 @@ public class Couple {
         this.displayName = displayName;
     }
 
-    public void setUid(int uid){
+    public void setUid(long uid){
         this.uid = uid;
     }
 
@@ -69,7 +69,7 @@ public class Couple {
         return listPosition;
     }
 
-    public int getUid() {
+    public long getUid() {
         return uid;
     }
 
