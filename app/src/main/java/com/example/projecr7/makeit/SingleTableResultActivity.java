@@ -23,6 +23,7 @@ import com.example.projecr7.database.Table;
 import com.example.projecr7.forceAssign.ManageSinglePersonTableActivity;
 import com.example.projecr7.onClickInterface;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class SingleTableResultActivity extends AppCompatActivity {
@@ -32,6 +33,7 @@ public class SingleTableResultActivity extends AppCompatActivity {
     private int tableId;
     private List<Person> personList;
     private String[] seatsNameDisplay;
+    private double[] personScoreDisplay;
     private Table currentTable;
 
     private RecyclerView mRecyclerView;
@@ -60,13 +62,15 @@ public class SingleTableResultActivity extends AppCompatActivity {
         drawTableboard.addView(tableDraw);
 
         seatsNameDisplay = new String[currentTable.getTableSize()];
+        personScoreDisplay = new double[currentTable.getTableSize()];
 
-        for(int i = 0; i < currentTable.getTableSize(); i++){
-            seatsNameDisplay[i] = "";
-        }
+        Arrays.fill(seatsNameDisplay, "");
+        Arrays.fill(personScoreDisplay, 0);
+
         for(int i = 0; i < personList.size(); i++){
             Log.i(TAG, personList.get(i).getName() + "Table: " + personList.get(i).getTableId() + "Seat: " + personList.get(i).getSeatId());
             seatsNameDisplay[personList.get(i).getSeatId()] = personList.get(i).getName();
+            personScoreDisplay[personList.get(i).getSeatId()] = personList.get(i).getHappiness();
         }
 
         mRecyclerView = findViewById(R.id.recyclerView_single_table_result);
@@ -74,7 +78,7 @@ public class SingleTableResultActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new MyTableResultAdapter(seatsNameDisplay);
+        mAdapter = new MyTableResultAdapter(seatsNameDisplay, personScoreDisplay);
         mRecyclerView.setAdapter(mAdapter);
     }
 

@@ -11,9 +11,11 @@ import com.example.projecr7.R;
 
 public class MyTableResultAdapter extends RecyclerView.Adapter<MyTableResultAdapter.ViewHolder>{
     private String[] nameArray;
+    private double[] scoreArray;
 
-    public MyTableResultAdapter(String[] nameArray) {
+    public MyTableResultAdapter(String[] nameArray, double[] scoreArray) {
         this.nameArray = nameArray;
+        this.scoreArray = scoreArray;
     }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -27,6 +29,7 @@ public class MyTableResultAdapter extends RecyclerView.Adapter<MyTableResultAdap
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.textViewName.setText(nameArray[position]);
         holder.textViewSeatNumber.setText("Seat. " + (position+1));
+        holder.textViewScore.setText(Double.toString(scoreArray[position]));
     }
 
 
@@ -38,10 +41,12 @@ public class MyTableResultAdapter extends RecyclerView.Adapter<MyTableResultAdap
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView textViewName;
         public TextView textViewSeatNumber;
+        public TextView textViewScore;
         public ViewHolder(View itemView) {
             super(itemView);
             this.textViewName = itemView.findViewById(R.id.result_item_name_textview);
             this.textViewSeatNumber = itemView.findViewById(R.id.result_item_seatId_textview);
+            this.textViewScore = itemView.findViewById(R.id.result_item_score_textview);
         }
     }
 }
