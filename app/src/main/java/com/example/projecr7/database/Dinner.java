@@ -19,6 +19,9 @@ public class Dinner {
     @ColumnInfo(name = "dinner_score")
     public double score;
 
+    @ColumnInfo(name = "dinner_plan")
+    public boolean havePlan;
+
     public Dinner(String dinnerName){
         Calendar calendar = Calendar.getInstance();
         String year = Integer.toString(calendar.get(Calendar.YEAR));
@@ -30,6 +33,7 @@ public class Dinner {
         String currentT = month + date + hour + minute + second;
         this.uid = Integer.parseInt(currentT);
         this.dinnerName = dinnerName;
+        this.havePlan = false;
     }
 
     public void setDinnerName(String givenName){
@@ -48,6 +52,14 @@ public class Dinner {
 
     public void setScore(double score) {
         this.score = score;
+    }
+
+    public void setHavePlan(boolean havePlan) {
+        this.havePlan = havePlan;
+    }
+
+    public boolean isHavePlan() {
+        return havePlan;
     }
 
     public double getScore() {

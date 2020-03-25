@@ -68,7 +68,7 @@ public class AddTableActivity extends AppCompatActivity {
                 String tableName = tableNameInput.getText().toString();
                 int tableSize = tableSizeInput.getValue();
                 if (tableName.matches("")) {
-                    Snackbar.make(findViewById(R.id.add_table_layout), R.string.name_warning, Snackbar.LENGTH_SHORT);
+                    Snackbar.make(findViewById(R.id.add_table_layout), R.string.name_warning, Snackbar.LENGTH_SHORT).show();
                     return;
                 }
                 int tableType = tableTypeSpinner.getSelectedItemPosition();

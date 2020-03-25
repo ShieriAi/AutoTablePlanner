@@ -6,7 +6,7 @@
     <string name="groups">Groups</string>
     <string name="relations">Proximity</string>
     <string name="tables">Tables</string>
-    <string name="makeItButton">Make It</string>
+    <string name="makeItButton">Make new</string>
     <string name="Bribes">Bribes</string>
     <string name="AddDinnerHint">Enter Dinner Name...</string>
     <string name="addDinnerbtn">Add Dinner</string>
@@ -57,4 +57,7 @@
     <string name="single_select_table">Select table</string>
     <string name="single_select_seat">Select_seat</string>
     <string name="score">Score</string>
+    <string name="see_exist">see exist plan</string>
+    <string name="no_exist_warning">There\'s no exist seating plan</string>
+    <string name="no_seats_warning">Don\'t have enough seats</string>
 </resources>

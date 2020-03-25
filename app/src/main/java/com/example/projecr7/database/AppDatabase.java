@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = {Dinner.class, Person.class, Table.class, Couple.class, Family.class, Proximity.class, Bribe.class}, version = 3)
+@Database(entities = {Dinner.class, Person.class, Table.class, Couple.class, Family.class, Proximity.class, Bribe.class}, version = 4)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract DinnerDao dinnerDao();
     public abstract PersonDao personDao();
@@ -19,6 +19,13 @@ public abstract class AppDatabase extends RoomDatabase {
         @Override
         public void migrate(SupportSQLiteDatabase database) {
             database.execSQL("ALTER TABLE dinner ADD COLUMN dinner_score DOUBLE NOT NULL DEFAULT 0");
+        }
+    };
+
+    static final Migration MIGRATION_3_4 = new Migration(3, 4) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE dinner ADD COLUMN dinner_plan INTEGER NOT NULL DEFAULT 0");
         }
     };
 }

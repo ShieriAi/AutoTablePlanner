@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.room.Room;
 
 import static com.example.projecr7.database.AppDatabase.MIGRATION_2_3;
+import static com.example.projecr7.database.AppDatabase.MIGRATION_3_4;
 
 public class DatabaseClient {
     private Context mCtx;
@@ -18,7 +19,7 @@ public class DatabaseClient {
 
         //creating the app database with Room database builder
         //MyToDos is the name of the database
-        appDatabase = Room.databaseBuilder(mCtx, AppDatabase.class, "dinnerDatabase.db").allowMainThreadQueries().addMigrations(MIGRATION_2_3).build();
+        appDatabase = Room.databaseBuilder(mCtx, AppDatabase.class, "dinnerDatabase.db").allowMainThreadQueries().addMigrations(MIGRATION_3_4).build();
     }
 
     public static synchronized DatabaseClient getInstance(Context mCtx) {
