@@ -192,6 +192,7 @@ public class MainAlgorithm {
             double currentS = calculateSingleTableScore(i);
             tableList.get(i).setScore(currentS);
             overallScore += currentS;
+            Log.i(TAG, "overall=" + overallScore);
         }
         for(int i = 0; i < numberOfGuest; i++){
             Log.i(TAG, "guest" + i + ": " + allGuests[i].table + " name: " + personList.get(i).getName() + " seat: " + allGuests[i].seat);
@@ -207,6 +208,8 @@ public class MainAlgorithm {
         }
         allTables = solution.tables;
         overallScore = solution.score;
+        Log.i(TAG, "overall score = " + overallScore);
+
         if(!retry) {
             for (int i = 0; i < tableList.size(); i++) {
                 calculateSingleTableScore(i);
@@ -558,8 +561,17 @@ public class MainAlgorithm {
         return r.nextInt((max - min) + 1) + min;
     }
 
-    private Solution updatingSwapCouple(int n, Solution solution){
+    private Solution updatingSwapCouple(int n, Solution solutionGiven){
 //        Log.i(TAG, "updating=================================================");
+        Solution solution = new Solution();
+        solution.tables = new TableAlgo[tableList.size()];
+        solution.scores = new double[tableList.size()];
+        solution.score = Double.valueOf(solutionGiven.score);
+        for(int i = 0; i < tableList.size(); i++){
+            solution.tables[i] = makeDeepCopy(solutionGiven.tables[i]);
+            solution.scores[i] = Double.valueOf(solutionGiven.scores[i]);
+        }
+
         TableAlgo[][] newTables = new TableAlgo[n][tableList.size()];
         for(int i = 0; i < n; i++){
             for(int j = 0; j < tableList.size(); j++){
@@ -708,8 +720,16 @@ public class MainAlgorithm {
         return solution;
     }
 
-    private Solution updatingSwap3(int n, Solution solution){
-//        Log.i(TAG, "updating=================================================");
+    private Solution updatingSwap3(int n, Solution solutionGiven){
+        Solution solution = new Solution();
+        solution.tables = new TableAlgo[tableList.size()];
+        solution.scores = new double[tableList.size()];
+        solution.score = Double.valueOf(solutionGiven.score);
+        for(int i = 0; i < tableList.size(); i++){
+            solution.tables[i] = makeDeepCopy(solutionGiven.tables[i]);
+            solution.scores[i] = Double.valueOf(solutionGiven.scores[i]);
+        }
+
         TableAlgo[][] newTables = new TableAlgo[n][tableList.size()];
         for(int i = 0; i < n; i++){
             for(int j = 0; j < tableList.size(); j++){
@@ -723,19 +743,12 @@ public class MainAlgorithm {
         int swapTable1 = -1, swapTable2 = -1, swapTable3 = -1, swapPerson1 = -1, swapPerson2 = -1, swapPerson3 = -1, swapPerson1Id = -1, swapPerson2Id = -1, swapPerson3Id = -1;
         for(int i = 0; i < n; i++){
             currentScore = 0;
-            swapTable1 = -1; swapTable2 = -1; swapTable3 = -1; swapPerson1 = -1; swapPerson2 = -1; swapPerson3 = -1; swapPerson1Id = -1; swapPerson2Id = -1; swapPerson3Id = -1;
             swapTable1 = getRandomNumberInRange(0, tableList.size() - 1);
             swapTable2 = getRandomNumberInRange(0, tableList.size() - 1);
             swapTable3 = getRandomNumberInRange(0, tableList.size() - 1);
             swapPerson1 = getRandomNumberInRange(0, tableList.get(swapTable1).getTableSize() - 1);
             swapPerson2 = getRandomNumberInRange(0, tableList.get(swapTable2).getTableSize() - 1);
             swapPerson3 = getRandomNumberInRange(0, tableList.get(swapTable3).getTableSize() - 1);
-            if(swapTable1 == swapTable2 && swapPerson1 == swapPerson2)
-                continue;
-            if(swapTable1 == swapTable3 && swapPerson1 == swapPerson3)
-                continue;
-            if(swapTable2 == swapTable3 && swapPerson2 == swapPerson3)
-                continue;
             int lockCount = 0;
             while (solution.tables[swapTable1].lock[swapPerson1] && lockCount < 500){
                 swapTable1 = getRandomNumberInRange(0, tableList.size() - 1);
@@ -752,6 +765,12 @@ public class MainAlgorithm {
                 swapPerson3 = getRandomNumberInRange(0, tableList.get(swapTable3).getTableSize() - 1);
                 lockCount++;
             }
+            if(swapTable1 == swapTable2 && swapPerson1 == swapPerson2)
+                continue;
+            if(swapTable1 == swapTable3 && swapPerson1 == swapPerson3)
+                continue;
+            if(swapTable2 == swapTable3 && swapPerson2 == swapPerson3)
+                continue;
             swapPerson1Id = solution.tables[swapTable1].seats[swapPerson1];
             swapPerson2Id = solution.tables[swapTable2].seats[swapPerson2];
             swapPerson3Id = solution.tables[swapTable3].seats[swapPerson3];
@@ -868,6 +887,7 @@ public class MainAlgorithm {
     public Solution step3_evolution(){
         Solution solution = new Solution();
         solution.score = overallScore;
+        Log.i(TAG, "overallllll" + solution.score);
         solution.tables = new TableAlgo[tableList.size()];
         solution.scores = new double[tableList.size()];
         for(int i = 0; i < tableList.size(); i++){
@@ -920,6 +940,7 @@ public class MainAlgorithm {
 //        }
         Log.i(TAG, "currentBestIndex " + currentBestIndex + ", count: " + evolutionCount);
         Log.i(TAG, "currentScore " + overallScore);
+        Log.i(TAG, "solution" + solution.score);
         return solution;
     } // step3_evolution
 
