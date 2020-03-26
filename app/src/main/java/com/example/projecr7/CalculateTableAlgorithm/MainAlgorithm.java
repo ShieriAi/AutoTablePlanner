@@ -227,16 +227,6 @@ public class MainAlgorithm {
         }
 
         Log.i(TAG, "couple count: " + coupleSCount);
-//        Log.i(TAG, "score2: " + calculateSingleTableScore(1));
-//
-//        Log.i(TAG, "-------------------------");
-//        for(int i = 0; i<10; i++){
-//            Log.i(TAG, "Table1:" + tables[0].get(i) + " Name: " + personList.get(tables[0].get(i)).getName() + " Happiness: " + allGuests[tables[0].get(i)].happiness);
-//
-//        }
-//        for(int i = 0; i<10; i++){
-//            Log.i(TAG, "Table2:" + tables[1].get(i) + " Name: " + personList.get(tables[1].get(i)).getName() + " Happiness: " + allGuests[tables[1].get(i)].happiness);
-//        }
     }
 
     public void retry(){
@@ -281,64 +271,7 @@ public class MainAlgorithm {
         }
 
         Log.i(TAG, "couple count: " + coupleSCount);
-//        Log.i(TAG, "score2: " + calculateSingleTableScore(1));
-//
-//        Log.i(TAG, "-------------------------");
-//        for(int i = 0; i<10; i++){
-//            Log.i(TAG, "Table1:" + tables[0].get(i) + " Name: " + personList.get(tables[0].get(i)).getName() + " Happiness: " + allGuests[tables[0].get(i)].happiness);
-//
-//        }
-//        for(int i = 0; i<10; i++){
-//            Log.i(TAG, "Table2:" + tables[1].get(i) + " Name: " + personList.get(tables[1].get(i)).getName() + " Happiness: " + allGuests[tables[1].get(i)].happiness);
-//        }
     }
-
-//    public void retry(){
-//        start(true);
-//        Solution solution = new Solution();
-//        solution.score = overallScore;
-//        solution.tables = new TableAlgo[tableList.size()];
-//        for(int i = 0; i < tableList.size(); i++)
-//            solution.tables[i] = makeDeepCopy(allTables[i]);
-//        Log.i(TAG, "INIT DATA===");
-//        allTables = new TableAlgo[tableList.size()];
-//        overallScore = 0;
-//        for(int i = 0; i < tableList.size(); i++){
-//            allTables[i] = new TableAlgo();
-//            allTables[i].lock = new Boolean[tableList.get(i).getTableSize()];
-//            allTables[i].seats = new int[tableList.get(i).getTableSize()];
-//
-//            allTables[i].id = tableList.get(i).getUid();
-//            allTables[i].seatLeft = tableList.get(i).getTableSize();
-//            allTables[i].tableSize = tableList.get(i).getTableSize();
-//            Arrays.fill(allTables[i].lock, false);
-//            Arrays.fill(allTables[i].seats, -1);
-//        }
-//        initDataRetry();
-//        Log.i(TAG, "EVOLUTION===");
-//        Solution oldSolutionUpdate = step3_evolution();
-//        if(oldSolutionUpdate.score > solution.score) {
-//            Log.i(TAG, "new Solution:" + oldSolutionUpdate.score);
-//            allTables = oldSolutionUpdate.tables;
-//            overallScore = oldSolutionUpdate.score;
-//        }
-//        else {
-//            allTables = solution.tables;
-//            overallScore = solution.score;
-//        }
-//        for(int i = 0; i < tableList.size(); i++){
-//            calculateSingleTableScore(i);
-//            for(int j = 0; j < allTables[i].tableSize; j++){
-//                if(allTables[i].seats[j] != -1){
-//                    allGuests[allTables[i].seats[j]].table = i;
-//                    allGuests[allTables[i].seats[j]].seat = j;
-//                }
-//            }
-//        }
-//
-//        Log.i(TAG, "UPDATING===");
-//        updateDatabase();
-//    }
 
     // check if it's too much people
     public boolean checkDinnerSize(){
@@ -346,23 +279,6 @@ public class MainAlgorithm {
             return false;
         else
             return true;
-    }
-
-    public void randomSeat(){
-        int numberOfPeopleInSeat = 0;
-        int currentTableId;
-        for(int i = 0; i < tableList.size(); i++){
-            currentTableId = tableList.get(i).getUid();
-            for(int j = 0; j < tableList.get(i).getTableSize(); j++){
-                Person currentPerson = personList.get(numberOfPeopleInSeat);
-                currentPerson.setTableId(currentTableId);
-                currentPerson.setSeatId(j);
-                DatabaseClient.getInstance(MainActivity.getContext()).getAppDatabase().personDao().updateUsers(currentPerson);
-                numberOfPeopleInSeat++;
-                if(numberOfPeopleInSeat == personList.size())
-                    break;
-            }
-        }
     }
 
     public void updateDatabase(){
@@ -378,38 +294,7 @@ public class MainAlgorithm {
         DatabaseClient.getInstance(MainActivity.getContext()).getAppDatabase().dinnerDao().updateUsers(currentDinner);
     }
 
-    public void initDataRetry(){
-        Log.i(TAG, "retrying");
-        overallScore = currentDinner.getScore();
-        allGuests = new Guest[numberOfGuest];
-        for(int i = 0; i < numberOfGuest; i++){
-            allGuests[i] = new Guest();
-            Log.i(TAG, "current uid==== " + personList.get(i).getId());
-            allGuests[i].id = personList.get(i).getId();
-            int tableIndex = 0;
-            int currentTableId = tableList.get(0).getUid();
-            while(currentTableId != personList.get(i).getTableId()){
-                tableIndex++;
-                currentTableId = tableList.get(tableIndex).getUid();
-            }
-            allGuests[i].table = tableIndex;
-            allGuests[i].seat = personList.get(i).getSeatId();
-            allGuests[i].lock = personList.get(i).isLock();
-            for(int j = 0; j < tableList.size(); j++){
-                if(allTables[j].id == currentTableId){
-                    allTables[j].seats[personList.get(i).getSeatId()] = i;
-                    allTables[j].lock[personList.get(i).getSeatId()] = allGuests[i].lock;
-                    Log.i(TAG, "Lock seat:" + personList.get(i).getSeatId());
-                    allTables[j].seatLeft--;
-                }
-            }
-            allGuests[i].happiness = 0;
-        }
-
-        Log.i(TAG, "numberOfGuest " + numberOfGuest);
-    }
-
-    public void initDataStart(){
+    private void initDataStart(){
         allGuests = new Guest[numberOfGuest];
         for(int i = 0; i < numberOfGuest; i++){
             allGuests[i] = new Guest();
@@ -445,7 +330,7 @@ public class MainAlgorithm {
         Log.i(TAG, "numberOfGuest " + numberOfGuest);
     }
 
-    public void step1_hate(){
+    private void step1_hate(){
         int current1P = -1, current2P = -1;
         boolean found = false;
         long startT = System.nanoTime();
@@ -808,17 +693,7 @@ public class MainAlgorithm {
             }
         }
         if(currentBestIndex >= 0){
-//            Log.i(TAG, "=-=-=-=-=-=-=-=-=-=-=-");
-//            Log.i(TAG, "iscouple1 = " + isCouple1 + " iscouple2 = " + isCouple2);
-//            Log.i(TAG, "swaptable1 = " + swapTable1 + " swaptable2 = " + swapTable2);
-//            Log.i(TAG, "swapPerson1 = " + swapPerson1 + " swapPerson2 = " + swapPerson2);
-//            for(int i = 0; i < solution.tables.length; i++){
-//                for(int j = 0; j < solution.tables[i].tableSize; j++)
-//                    Log.i(TAG, "table" + i  + " seat " + j + ": " + solution.tables[i].seats[j] + " name: " + personList.get(solution.tables[i].seats[j]).getName() + " coupleId: " + personList.get(solution.tables[i].seats[j]).getCoupleId() );
-//            }
             solution.tables = newTables[currentBestIndex];
-//            tableList.get(bestSwapTable1).setScore(calculateSingleTableScore(bestSwapTable1));
-//            tableList.get(bestSwapTable2).setScore(calculateSingleTableScore(bestSwapTable2));
             solution.scores[bestSwapTable1] = calculateSingleTableScore(newTables[currentBestIndex][bestSwapTable1], tableList.get(bestSwapTable1).getTableType());
             solution.scores[bestSwapTable2] = calculateSingleTableScore(newTables[currentBestIndex][bestSwapTable2], tableList.get(bestSwapTable2).getTableType());
             solution.scores[bestSwapTable3] = calculateSingleTableScore(newTables[currentBestIndex][bestSwapTable3], tableList.get(bestSwapTable3).getTableType());
@@ -897,62 +772,27 @@ public class MainAlgorithm {
         double currentBestScore = overallScore;
         int currentBestIndex = 0;
         int evolutionCount = 1;
-        while(evolutionCount < 50000 && evolutionCount - currentBestIndex < 200){
-            //Log.i(TAG, "count"+ evolutionCount);
+        while(evolutionCount < 50000 && evolutionCount - currentBestIndex < 300){
             Solution c = updatingSwapCouple(50, solution);
             Solution c2 = updatingSwap3(50, solution);
             if(c.score > currentBestScore){
                 currentBestScore = c.score;
                 solution = c;
-                Log.i(TAG, "FindBest: " + currentBestIndex);
                 currentBestIndex = evolutionCount;
             }
             if(c2.score > currentBestScore){
                 currentBestScore = c2.score;
                 solution = c2;
-                Log.i(TAG, "FindBest2222222222222: " + currentBestIndex);
                 currentBestIndex = evolutionCount;
             }
             evolutionCount++;
         }
-//        evolutionCount = 1; currentBestIndex = 0;
-//        while(evolutionCount < 50000 && evolutionCount - currentBestIndex < 200){
-//            //Log.i(TAG, "count"+ evolutionCount);
-//            Solution c = updatingSwap3(50, solution);
-//            if(c.score > currentBestScore){
-//                currentBestScore = c.score;
-//                solution = c;
-//                Log.i(TAG, "FindBest222: " + currentBestIndex);
-//                currentBestIndex = evolutionCount;
-//            }
-//            evolutionCount++;
-//        }
         Log.i(TAG, "======final score:" + currentBestScore);
-        //overallScore = currentBestScore;
-
-//        for(int i = 0; i < tableList.size(); i++){
-//            for(int j = 0; j < allTables[i].tableSize; j++){
-//                if(allTables[i].seats[j] != -1){
-//                    allGuests[allTables[i].seats[j]].table = i;
-//                    allGuests[allTables[i].seats[j]].seat = j;
-//                }
-//            }
-//        }
         Log.i(TAG, "currentBestIndex " + currentBestIndex + ", count: " + evolutionCount);
         Log.i(TAG, "currentScore " + overallScore);
         Log.i(TAG, "solution" + solution.score);
         return solution;
     } // step3_evolution
-
-//    private double checkLovers(){ // check if any family or couple has been split
-//        Person currentPerson;
-//        double currentScore;
-//        int currentId;
-//        for(int i = 0; i < coupleList.size(); i++){
-//            currentPerson = coupleList.get(i);
-//
-//        }
-//    }
 
     private double calculateSingleTableScore(int tableI){
         int currentID = 0;
